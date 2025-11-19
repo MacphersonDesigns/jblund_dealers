@@ -27,6 +27,7 @@ class Styles {
      */
     public function __construct() {
         add_action('wp_enqueue_scripts', array($this, 'enqueue_frontend_styles'));
+        add_action('wp_enqueue_scripts', array($this, 'enqueue_dashboard_styles'));
     }
 
     /**
@@ -219,5 +220,28 @@ class Styles {
         $b = max(0, min(255, $b - ($b * $percent / 100)));
 
         return sprintf("#%02x%02x%02x", $r, $g, $b);
+    }
+
+    /**
+     * Enqueue dashboard styles for dealer portal pages
+     */
+    public function enqueue_dashboard_styles() {
+        // Check if we're on a dealer portal page
+        if (!is_user_logged_in()) {
+            return;
+        }
+
+        $current_user = wp_get_current_user();
+        if (!in_array('dealer', (array) $current_user->roles)) {
+            return;
+        }
+
+        // Enqueue dashboard CSS
+        wp_enqueue_style(
+            'jblund-dealers-dashboard',
+            JBLUND_DEALERS_PLUGIN_URL . 'modules/dealer-portal/assets/css/dashboard.css',
+            array(),
+            JBLUND_DEALERS_VERSION
+        );
     }
 }

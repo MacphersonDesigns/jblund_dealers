@@ -42,6 +42,21 @@ if ( ! $is_dealer && ! $can_bypass ) {
 // Get dealer information
 $company_name = get_user_meta( $current_user->ID, '_dealer_company_name', true );
 $display_name = $current_user->display_name;
+
+// Get dealer representative info
+$dealer_rep = jblund_get_dealer_representative( $current_user->ID );
+
+// Get dealer post (for additional info if needed)
+$dealer_post = jblund_get_user_dealer_post( $current_user->ID );
+
+// Get NDA acceptance info
+$nda_data = get_user_meta( $current_user->ID, '_dealer_nda_acceptance', true );
+$nda_accepted = ! empty( $nda_data['accepted'] );
+$nda_date = $nda_accepted && ! empty( $nda_data['acceptance_date'] ) ? $nda_data['acceptance_date'] : '';
+
+// Get forms/documents from settings
+$settings = get_option( 'jblund_dealers_settings' );
+$required_documents = isset( $settings['required_documents'] ) ? $settings['required_documents'] : array();
 ?>
 
 <div class="jblund-dealer-dashboard">
@@ -103,6 +118,108 @@ $display_name = $current_user->display_name;
 					<?php endif; ?>
 				</div>
 			</div>
+
+			<!-- Dealer Representative Card -->
+			<?php if ( $dealer_rep ) : ?>
+			<div class="dashboard-card dealer-representative">
+				<h2><?php esc_html_e( 'Your Dealer Representative', 'jblund-dealers' ); ?></h2>
+				<div class="rep-info">
+					<div class="rep-item">
+						<span class="rep-icon">👤</span>
+						<div class="rep-details">
+							<strong><?php echo esc_html( $dealer_rep['name'] ); ?></strong>
+						</div>
+					</div>
+					<?php if ( ! empty( $dealer_rep['phone'] ) ) : ?>
+					<div class="rep-item">
+						<span class="rep-icon">📞</span>
+						<div class="rep-details">
+							<a href="tel:<?php echo esc_attr( preg_replace( '/[^0-9]/', '', $dealer_rep['phone'] ) ); ?>">
+								<?php echo esc_html( $dealer_rep['phone'] ); ?>
+							</a>
+						</div>
+					</div>
+					<?php endif; ?>
+					<?php if ( ! empty( $dealer_rep['email'] ) ) : ?>
+					<div class="rep-item">
+						<span class="rep-icon">✉️</span>
+						<div class="rep-details">
+							<a href="mailto:<?php echo esc_attr( $dealer_rep['email'] ); ?>">
+								<?php echo esc_html( $dealer_rep['email'] ); ?>
+							</a>
+						</div>
+					</div>
+					<?php endif; ?>
+				</div>
+			</div>
+			<?php endif; ?>
+
+			<!-- Signed Documents Card -->
+			<div class="dashboard-card signed-documents">
+				<h2><?php esc_html_e( 'Signed Documents', 'jblund-dealers' ); ?></h2>
+				<p class="card-description"><?php esc_html_e( 'View and download your signed documents.', 'jblund-dealers' ); ?></p>
+				<ul class="documents-list">
+					<?php if ( $nda_accepted ) : ?>
+					<li class="document-item">
+						<span class="document-icon">📄</span>
+						<div class="document-info">
+							<strong><?php esc_html_e( 'Non-Disclosure Agreement', 'jblund-dealers' ); ?></strong>
+							<div class="document-meta">
+								<span class="document-status signed">✓ <?php esc_html_e( 'Signed', 'jblund-dealers' ); ?></span>
+								<?php if ( $nda_date ) : ?>
+								<span class="document-date"><?php echo esc_html( date_i18n( get_option( 'date_format' ), strtotime( $nda_date ) ) ); ?></span>
+								<?php endif; ?>
+							</div>
+							<a href="<?php echo esc_url( jblund_get_portal_page_url( 'nda' ) ?: home_url( '/dealer-nda-acceptance/' ) ); ?>" class="document-link">
+								<?php esc_html_e( 'View Document', 'jblund-dealers' ); ?> →
+							</a>
+						</div>
+					</li>
+					<?php else : ?>
+					<li class="no-documents">
+						<p><?php esc_html_e( 'No signed documents yet.', 'jblund-dealers' ); ?></p>
+					</li>
+					<?php endif; ?>
+				</ul>
+			</div>
+
+			<!-- Documents to Complete Card -->
+			<?php if ( ! empty( $required_documents ) ) : ?>
+			<div class="dashboard-card documents-to-complete">
+				<h2><?php esc_html_e( 'Documents to Complete', 'jblund-dealers' ); ?></h2>
+				<p class="card-description"><?php esc_html_e( 'Please review and complete the following documents.', 'jblund-dealers' ); ?></p>
+				<ul class="documents-list">
+					<?php
+					foreach ( $required_documents as $document ) :
+						if ( empty( $document['title'] ) ) {
+							continue;
+						}
+						$doc_title = $document['title'];
+						$doc_url = ! empty( $document['url'] ) ? $document['url'] : '#';
+						$doc_description = ! empty( $document['description'] ) ? $document['description'] : '';
+						$is_required = ! empty( $document['required'] );
+						?>
+						<li class="document-item">
+							<span class="document-icon">📋</span>
+							<div class="document-info">
+								<strong>
+									<?php echo esc_html( $doc_title ); ?>
+									<?php if ( $is_required ) : ?>
+										<span class="required-badge"><?php esc_html_e( 'Required', 'jblund-dealers' ); ?></span>
+									<?php endif; ?>
+								</strong>
+								<?php if ( $doc_description ) : ?>
+									<p class="document-description"><?php echo esc_html( $doc_description ); ?></p>
+								<?php endif; ?>
+								<a href="<?php echo esc_url( $doc_url ); ?>" class="document-button" target="_blank">
+									<?php esc_html_e( 'Complete Form', 'jblund-dealers' ); ?> →
+								</a>
+							</div>
+						</li>
+					<?php endforeach; ?>
+				</ul>
+			</div>
+			<?php endif; ?>
 
 			<!-- Resources Card (Placeholder for future features) -->
 			<div class="dashboard-card resources">
