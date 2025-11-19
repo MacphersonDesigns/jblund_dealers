@@ -11,12 +11,12 @@
  * @since      1.0.0
  */
 
+namespace JBLund\Frontend;
+
 // Exit if accessed directly
 if (!defined('ABSPATH')) {
     exit;
 }
-
-namespace JBLund\Frontend;
 
 /**
  * Class Shortcode
