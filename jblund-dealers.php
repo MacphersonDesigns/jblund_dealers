@@ -731,7 +731,7 @@ class JBLund_Dealers_Plugin {
      * Register settings and fields
      */
     public function register_settings() {
-        register_setting('jblund_dealers_settings', 'jblund_dealers_settings');
+        register_setting('jblund_dealers_settings', 'jblund_dealers_settings', array($this, 'sanitize_settings'));
         register_setting('jblund_dealers_portal_pages', 'jblund_dealers_portal_pages');
 
         // Appearance Section
@@ -1057,6 +1057,21 @@ class JBLund_Dealers_Plugin {
             'jblund_dealers_settings',
             'jblund_dealers_portal_updates'
         );
+    }
+
+    /**
+     * Sanitize settings and merge with existing values
+     * This prevents settings from one tab overwriting settings from other tabs
+     */
+    public function sanitize_settings($input) {
+        // Get existing settings
+        $existing = get_option('jblund_dealers_settings', array());
+
+        // Merge new input with existing settings
+        // New values will overwrite existing ones, but missing values are preserved
+        $output = array_merge($existing, $input);
+
+        return $output;
     }
 
     /**
