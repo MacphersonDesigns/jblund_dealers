@@ -19,9 +19,11 @@ modules/frontend/shortcodes/
 ## Editing Individual Layouts
 
 ### Grid Layout (`class-grid-layout.php`)
+
 **Shortcode:** `[jblund_dealers]` or `[jblund_dealers layout="grid"]`
 
 Edit this file to customize:
+
 - Vertical card layout
 - Auto-fill responsive grid
 - Card header and body structure
@@ -31,6 +33,7 @@ Edit this file to customize:
 - Sublocations in grid format
 
 **Key Methods:**
+
 - `render()` - Main rendering loop
 - `render_contact_info()` - Address and phone display
 - `render_website_button()` - Website button display
@@ -38,9 +41,11 @@ Edit this file to customize:
 - `render_sublocations()` - Additional locations display
 
 ### List Layout (`class-list-layout.php`)
+
 **Shortcode:** `[jblund_dealers layout="list"]`
 
 Edit this file to customize:
+
 - Horizontal row layout
 - 4-column structure (name | contact | website | services)
 - Inline contact display
@@ -48,21 +53,25 @@ Edit this file to customize:
 - Sublocations in list format
 
 **Key Methods:**
+
 - `render()` - Main rendering loop with 4 columns
 - `render_contact_info()` - Inline contact items
 - `render_website_button()` - Website button in column 3
 - `render_sublocations()` - Additional locations in list format
 
 ### Compact Layout (`class-compact-layout.php`)
+
 **Shortcode:** `[jblund_dealers layout="compact"]`
 
 Edit this file to customize:
+
 - Smaller card size
 - Tighter spacing
 - Same structure as grid but more compact
 - Reduced padding and margins
 
 **Key Methods:**
+
 - Same as Grid Layout but with compact class wrapper
 
 ## Shared Functionality (`class-layout-base.php`)
@@ -72,24 +81,29 @@ This abstract base class provides shared methods that all layouts use:
 ### Methods Available to All Layouts:
 
 **`get_dealer_data($post_id)`**
+
 - Retrieves all dealer meta data for a post
 - Returns array with company_name, address, phone, website, services, sublocations, etc.
 
 **`generate_map_link($address, $latitude, $longitude, $custom_map_link)`**
+
 - Generates Google Maps links
 - Priority: Custom link > Coordinates > Address search
 
 **`render_service_icons($docks, $lifts, $trailers)`**
+
 - Renders service icons (🚢 🚛 ⚓)
 - Shows active/inactive states
 - Can be called from any layout
 
 **`render_service_list($docks, $lifts, $trailers)`**
+
 - Renders traditional bullet list of services
 - Fallback when icons are disabled
 - Can be called from any layout
 
 **`$this->use_icons`**
+
 - Property available in all layouts
 - Determines whether to show icons or list
 - Based on plugin settings
@@ -116,22 +130,27 @@ This abstract base class provides shared methods that all layouts use:
 ## Common Editing Tasks
 
 ### Change Contact Info Display
+
 **Edit:** Individual layout file (`class-grid-layout.php`, etc.)
 **Method:** `render_contact_info()` or inline in `render()`
 
 ### Change Website Button Text/Style
+
 **Edit:** Individual layout file
 **Method:** `render_website_button()`
 
 ### Modify Services Display
+
 **Edit:** Individual layout file
 **Method:** `render_services()` or use shared `render_service_icons()` / `render_service_list()`
 
 ### Change Sublocation Structure
+
 **Edit:** Individual layout file
 **Method:** `render_sublocations()`
 
 ### Add New Shared Function
+
 **Edit:** `class-layout-base.php`
 **Add:** Protected method, then call from any layout using `$this->method_name()`
 
@@ -147,6 +166,7 @@ This abstract base class provides shared methods that all layouts use:
 ## CSS Structure (Unchanged)
 
 CSS for all layouts is still in:
+
 - `assets/scss/_layout-grid.scss`
 - `assets/scss/_layout-list.scss`
 - `assets/scss/_layout-compact.scss`
@@ -169,6 +189,7 @@ The modular PHP structure **works with existing CSS** - no CSS changes needed!
 ## Questions?
 
 This structure follows the same modular pattern as the rest of the plugin:
+
 - `/modules/admin/` - Admin functionality
 - `/modules/core/` - Post types and meta
 - `/modules/frontend/shortcodes/` - Now modular too!

@@ -14,7 +14,11 @@
 
 /* Dashboard Header */
 .dashboard-header {
-	background: linear-gradient(135deg, var(--jblund-header-color, #0073aa) 0%, var(--jblund-button-hover-color, #005177) 100%);
+	background: linear-gradient(
+		135deg,
+		var(--jblund-header-color, #0073aa) 0%,
+		var(--jblund-button-hover-color, #005177) 100%
+	);
 	color: var(--jblund-button-text-color, #ffffff);
 	padding: $spacing-xl;
 	border-radius: $radius-lg;
@@ -28,7 +32,8 @@
 		color: var(--jblund-button-text-color, #ffffff);
 	}
 
-	p, .welcome-message {
+	p,
+	.welcome-message {
 		margin: 0;
 		font-size: 1.1em;
 		opacity: 0.95;

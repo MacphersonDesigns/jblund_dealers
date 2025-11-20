@@ -51,10 +51,10 @@ function jblund_dealers_activate() {
     // Load necessary files for activation
     require_once JBLUND_DEALERS_PLUGIN_DIR . 'includes/class-loader.php';
     require_once JBLUND_DEALERS_PLUGIN_DIR . 'includes/class-activator.php';
-    
+
     $loader = new \JBLund\Includes\Loader(JBLUND_DEALERS_PLUGIN_DIR);
     $loader->load_modules();
-    
+
     \JBLund\Includes\Activator::activate();
 }
 register_activation_hook(__FILE__, 'jblund_dealers_activate');

@@ -55,7 +55,7 @@ class Loader {
         $this->load_core_modules();
         $this->load_admin_modules();
         $this->load_frontend_modules();
-        
+
         if (!$this->skip_dealer_portal) {
             $this->load_dealer_portal_modules();
         }
