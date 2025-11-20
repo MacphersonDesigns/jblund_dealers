@@ -105,22 +105,45 @@ class Styles {
      * Enqueue dashboard styles for dealer portal pages
      */
     public function enqueue_dashboard_styles() {
-        // Check if we're on a dealer portal page
-        if (!is_user_logged_in()) {
+        // Check if we're on a dealer portal page by checking for portal shortcodes
+        global $post;
+        
+        if (!$post) {
             return;
         }
 
-        $current_user = wp_get_current_user();
-        if (!in_array('dealer', (array) $current_user->roles)) {
-            return;
-        }
-
-        // Enqueue dashboard CSS
-        wp_enqueue_style(
-            'jblund-dealers-dashboard',
-            JBLUND_DEALERS_PLUGIN_URL . 'modules/dealer-portal/assets/css/dashboard.css',
-            array(),
-            JBLUND_DEALERS_VERSION
+        // Check if page contains any dealer portal shortcodes
+        $portal_shortcodes = array(
+            '[jblund_dealer_login]',
+            '[jblund_dealer_dashboard]',
+            '[jblund_dealer_profile]',
+            '[jblund_nda_acceptance]',
+            '[jblund_dealer_registration]',
         );
+
+        $has_portal_shortcode = false;
+        foreach ($portal_shortcodes as $shortcode) {
+            if (has_shortcode($post->post_content, str_replace(array('[', ']'), '', $shortcode))) {
+                $has_portal_shortcode = true;
+                break;
+            }
+        }
+
+        // Also check if user is logged in as dealer (for direct access)
+        $is_dealer = false;
+        if (is_user_logged_in()) {
+            $current_user = wp_get_current_user();
+            $is_dealer = in_array('dealer', (array) $current_user->roles);
+        }
+
+        // Enqueue if portal shortcode present OR user is a dealer
+        if ($has_portal_shortcode || $is_dealer) {
+            wp_enqueue_style(
+                'jblund-dealers-dashboard',
+                JBLUND_DEALERS_PLUGIN_URL . 'modules/dealer-portal/assets/css/dashboard.css',
+                array(),
+                JBLUND_DEALERS_VERSION
+            );
+        }
     }
 }
