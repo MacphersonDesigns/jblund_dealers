@@ -110,7 +110,7 @@ class List_Layout extends Layout_Base {
     private function render_website_button($website) {
         if ($website) : ?>
             <a href="<?php echo esc_url($website); ?>" target="_blank" rel="noopener noreferrer" class="dealer-website-button">
-                <span class="website-icon">🌐</span> <?php _e('Visit Website', 'jblund-dealers'); ?>
+                <?php _e('Visit Website', 'jblund-dealers'); ?>
             </a>
         <?php endif;
     }
