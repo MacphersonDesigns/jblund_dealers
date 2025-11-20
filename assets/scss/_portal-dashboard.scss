@@ -1,0 +1,169 @@
+/**
+ * Dealer Portal Dashboard Component
+ * Main dashboard page with cards and widgets
+ */
+
+@use "variables" as *;
+
+/* Dashboard Container */
+.jblund-dealer-dashboard {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: $spacing-lg;
+}
+
+/* Dashboard Header */
+.dashboard-header {
+	background: linear-gradient(
+		135deg,
+		var(--jblund-header-color, #0073aa) 0%,
+		var(--jblund-button-hover-color, #005177) 100%
+	);
+	color: var(--jblund-button-text-color, #ffffff);
+	padding: $spacing-xl;
+	border-radius: $radius-lg;
+	margin-bottom: $spacing-xl;
+	box-shadow: 0 4px 12px rgba(0, 115, 170, 0.2);
+
+	h1 {
+		margin: 0 0 $spacing-sm 0;
+		font-size: 2em;
+		font-weight: 700;
+		color: var(--jblund-button-text-color, #ffffff);
+	}
+
+	p,
+	.welcome-message {
+		margin: 0;
+		font-size: 1.1em;
+		opacity: 0.95;
+		color: var(--jblund-button-text-color, #ffffff);
+	}
+}
+
+/* Dashboard Grid */
+.dashboard-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+	gap: 24px;
+	margin-bottom: $spacing-xl;
+}
+
+/* Dashboard Card Base */
+.dashboard-card {
+	background: var(--jblund-card-background, #ffffff);
+	border: 1px solid var(--jblund-border-color, #e0e0e0);
+	border-radius: $radius-lg;
+	padding: 24px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+	transition: $transition-fast;
+
+	&:hover {
+		box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+		transform: translateY(-2px);
+	}
+
+	h2 {
+		margin: 0 0 16px 0;
+		font-size: 1.4em;
+		font-weight: 700;
+		color: var(--jblund-primary-text-color, #333);
+		border-bottom: 2px solid var(--jblund-header-color, #0073aa);
+		padding-bottom: 12px;
+	}
+
+	.card-description {
+		color: var(--jblund-secondary-text-color, #666);
+		font-size: 0.95em;
+		margin-bottom: 16px;
+		line-height: 1.5;
+	}
+}
+
+/* Loading States */
+.dashboard-card.loading {
+	opacity: 0.6;
+	pointer-events: none;
+	position: relative;
+
+	&::after {
+		content: "";
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 32px;
+		height: 32px;
+		border: 3px solid #f3f3f3;
+		border-top: 3px solid var(--jblund-header-color, #0073aa);
+		border-radius: 50%;
+		animation: spin 1s linear infinite;
+	}
+}
+
+@keyframes spin {
+	0% {
+		transform: translate(-50%, -50%) rotate(0deg);
+	}
+	100% {
+		transform: translate(-50%, -50%) rotate(360deg);
+	}
+}
+
+/* Responsive Design */
+@media (max-width: $breakpoint-mobile) {
+	.dealer-dashboard-container {
+		padding: $spacing-md;
+	}
+
+	.dashboard-welcome {
+		padding: $spacing-lg;
+		margin-bottom: $spacing-lg;
+
+		h1 {
+			font-size: 1.5em;
+		}
+
+		p {
+			font-size: 1em;
+		}
+	}
+
+	.dashboard-grid {
+		grid-template-columns: 1fr;
+		gap: 16px;
+		margin-bottom: $spacing-lg;
+	}
+
+	.dashboard-card {
+		padding: 18px;
+
+		h2 {
+			font-size: 1.2em;
+		}
+	}
+}
+
+/* Print Styles */
+@media print {
+	.jblund-dealer-dashboard {
+		padding: 0;
+	}
+
+	.dashboard-header {
+		background: #fff;
+		color: #000;
+		border: 2px solid #000;
+	}
+
+	.dashboard-card {
+		break-inside: avoid;
+		box-shadow: none;
+		border: 1px solid #000;
+	}
+
+	.quick-links,
+	.resources {
+		display: none;
+	}
+}

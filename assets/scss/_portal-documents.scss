@@ -1,0 +1,182 @@
+/**
+ * Document Card Components
+ * Signed documents and documents to complete
+ */
+
+@use "variables" as *;
+
+/* Signed Documents Card */
+.signed-documents {
+	.documents-list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+	}
+
+	.document-item {
+		display: flex;
+		align-items: flex-start;
+		gap: 12px;
+		padding: 16px;
+		background: var(--jblund-hover-background, #f8f9fa);
+		border: 1px solid var(--jblund-border-color, #e0e0e0);
+		border-radius: $radius-md;
+		transition: $transition-fast;
+
+		&:hover {
+			border-color: var(--jblund-header-color, #0073aa);
+			box-shadow: 0 2px 8px rgba(0, 115, 170, 0.1);
+		}
+	}
+
+	.document-icon {
+		font-size: 2em;
+		min-width: 32px;
+		text-align: center;
+	}
+
+	.document-info {
+		flex: 1;
+
+		strong {
+			display: block;
+			font-size: 1.05em;
+			color: var(--jblund-primary-text-color, #333);
+			margin-bottom: 8px;
+		}
+	}
+
+	.document-meta {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 12px;
+		align-items: center;
+		margin-bottom: 10px;
+		font-size: 0.9em;
+	}
+
+	.document-status {
+		display: inline-flex;
+		align-items: center;
+		gap: 4px;
+		padding: 4px 10px;
+		border-radius: 16px;
+		font-weight: 600;
+
+		&.signed {
+			background: #d1f4e0;
+			color: #0d7a3f;
+		}
+	}
+
+	.document-date {
+		color: var(--jblund-secondary-text-color, #666);
+	}
+
+	.document-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		color: var(--jblund-link-color, #0073aa);
+		text-decoration: none;
+		font-weight: 500;
+		transition: $transition-fast;
+
+		&:hover {
+			color: var(--jblund-button-hover-color, #005177);
+			text-decoration: underline;
+		}
+	}
+
+	.no-documents {
+		text-align: center;
+		padding: 24px;
+		color: #999;
+	}
+}
+
+/* Documents to Complete Card */
+.documents-to-complete {
+	.documents-list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+	}
+
+	.document-item {
+		display: flex;
+		align-items: flex-start;
+		gap: 12px;
+		padding: 16px;
+		background: #fff8e6;
+		border: 2px solid #ffc107;
+		border-radius: $radius-md;
+		transition: $transition-fast;
+
+		&:hover {
+			border-color: #ff9800;
+			box-shadow: 0 2px 12px rgba(255, 193, 7, 0.2);
+		}
+	}
+
+	.document-icon {
+		font-size: 2em;
+		min-width: 32px;
+		text-align: center;
+	}
+
+	.document-info {
+		flex: 1;
+
+		strong {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			font-size: 1.05em;
+			color: var(--jblund-primary-text-color, #333);
+			margin-bottom: 8px;
+		}
+	}
+
+	.required-badge {
+		display: inline-block;
+		padding: 2px 8px;
+		background: #dc3545;
+		color: #fff;
+		border-radius: 12px;
+		font-size: 0.75em;
+		font-weight: 700;
+		text-transform: uppercase;
+	}
+
+	.document-description {
+		color: var(--jblund-secondary-text-color, #666);
+		font-size: 0.95em;
+		margin: 0 0 12px 0;
+		line-height: 1.5;
+	}
+
+	.document-button {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		padding: 10px 16px;
+		background: var(--jblund-button-color, #0073aa);
+		color: var(--jblund-button-text-color, #ffffff);
+		text-decoration: none;
+		border-radius: $radius-sm;
+		font-weight: 600;
+		transition: $transition-fast;
+
+		&:hover {
+			background: var(--jblund-button-hover-color, #005177);
+			transform: translateX(2px);
+		}
+	}
+}

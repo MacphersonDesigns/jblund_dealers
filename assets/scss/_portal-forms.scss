@@ -1,0 +1,147 @@
+/**
+ * Shared Form Elements
+ * Common form components used across all portal pages
+ */
+
+@use "variables" as *;
+
+/* Form Field Base */
+.form-field {
+	margin-bottom: $spacing-lg;
+
+	label {
+		display: block;
+		margin-bottom: 8px;
+		color: var(--jblund-primary-text-color, #333);
+		font-weight: 600;
+		font-size: 14px;
+	}
+
+	.required {
+		color: #c00;
+	}
+
+	input[type="text"],
+	input[type="email"],
+	input[type="tel"],
+	input[type="url"],
+	input[type="password"],
+	textarea {
+		width: 100%;
+		padding: 10px 12px;
+		border: 1px solid var(--jblund-border-color, #ddd);
+		border-radius: $radius-sm;
+		font-size: 14px;
+		transition: border-color 0.3s ease;
+
+		&:focus {
+			outline: none;
+			border-color: var(--jblund-header-color, #003366);
+		}
+	}
+
+	textarea {
+		min-height: 100px;
+		resize: vertical;
+	}
+
+	.field-description {
+		margin-top: 5px;
+		color: var(--jblund-secondary-text-color, #666);
+		font-size: 13px;
+	}
+}
+
+/* Checkbox Field */
+.checkbox-field {
+	display: flex;
+	align-items: center;
+	margin-bottom: $spacing-md;
+
+	input[type="checkbox"] {
+		margin-right: 8px;
+	}
+
+	label {
+		margin: 0;
+		font-weight: normal;
+	}
+}
+
+/* Form Actions */
+.form-actions {
+	margin-top: $spacing-xl;
+	padding-top: $spacing-lg;
+	border-top: 1px solid #eee;
+	text-align: right;
+
+	.btn {
+		padding: 12px 30px;
+		border: none;
+		border-radius: $radius-sm;
+		font-size: 16px;
+		font-weight: 600;
+		cursor: pointer;
+		transition: $transition-fast;
+		text-decoration: none;
+		display: inline-block;
+	}
+
+	.btn-primary {
+		background: var(--jblund-button-color, #003366);
+		color: var(--jblund-button-text-color, #ffffff);
+
+		&:hover {
+			background: var(--jblund-button-hover-color, #002244);
+		}
+	}
+
+	.btn-secondary {
+		background: #6c757d;
+		color: #fff;
+		margin-right: 10px;
+
+		&:hover {
+			background: #5a6268;
+		}
+	}
+}
+
+/* Messages */
+.portal-message {
+	padding: $spacing-md;
+	margin-bottom: $spacing-lg;
+	border-radius: $radius-sm;
+	font-weight: 500;
+
+	&.success {
+		background: #d4edda;
+		color: #155724;
+		border: 1px solid #c3e6cb;
+	}
+
+	&.error {
+		background: #f8d7da;
+		color: #721c24;
+		border: 1px solid #f5c6cb;
+	}
+
+	&.warning {
+		background: #fff3cd;
+		color: #856404;
+		border: 1px solid #ffc107;
+	}
+}
+
+/* Back Link */
+.back-link {
+	a {
+		color: var(--jblund-link-color, #003366);
+		text-decoration: none;
+		font-size: 14px;
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+}

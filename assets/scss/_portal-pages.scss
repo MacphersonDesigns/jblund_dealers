@@ -1,0 +1,450 @@
+/**
+ * Portal Pages - Login, Profile, NDA
+ * Individual portal page layouts
+ */
+
+@use "variables" as *;
+
+/* ==========================================================================
+   DEALER LOGIN PAGE
+   ========================================================================== */
+.jblund-dealer-login {
+	max-width: 450px;
+	margin: $spacing-xl auto;
+	padding: $spacing-lg;
+}
+
+.login-container {
+	background: var(--jblund-card-background, #ffffff);
+	border: 1px solid var(--jblund-border-color, #ddd);
+	border-radius: $radius-lg;
+	padding: $spacing-xl;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.login-header {
+	text-align: center;
+	margin-bottom: $spacing-xl;
+	padding-bottom: $spacing-lg;
+	border-bottom: 2px solid var(--jblund-header-color, #003366);
+
+	h1 {
+		margin: 0 0 $spacing-sm 0;
+		color: var(--jblund-header-color, #003366);
+		font-size: 28px;
+	}
+
+	p {
+		margin: 0;
+		color: var(--jblund-secondary-text-color, #666);
+		font-size: 14px;
+	}
+}
+
+.login-form-wrapper {
+	form {
+		margin: 0;
+	}
+
+	label {
+		display: block;
+		margin-bottom: 8px;
+		color: var(--jblund-primary-text-color, #333);
+		font-weight: 600;
+		font-size: 14px;
+	}
+
+	input[type="text"],
+	input[type="password"] {
+		width: 100%;
+		padding: 12px;
+		border: 1px solid var(--jblund-border-color, #ddd);
+		border-radius: $radius-sm;
+		font-size: 14px;
+		margin-bottom: $spacing-md;
+		box-sizing: border-box;
+
+		&:focus {
+			outline: none;
+			border-color: var(--jblund-header-color, #003366);
+		}
+	}
+
+	.login-remember {
+		margin-bottom: $spacing-lg;
+
+		label {
+			display: inline;
+			font-weight: normal;
+			margin-left: 5px;
+		}
+	}
+
+	input[type="submit"] {
+		width: 100%;
+		background: var(--jblund-button-color, #003366);
+		color: var(--jblund-button-text-color, #ffffff);
+		padding: 12px;
+		border: none;
+		border-radius: $radius-sm;
+		font-size: 16px;
+		font-weight: 600;
+		cursor: pointer;
+		transition: $transition-fast;
+
+		&:hover {
+			background: var(--jblund-button-hover-color, #002244);
+		}
+	}
+}
+
+.login-links {
+	text-align: center;
+	margin-top: $spacing-lg;
+	padding-top: $spacing-lg;
+	border-top: 1px solid #eee;
+
+	p {
+		margin: $spacing-sm 0;
+	}
+
+	a {
+		color: var(--jblund-link-color, #003366);
+		text-decoration: none;
+		font-size: 14px;
+
+		&:hover {
+			text-decoration: underline;
+			color: var(--jblund-button-hover-color, #002244);
+		}
+	}
+
+	.registration-link {
+		margin-top: $spacing-md;
+		padding-top: $spacing-md;
+		border-top: 1px solid #eee;
+		font-size: 14px;
+		color: var(--jblund-secondary-text-color, #666);
+
+		a {
+			color: var(--jblund-button-color, #003366);
+			font-weight: 600;
+			margin-left: $spacing-xs;
+
+			&:hover {
+				color: var(--jblund-button-hover-color, #002244);
+			}
+		}
+	}
+}
+
+/* ==========================================================================
+   DEALER PROFILE PAGE
+   ========================================================================== */
+.jblund-dealer-profile {
+	max-width: 800px;
+	margin: 0 auto;
+	padding: $spacing-lg;
+}
+
+.profile-header {
+	margin-bottom: $spacing-xl;
+	padding-bottom: $spacing-lg;
+	border-bottom: 2px solid var(--jblund-header-color, #003366);
+
+	h1 {
+		margin: 0 0 $spacing-sm 0;
+		color: var(--jblund-header-color, #003366);
+		font-size: 32px;
+	}
+}
+
+.dealer-profile-form {
+	background: var(--jblund-card-background, #ffffff);
+	border: 1px solid var(--jblund-border-color, #ddd);
+	border-radius: $radius-lg;
+	padding: $spacing-xl;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.form-section {
+	margin-bottom: $spacing-xl;
+
+	&:last-of-type {
+		margin-bottom: 0;
+	}
+
+	h2 {
+		margin: 0 0 $spacing-lg 0;
+		color: var(--jblund-header-color, #003366);
+		font-size: 20px;
+		padding-bottom: $spacing-sm;
+		border-bottom: 1px solid #eee;
+	}
+}
+
+/* ==========================================================================
+   NDA ACCEPTANCE PAGE
+   ========================================================================== */
+.dealer-nda-acceptance {
+	max-width: 900px;
+	margin: $spacing-xl auto;
+	padding: $spacing-xl;
+	background: var(--jblund-card-background, #ffffff);
+	border-radius: $radius-lg;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.nda-header {
+	text-align: center;
+	margin-bottom: $spacing-xl;
+	padding-bottom: $spacing-lg;
+	border-bottom: 2px solid var(--jblund-header-color, #003366);
+
+	h1 {
+		color: var(--jblund-header-color, #003366);
+		font-size: 32px;
+		margin: 0 0 $spacing-sm 0;
+	}
+}
+
+.nda-subtitle {
+	color: var(--jblund-secondary-text-color, #666);
+	font-size: 16px;
+	margin: 0;
+
+	&.nda-accepted-notice {
+		background: #d4edda;
+		color: #155724;
+		border: 2px solid #28a745;
+		border-radius: $radius-sm;
+		padding: $spacing-md $spacing-lg;
+		font-size: 16px;
+		font-weight: 600;
+		display: inline-block;
+		margin-top: $spacing-md;
+	}
+}
+
+.nda-agreement-text {
+	background: var(--jblund-hover-background, #f9f9f9);
+	padding: $spacing-xl;
+	border-radius: $radius-md;
+	margin-bottom: $spacing-xl;
+	max-height: 500px;
+	overflow-y: auto;
+	border: 1px solid var(--jblund-border-color, #ddd);
+
+	h2 {
+		color: var(--jblund-header-color, #003366);
+		font-size: 24px;
+		margin-top: 0;
+	}
+
+	h3 {
+		color: var(--jblund-primary-text-color, #333);
+		font-size: 18px;
+		margin-top: $spacing-lg;
+	}
+}
+
+.nda-acceptance-form {
+	background: var(--jblund-hover-background, #f9f9f9);
+	padding: $spacing-lg;
+	border-radius: $radius-md;
+	margin-top: $spacing-xl;
+	border: 2px solid var(--jblund-header-color, #003366);
+
+	.form-field {
+		margin-bottom: $spacing-md;
+	}
+
+	.signature-field {
+		margin-top: $spacing-lg;
+	}
+
+	.acceptance-checkbox {
+		background: var(--jblund-card-background, #ffffff);
+		padding: $spacing-md;
+		border-radius: $radius-sm;
+		border: 1px solid var(--jblund-border-color, #ddd);
+
+		label {
+			font-weight: 600;
+			color: var(--jblund-primary-text-color, #333);
+		}
+	}
+}
+
+.acceptance-button {
+	background: var(--jblund-button-color, #003366);
+	color: var(--jblund-button-text-color, #ffffff);
+	padding: $spacing-md $spacing-xl;
+	border: none;
+	border-radius: $radius-sm;
+	font-size: 18px;
+	font-weight: 700;
+	cursor: pointer;
+	transition: $transition-fast;
+	width: 100%;
+
+	&:hover {
+		background: var(--jblund-button-hover-color, #002244);
+	}
+
+	&:disabled {
+		background: #6c757d;
+		cursor: not-allowed;
+		opacity: 0.6;
+	}
+}
+
+.nda-already-accepted {
+	background: var(--jblund-hover-background, #f9f9f9);
+	padding: $spacing-xl;
+	border-radius: $radius-md;
+	margin-top: $spacing-lg;
+	text-align: center;
+
+	.acceptance-confirmation {
+		background: #d4edda;
+		border: 2px solid #28a745;
+		border-radius: $radius-md;
+		padding: $spacing-xl;
+		max-width: 600px;
+		margin: 0 auto;
+
+		.acceptance-icon {
+			display: block;
+			font-size: 64px;
+			color: #28a745;
+			margin-bottom: $spacing-md;
+			font-weight: bold;
+		}
+
+		h3 {
+			color: #155724;
+			font-size: 24px;
+			margin: 0 0 $spacing-md 0;
+		}
+
+		p {
+			color: #155724;
+			font-size: 16px;
+			line-height: 1.6;
+			margin-bottom: $spacing-lg;
+		}
+
+		.acceptance-actions {
+			margin-top: $spacing-lg;
+
+			a {
+				display: inline-block;
+				background: var(--jblund-button-color, #003366);
+				color: var(--jblund-button-text-color, #ffffff);
+				padding: $spacing-md $spacing-xl;
+				text-decoration: none;
+				border-radius: $radius-sm;
+				font-weight: 600;
+				transition: $transition-fast;
+
+				&:hover {
+					background: var(--jblund-button-hover-color, #002244);
+				}
+			}
+		}
+	}
+}
+
+/* ==========================================================================
+   SHARED PORTAL STYLES
+   ========================================================================== */
+
+/* Access Denied / Alert Messages */
+.dealer-access-denied,
+.dealer-already-logged-in {
+	max-width: 600px;
+	margin: 40px auto;
+	padding: 30px;
+	border-radius: 8px;
+	text-align: center;
+	border: 2px solid;
+
+	h2 {
+		margin-top: 0;
+	}
+
+	p {
+		margin-bottom: $spacing-lg;
+	}
+
+	a {
+		display: inline-block;
+		background: var(--jblund-button-color, #003366);
+		color: var(--jblund-button-text-color, #fff);
+		padding: 12px 30px;
+		text-decoration: none;
+		border-radius: $radius-md;
+		font-weight: 600;
+		transition: $transition-fast;
+
+		&:hover {
+			background: var(--jblund-button-hover-color, #002244);
+		}
+	}
+
+	&.warning {
+		background: #fff3cd;
+		border-color: #ffc107;
+
+		h2,
+		p {
+			color: #856404;
+		}
+	}
+
+	&.error {
+		background: #f8d7da;
+		border-color: #dc3545;
+
+		h2,
+		p {
+			color: #721c24;
+		}
+	}
+
+	&.success {
+		background: #d4edda;
+		border-color: #28a745;
+
+		h2,
+		p {
+			color: #155724;
+		}
+	}
+}
+
+/* Responsive mobile adjustments for all portal pages */
+@media (max-width: $breakpoint-mobile) {
+	.jblund-dealer-dashboard,
+	.jblund-dealer-login,
+	.jblund-dealer-profile,
+	.dealer-nda-acceptance {
+		padding: $spacing-md;
+
+		.login-container,
+		.dealer-profile-form,
+		.dashboard-card {
+			padding: $spacing-lg;
+		}
+
+		h1 {
+			font-size: 24px !important;
+		}
+
+		.dashboard-grid,
+		.form-section {
+			gap: $spacing-md;
+		}
+	}
+}

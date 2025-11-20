@@ -1,0 +1,199 @@
+/**
+ * Dashboard Card Components
+ * Individual card widgets for dashboard
+ */
+
+@use "variables" as *;
+
+/* Quick Links & Resources Cards (reusing same structure) */
+.quick-links,
+.resources {
+	.link-list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		gap: $spacing-sm;
+	}
+
+	.dashboard-link {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		padding: 12px 16px;
+		background: var(--jblund-hover-background, #f8f9fa);
+		border: 1px solid var(--jblund-border-color, #e0e0e0);
+		border-radius: $radius-md;
+		text-decoration: none;
+		color: var(--jblund-primary-text-color, #333);
+		transition: $transition-fast;
+		font-weight: 500;
+
+		&:hover {
+			background: var(--jblund-header-color, #0073aa);
+			color: var(--jblund-button-text-color, #ffffff);
+			border-color: var(--jblund-header-color, #0073aa);
+			transform: translateX(4px);
+		}
+	}
+
+	.link-icon {
+		font-size: 1.4em;
+		min-width: 24px;
+		text-align: center;
+	}
+
+	.link-text {
+		flex: 1;
+	}
+}
+
+/* Account Status Card */
+.account-status {
+	.info-list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+	}
+
+	.info-item {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: $spacing-sm 12px;
+		background: var(--jblund-hover-background, #f8f9fa);
+		border-radius: $radius-sm;
+		border-left: 4px solid var(--jblund-header-color, #0073aa);
+	}
+
+	.info-label {
+		font-weight: 600;
+		color: var(--jblund-secondary-text-color, #555);
+	}
+
+	.info-value {
+		color: var(--jblund-primary-text-color, #333);
+	}
+
+	.status-badge {
+		display: inline-block;
+		padding: 4px 12px;
+		border-radius: $spacing-lg;
+		font-size: 0.85em;
+		font-weight: 600;
+
+		&.active {
+			background: #d1f4e0;
+			color: #0d7a3f;
+		}
+
+		&.pending {
+			background: #fff3cd;
+			color: #856404;
+		}
+
+		&.inactive {
+			background: #f8d7da;
+			color: #721c24;
+		}
+	}
+}
+
+/* Dealer Representative Card */
+.dealer-representative {
+	.rep-info {
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+	}
+
+	.rep-item {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		padding: 12px;
+		background: var(--jblund-hover-background, #f8f9fa);
+		border-radius: $radius-md;
+		transition: $transition-fast;
+
+		&:hover {
+			background: #e9ecef;
+		}
+	}
+
+	.rep-icon {
+		font-size: 1.5em;
+		min-width: 32px;
+		text-align: center;
+	}
+
+	.rep-details {
+		flex: 1;
+
+		strong {
+			display: block;
+			font-size: 1.1em;
+			color: var(--jblund-primary-text-color, #333);
+			margin-bottom: 2px;
+		}
+
+		a {
+			color: var(--jblund-link-color, #0073aa);
+			text-decoration: none;
+			transition: color 0.3s ease;
+
+			&:hover {
+				color: var(--jblund-button-hover-color, #005177);
+				text-decoration: underline;
+			}
+		}
+	}
+}
+
+/* Dashboard Updates Card */
+.dashboard-updates {
+	.updates-list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+	}
+
+	.update-item {
+		padding: 16px;
+		background: #f0f9ff;
+		border-left: 4px solid var(--jblund-header-color, #0073aa);
+		border-radius: $radius-sm;
+	}
+
+	.update-title {
+		font-weight: 700;
+		font-size: 1.05em;
+		color: var(--jblund-primary-text-color, #333);
+		margin-bottom: 8px;
+	}
+
+	.update-message {
+		color: var(--jblund-secondary-text-color, #555);
+		line-height: 1.6;
+		margin: 0 0 8px 0;
+	}
+
+	.update-date {
+		font-size: 0.85em;
+		color: #999;
+		font-style: italic;
+	}
+
+	.no-updates {
+		text-align: center;
+		padding: 24px;
+		color: #999;
+	}
+}
