@@ -122,59 +122,59 @@ class List_Layout extends Layout_Base {
      */
     private function render_sublocations_list($sublocations) {
         if (!empty($sublocations) && is_array($sublocations)) : ?>
-            <hr class="sublocation-divider">
             <div class="dealer-sublocations">
                 <h4><?php _e('Additional Locations:', 'jblund-dealers'); ?></h4>
                 <?php foreach ($sublocations as $location) : ?>
                     <div class="dealer-sublocation">
-                        <?php if (!empty($location['name'])) : ?>
-                            <h5 class="sublocation-name"><?php echo esc_html($location['name']); ?></h5>
-                        <?php endif; ?>
-                        
-                        <div class="sublocation-contact-info">
-                            <?php if (!empty($location['address'])) : ?>
-                                <p class="sublocation-address">
-                                    <strong><?php _e('Address:', 'jblund-dealers'); ?></strong><br>
-                                    <?php echo esc_html($location['address']); ?>
-                                </p>
-                            <?php endif; ?>
-                            
-                            <?php if (!empty($location['phone'])) : ?>
-                                <p class="sublocation-phone">
-                                    <strong><?php _e('Phone:', 'jblund-dealers'); ?></strong>
-                                    <a href="tel:<?php echo esc_attr($location['phone']); ?>"><?php echo esc_html($location['phone']); ?></a>
-                                </p>
+                        <!-- Column 1: Sublocation Name -->
+                        <div class="sublocation-name-col">
+                            <?php if (!empty($location['name'])) : ?>
+                                <h5><?php echo esc_html($location['name']); ?></h5>
                             <?php endif; ?>
                         </div>
-                        
-                        <?php if (!empty($location['website'])) : ?>
-                            <div class="sublocation-website">
-                                <a href="<?php echo esc_url($location['website']); ?>" target="_blank" rel="noopener noreferrer" class="dealer-website-button">
-                                    <?php _e('Visit Website', 'jblund-dealers'); ?>
-                                    <span class="website-icon">↗</span>
-                                </a>
-                            </div>
-                        <?php endif; ?>
-                        
-                        <?php if (!empty($location['docks']) || !empty($location['lifts']) || !empty($location['trailers'])) : ?>
-                            <div class="sublocation-services">
-                                <strong><?php _e('Services:', 'jblund-dealers'); ?></strong>
-                                <div class="dealer-services-icons">
-                                    <span class="service-icon service-docks <?php echo (!empty($location['docks']) && $location['docks'] == '1') ? 'active' : ''; ?>" title="<?php _e('Docks', 'jblund-dealers'); ?>">
-                                        <span class="icon">🚢</span>
-                                        <span class="label"><?php _e('Docks', 'jblund-dealers'); ?></span>
-                                    </span>
-                                    <span class="service-icon service-lifts <?php echo (!empty($location['lifts']) && $location['lifts'] == '1') ? 'active' : ''; ?>" title="<?php _e('Lifts', 'jblund-dealers'); ?>">
-                                        <span class="icon">⚓</span>
-                                        <span class="label"><?php _e('Lifts', 'jblund-dealers'); ?></span>
-                                    </span>
-                                    <span class="service-icon service-trailers <?php echo (!empty($location['trailers']) && $location['trailers'] == '1') ? 'active' : ''; ?>" title="<?php _e('Trailers', 'jblund-dealers'); ?>">
-                                        <span class="icon">🚛</span>
-                                        <span class="label"><?php _e('Trailers', 'jblund-dealers'); ?></span>
-                                    </span>
+
+                        <!-- Column 2: Contact Info -->
+                        <div class="sublocation-contact-col">
+                            <?php if (!empty($location['address'])) : ?>
+                                <div class="sublocation-address">
+                                    <span class="contact-icon">📍</span>
+                                    <?php echo esc_html($location['address']); ?>
                                 </div>
+                            <?php endif; ?>
+                            <?php if (!empty($location['phone'])) : ?>
+                                <div class="sublocation-phone">
+                                    <span class="contact-icon">📞</span>
+                                    <a href="tel:<?php echo esc_attr($location['phone']); ?>"><?php echo esc_html($location['phone']); ?></a>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+
+                        <!-- Column 3: Website -->
+                        <div class="sublocation-website-col">
+                            <?php if (!empty($location['website'])) : ?>
+                                <a href="<?php echo esc_url($location['website']); ?>" target="_blank" rel="noopener noreferrer" class="dealer-website-button sublocation-website-btn">
+                                    <?php _e('Visit Website', 'jblund-dealers'); ?>
+                                </a>
+                            <?php endif; ?>
+                        </div>
+
+                        <!-- Column 4: Services -->
+                        <div class="sublocation-services-col">
+                            <div class="dealer-services-icons sublocation-services-icons">
+                                <span class="service-icon service-docks <?php echo (!empty($location['docks']) && $location['docks'] == '1') ? 'active' : ''; ?>" title="<?php _e('Docks', 'jblund-dealers'); ?>">
+                                    <span class="icon">🚢</span>
+                                    <span class="label"><?php _e('Docks', 'jblund-dealers'); ?></span>
+                                </span>
+                                <span class="service-icon service-lifts <?php echo (!empty($location['lifts']) && $location['lifts'] == '1') ? 'active' : ''; ?>" title="<?php _e('Lifts', 'jblund-dealers'); ?>">
+                                    <span class="icon">⚓</span>
+                                    <span class="label"><?php _e('Lifts', 'jblund-dealers'); ?></span>
+                                </span>
+                                <span class="service-icon service-trailers <?php echo (!empty($location['trailers']) && $location['trailers'] == '1') ? 'active' : ''; ?>" title="<?php _e('Trailers', 'jblund-dealers'); ?>">
+                                    <span class="icon">🚛</span>
+                                    <span class="label"><?php _e('Trailers', 'jblund-dealers'); ?></span>
+                                </span>
                             </div>
-                        <?php endif; ?>
+                        </div>
                     </div>
                 <?php endforeach; ?>
             </div>

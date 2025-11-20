@@ -188,15 +188,20 @@
 	/* Sub-locations in list layout */
 	.dealer-sublocations {
 		grid-column: 1 / -1;
-		margin-top: 8px;
-		padding-top: 0;
-		border-top: none;
+		margin-top: $spacing-md;
+		padding-top: $spacing-md;
+		border-top: 2px solid var(--jblund-border-color, #e0e0e0);
 		display: flex;
 		flex-direction: column;
 		gap: $spacing-xs;
 
 		h4 {
-			display: none;
+			font-size: 0.95em;
+			margin-bottom: $spacing-sm;
+			color: var(--jblund-primary-text-color, #333);
+			font-weight: 600;
+			text-transform: uppercase;
+			letter-spacing: 0.5px;
 		}
 	}
 
@@ -206,10 +211,17 @@
 		gap: $spacing-md;
 		align-items: center;
 		margin: 0;
-		background: #f9f9f9;
+		padding: $spacing-sm $spacing-md;
+		background: var(--jblund-hover-background, #f9f9f9);
 		border: none;
-		border-left: none;
-		border-radius: $radius-md;
+		border-left: 3px solid var(--jblund-header-color, #0073aa);
+		border-radius: $radius-sm;
+		transition: $transition-fast;
+
+		&:hover {
+			background: #f0f0f0;
+			border-left-width: 4px;
+		}
 
 		h5,
 		p {
@@ -218,7 +230,8 @@
 
 		h5 {
 			font-size: 0.95em;
-			color: #555;
+			color: var(--jblund-header-color, #0073aa);
+			font-weight: 700;
 		}
 
 		p {
