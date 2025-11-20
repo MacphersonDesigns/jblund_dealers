@@ -258,14 +258,14 @@
 	opacity: 0.5;
 }
 
-/* Sub-locations */
+/* Sub-locations Container */
 .dealer-sublocations {
 	margin-top: $spacing-sm;
 	padding-top: 0;
 
 	h4 {
 		font-size: 0.95em;
-		margin-bottom: $spacing-sm;
+		margin-bottom: $spacing-md;
 		color: var(--jblund-primary-text-color, #333);
 		font-weight: 600;
 		text-transform: uppercase;
@@ -273,89 +273,43 @@
 	}
 }
 
-.dealer-sublocation {
-	background: var(--jblund-hover-background, #f9f9f9);
-	border-left: 3px solid var(--jblund-header-color, #0073aa);
-	border-radius: $radius-sm;
-	padding: $spacing-sm 12px;
-	margin-bottom: 8px;
-	transition: $transition-fast;
+/* Individual Sublocation Item */
+.sublocation-item {
+	margin-bottom: $spacing-md;
+	padding-bottom: $spacing-md;
+	border-bottom: 1px solid var(--jblund-border-color, #e0e0e0);
 
 	&:last-child {
 		margin-bottom: 0;
+		padding-bottom: 0;
+		border-bottom: none;
 	}
 
-	&:hover {
-		background: #f0f0f0;
-		border-left-width: 4px;
-	}
-
-	h5 {
-		font-size: 0.9em;
-		margin: 0 0 6px 0;
+	.sublocation-name {
+		font-size: 0.95em;
+		margin: 0 0 $spacing-xs 0;
 		color: var(--jblund-header-color, #0073aa);
 		font-weight: 700;
 	}
 
 	p {
-		margin: 3px 0;
-		font-size: 0.85em;
+		margin: $spacing-xs 0;
+		font-size: 0.9em;
 		color: var(--jblund-secondary-text-color, #666);
-		line-height: 1.4;
-	}
-
-	a {
-		color: var(--jblund-link-color, #0073aa);
-		text-decoration: none;
-
-		&:hover {
-			text-decoration: underline;
-		}
+		line-height: 1.5;
 	}
 }
 
-/* Sublocation Elements */
-.sublocation-website,
-.sublocation-services {
-	margin-top: $spacing-xs;
-}
-
-.sublocation-website-btn {
-	padding: 6px 12px;
-	font-size: 0.85em;
-}
-
-.sublocation-services-icons {
-	display: flex;
-	gap: 6px;
-	margin-top: $spacing-xs;
-
-	.service-icon {
-		min-width: 50px;
-		padding: 6px;
-
-		.icon {
-			font-size: 1.2em;
-			margin-bottom: 2px;
-		}
-
-		.label {
-			font-size: 0.65em;
-		}
-	}
-}
-
+/* Sublocation Contact Info */
 .sublocation-address,
 .sublocation-phone {
 	display: flex;
 	align-items: center;
-	gap: 4px;
-	font-size: 0.85em;
-	color: var(--jblund-secondary-text-color, #666);
-	margin: 3px 0;
-
+	gap: 6px;
+	
 	.contact-icon {
 		font-size: 1em;
+		opacity: 0.7;
 	}
 
 	a {
@@ -364,6 +318,55 @@
 
 		&:hover {
 			text-decoration: underline;
+		}
+	}
+}
+
+/* Sublocation Website Link */
+.sublocation-website {
+	.sublocation-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 4px;
+		color: var(--jblund-link-color, #0073aa);
+		text-decoration: none;
+		font-weight: 600;
+		
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+}
+
+/* Sublocation Services */
+.sublocation-services {
+	margin-top: $spacing-sm;
+
+	.dealer-services-icons {
+		gap: $spacing-xs;
+	}
+
+	.service-list {
+		list-style: none;
+		padding: 0;
+		margin: $spacing-xs 0 0 0;
+		display: flex;
+		flex-wrap: wrap;
+		gap: $spacing-sm;
+
+		li {
+			padding: 4px 8px;
+			background: #f5f5f5;
+			border-radius: $radius-sm;
+			font-size: 0.85em;
+			color: var(--jblund-secondary-text-color, #666);
+
+			&:before {
+				content: "✓";
+				color: var(--jblund-icon-color, #0073aa);
+				font-weight: bold;
+				margin-right: 4px;
+			}
 		}
 	}
 }
