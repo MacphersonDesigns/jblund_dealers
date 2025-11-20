@@ -127,17 +127,9 @@ class NDA_Access_Restrictor {
 		$user = \wp_get_current_user();
 		$is_nda_page = \is_page( $this->nda_page_slug );
 
-		// Allow administrators and staff to bypass
-		if ( Dealer_Role::can_bypass_dealer_restrictions( $user ) ) {
-			if ( $is_nda_page ) {
-				\wp_safe_redirect( \admin_url() );
-				exit;
-			}
-			return;
-		}
-
-		// Only restrict dealer role
+		// Only restrict dealer role - allow dealers to view NDA page
 		if ( ! Dealer_Role::is_dealer( $user ) ) {
+			// Non-dealers (including admins) shouldn't access NDA page
 			if ( $is_nda_page ) {
 				\wp_safe_redirect( \admin_url() );
 				exit;
@@ -145,7 +137,12 @@ class NDA_Access_Restrictor {
 			return;
 		}
 
-		// Dealer hasn't accepted NDA
+		// Dealer is on NDA page - always allow (whether accepted or not)
+		if ( $is_nda_page ) {
+			return;
+		}
+
+		// Dealer hasn't accepted NDA and is trying to access other pages
 		if ( ! $this->acceptance_manager->is_accepted( $user->ID ) ) {
 			// Get portal pages
 			$portal_pages = \get_option( 'jblund_dealers_portal_pages', array() );
