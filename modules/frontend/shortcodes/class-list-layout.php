@@ -57,10 +57,10 @@ class List_Layout extends Layout_Base {
                     <div class="dealer-services-column">
                         <?php $this->render_service_icons($dealer['docks'], $dealer['lifts'], $dealer['trailers']); ?>
                     </div>
-
-                    <!-- Sublocations (full width) -->
-                    <?php $this->render_sublocations($dealer['sublocations']); ?>
                 </div>
+
+                <!-- Sublocations (full width inside card) -->
+                <?php $this->render_sublocations_list($dealer['sublocations']); ?>
             <?php endwhile; ?>
         </div>
         <?php
@@ -116,12 +116,13 @@ class List_Layout extends Layout_Base {
     }
 
     /**
-     * Render sublocations
+     * Render sublocations for list layout
      *
      * @param array $sublocations Array of sublocation data
      */
-    private function render_sublocations($sublocations) {
+    private function render_sublocations_list($sublocations) {
         if (!empty($sublocations) && is_array($sublocations)) : ?>
+            <hr class="sublocation-divider">
             <div class="dealer-sublocations">
                 <h4><?php _e('Additional Locations:', 'jblund-dealers'); ?></h4>
                 <?php foreach ($sublocations as $location) : ?>

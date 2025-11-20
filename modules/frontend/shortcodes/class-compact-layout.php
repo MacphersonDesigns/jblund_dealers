@@ -45,8 +45,8 @@ class Compact_Layout extends Layout_Base {
                         <?php $this->render_contact_info($dealer); ?>
                         <?php $this->render_website_button($dealer['website']); ?>
                         <?php $this->render_services($dealer['docks'], $dealer['lifts'], $dealer['trailers']); ?>
+                        <?php $this->render_sublocations($dealer['sublocations']); ?>
                     </div>
-                    <?php $this->render_sublocations($dealer['sublocations']); ?>
                 </div>
             <?php endwhile; ?>
         </div>
@@ -134,6 +134,7 @@ class Compact_Layout extends Layout_Base {
      */
     private function render_sublocations($sublocations) {
         if (!empty($sublocations) && is_array($sublocations)) : ?>
+            <hr class="sublocation-divider">
             <div class="dealer-sublocations">
                 <h4><?php _e('Additional Locations:', 'jblund-dealers'); ?></h4>
                 <?php foreach ($sublocations as $location) : ?>
