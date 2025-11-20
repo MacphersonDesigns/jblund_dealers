@@ -18,10 +18,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 if ( is_user_logged_in() ) {
 	$current_user = wp_get_current_user();
 	if ( in_array( 'dealer', (array) $current_user->roles, true ) ) {
-		echo '<div class="dealer-already-logged-in" style="max-width: 600px; margin: 40px auto; padding: 30px; background: #d4edda; border: 2px solid #28a745; border-radius: 8px; text-align: center;">';
-		echo '<h2 style="color: #155724; margin-top: 0;">Already Logged In</h2>';
-		echo '<p style="color: #155724; margin-bottom: 20px;">You are already logged in as a dealer.</p>';
-		echo '<a href="' . esc_url( home_url( '/dealer-dashboard/' ) ) . '" style="display: inline-block; background: #003366; color: #fff; padding: 12px 30px; text-decoration: none; border-radius: 4px; font-weight: 600;">Go to Dashboard</a>';
+		echo '<div class="dealer-already-logged-in success">';
+		echo '<h2>Already Logged In</h2>';
+		echo '<p>You are already logged in as a dealer.</p>';
+		echo '<a href="' . esc_url( home_url( '/dealer-dashboard/' ) ) . '">Go to Dashboard</a>';
 		echo '</div>';
 		return;
 	}

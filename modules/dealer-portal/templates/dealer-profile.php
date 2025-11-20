@@ -17,10 +17,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 // Security check - must be logged in
 if ( ! is_user_logged_in() ) {
 	$login_url = jblund_get_portal_page_url('login') ?: home_url( '/dealer-login/' );
-	echo '<div class="dealer-access-denied" style="max-width: 600px; margin: 40px auto; padding: 30px; background: #fff3cd; border: 2px solid #ffc107; border-radius: 8px; text-align: center;">';
-	echo '<h2 style="color: #856404; margin-top: 0;">Access Denied</h2>';
-	echo '<p style="color: #856404; margin-bottom: 20px;">You must be logged in to access the dealer profile.</p>';
-	echo '<a href="' . esc_url( $login_url ) . '" style="display: inline-block; background: #003366; color: #fff; padding: 12px 30px; text-decoration: none; border-radius: 4px; font-weight: 600;">Login</a>';
+	echo '<div class="dealer-access-denied warning">';
+	echo '<h2>Access Denied</h2>';
+	echo '<p>You must be logged in to access the dealer profile.</p>';
+	echo '<a href="' . esc_url( $login_url ) . '">Login</a>';
 	echo '</div>';
 	return;
 }
@@ -31,10 +31,10 @@ $can_bypass   = JBLund\DealerPortal\Dealer_Role::can_bypass_dealer_restrictions(
 
 // Security check - must be a dealer or elevated user (admin/staff)
 if ( ! $is_dealer && ! $can_bypass ) {
-	echo '<div class="dealer-access-denied" style="max-width: 600px; margin: 40px auto; padding: 30px; background: #f8d7da; border: 2px solid #dc3545; border-radius: 8px; text-align: center;">';
-	echo '<h2 style="color: #721c24; margin-top: 0;">Access Denied</h2>';
-	echo '<p style="color: #721c24; margin-bottom: 20px;">This page is only accessible to authorized dealers.</p>';
-	echo '<a href="' . esc_url( home_url() ) . '" style="display: inline-block; background: #003366; color: #fff; padding: 12px 30px; text-decoration: none; border-radius: 4px; font-weight: 600;">Return Home</a>';
+	echo '<div class="dealer-access-denied error">';
+	echo '<h2>Access Denied</h2>';
+	echo '<p>This page is only accessible to authorized dealers.</p>';
+	echo '<a href="' . esc_url( home_url() ) . '">Return Home</a>';
 	echo '</div>';
 	return;
 }

@@ -248,8 +248,8 @@ class Registration_Form {
         }
 
         .registration-container {
-            background: #fff;
-            border: 1px solid #ddd;
+            background: var(--jblund-card-background, #fff);
+            border: 1px solid var(--jblund-border-color, #ddd);
             border-radius: 8px;
             padding: 40px;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
@@ -259,18 +259,18 @@ class Registration_Form {
             text-align: center;
             margin-bottom: 40px;
             padding-bottom: 20px;
-            border-bottom: 2px solid #003366;
+            border-bottom: 2px solid var(--jblund-header-color, #003366);
         }
 
         .registration-header h1 {
             margin: 0 0 10px 0;
-            color: #003366;
+            color: var(--jblund-header-color, #003366);
             font-size: 32px;
         }
 
         .registration-header p {
             margin: 0;
-            color: #666;
+            color: var(--jblund-secondary-text-color, #666);
             font-size: 16px;
         }
 
@@ -307,7 +307,7 @@ class Registration_Form {
             margin: 0 0 15px 0;
             font-size: 16px;
             line-height: 1.6;
-            color: #333;
+            color: var(--jblund-primary-text-color, #333);
         }
 
         .success-note {
@@ -334,10 +334,10 @@ class Registration_Form {
 
         .dealer-registration-form .form-section h3 {
             margin: 0 0 20px 0;
-            color: #003366;
+            color: var(--jblund-header-color, #003366);
             font-size: 20px;
             padding-bottom: 10px;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid var(--jblund-border-color, #eee);
         }
 
         .dealer-registration-form .form-row {
@@ -347,7 +347,7 @@ class Registration_Form {
         .dealer-registration-form label {
             display: block;
             margin-bottom: 8px;
-            color: #333;
+            color: var(--jblund-primary-text-color, #333);
             font-weight: 600;
             font-size: 14px;
         }
@@ -363,7 +363,7 @@ class Registration_Form {
         .dealer-registration-form textarea {
             width: 100%;
             padding: 10px 12px;
-            border: 1px solid #ddd;
+            border: 1px solid var(--jblund-border-color, #ddd);
             border-radius: 4px;
             font-size: 14px;
             transition: border-color 0.3s ease;
@@ -372,7 +372,7 @@ class Registration_Form {
         .dealer-registration-form input:focus,
         .dealer-registration-form textarea:focus {
             outline: none;
-            border-color: #003366;
+            border-color: var(--jblund-header-color, #003366);
         }
 
         .dealer-registration-form textarea {
@@ -401,7 +401,7 @@ class Registration_Form {
 
         .section-description {
             margin: 0 0 15px 0;
-            color: #666;
+            color: var(--jblund-secondary-text-color, #666);
             font-size: 14px;
             font-style: italic;
         }
@@ -410,12 +410,12 @@ class Registration_Form {
             text-align: center;
             margin-top: 30px;
             padding-top: 20px;
-            border-top: 2px solid #ddd;
+            border-top: 2px solid var(--jblund-border-color, #ddd);
         }
 
         .button-primary {
-            background: #003366;
-            color: #fff;
+            background: var(--jblund-button-color, #003366);
+            color: var(--jblund-button-text-color, #fff);
             padding: 12px 40px;
             border: none;
             border-radius: 4px;
@@ -426,7 +426,7 @@ class Registration_Form {
         }
 
         .button-primary:hover {
-            background: #002244;
+            background: var(--jblund-button-hover-color, #002244);
         }
 
         @media (max-width: 768px) {
