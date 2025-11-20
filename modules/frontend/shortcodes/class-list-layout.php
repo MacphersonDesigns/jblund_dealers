@@ -57,10 +57,10 @@ class List_Layout extends Layout_Base {
                     <div class="dealer-services-column">
                         <?php $this->render_service_icons($dealer['docks'], $dealer['lifts'], $dealer['trailers']); ?>
                     </div>
-                </div>
 
-                <!-- Sublocations (full width inside card) -->
-                <?php $this->render_sublocations_list($dealer['sublocations']); ?>
+                    <!-- Sublocations (full width inside card) -->
+                    <?php $this->render_sublocations_list($dealer['sublocations']); ?>
+                </div>
             <?php endwhile; ?>
         </div>
         <?php
