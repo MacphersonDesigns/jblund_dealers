@@ -94,7 +94,7 @@ class List_Layout extends Layout_Base {
 
         <?php if ($dealer['company_phone']) : ?>
             <div class="dealer-contact-item dealer-phone-item">
-                <a href="tel:<?php echo esc_attr($dealer['company_phone']); ?>"><?php echo esc_html($dealer['company_phone']); ?></a>
+                <a  class="dealer-address-link" href="tel:<?php echo esc_attr($dealer['company_phone']); ?>"><?php echo esc_html($dealer['company_phone']); ?></a>
             </div>
         <?php endif; ?>
         <?php

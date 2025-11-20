@@ -7,4 +7,4 @@
 @use "variables";
 
 // Import dashboard-specific styles
-@use "dashboard-styles";
+@use "dashboard-styles" as *;

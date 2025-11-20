@@ -329,6 +329,10 @@ class Settings_Page {
                             <td><?php _e('Displays the dealer login form with registration link', 'jblund-dealers'); ?></td>
                         </tr>
                         <tr>
+                            <td><code>[jblund_dealer_registration]</code></td>
+                            <td><?php _e('Displays the dealer registration application form for new dealers', 'jblund-dealers'); ?></td>
+                        </tr>
+                        <tr>
                             <td><code>[jblund_dealer_dashboard]</code></td>
                             <td><?php _e('Displays the dealer dashboard with welcome message and quick links', 'jblund-dealers'); ?></td>
                         </tr>
