@@ -188,17 +188,19 @@
 	/* Sub-locations in list layout */
 	.dealer-sublocations {
 		grid-column: 1 / -1;
-		margin-top: $spacing-md;
-		padding-top: $spacing-md;
-		border-top: 2px solid var(--jblund-border-color, #e0e0e0);
+		margin-top: $spacing-sm;
+		padding-top: $spacing-sm;
+		border-top: 1px solid var(--jblund-border-color, #e0e0e0);
 		display: flex;
 		flex-direction: column;
 		gap: $spacing-xs;
 
 		h4 {
-			font-size: 0.95em;
-			margin-bottom: $spacing-sm;
-			color: var(--jblund-primary-text-color, #333);
+			grid-column: 1 / -1;
+			font-size: 0.8em;
+			margin: 0 0 $spacing-xs 0;
+			padding: 0;
+			color: var(--jblund-secondary-text-color, #666);
 			font-weight: 600;
 			text-transform: uppercase;
 			letter-spacing: 0.5px;
@@ -210,17 +212,16 @@
 		grid-template-columns: 200px 1fr 120px 200px;
 		gap: $spacing-md;
 		align-items: center;
-		margin: 0;
+		margin: 0 (-$spacing-md);
 		padding: $spacing-sm $spacing-md;
 		background: var(--jblund-hover-background, #f9f9f9);
 		border: none;
 		border-left: 3px solid var(--jblund-header-color, #0073aa);
-		border-radius: $radius-sm;
+		border-radius: 0;
 		transition: $transition-fast;
 
 		&:hover {
 			background: #f0f0f0;
-			border-left-width: 4px;
 		}
 
 		h5,
