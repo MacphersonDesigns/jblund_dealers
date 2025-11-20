@@ -182,11 +182,8 @@ class NDA_Access_Restrictor {
 				\wp_safe_redirect( $this->get_nda_page_url() );
 				exit;
 			}
-		} elseif ( $is_nda_page ) {
-			// Already accepted, redirect away from NDA page
-			\wp_safe_redirect( $this->get_dashboard_page_url() );
-			exit;
 		}
+		// Don't redirect away from NDA page if already accepted - allow viewing
 	}
 
 	/**

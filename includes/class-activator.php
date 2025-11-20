@@ -30,6 +30,7 @@ class Activator {
     public static function activate() {
         self::register_post_types();
         self::create_dealer_role();
+        self::create_portal_pages();
         self::flush_rewrite_rules();
     }
 
@@ -51,6 +52,16 @@ class Activator {
     private static function create_dealer_role() {
         if (class_exists('JBLund\DealerPortal\Dealer_Role')) {
             \JBLund\DealerPortal\Dealer_Role::create_role();
+        }
+    }
+
+    /**
+     * Create dealer portal pages
+     */
+    private static function create_portal_pages() {
+        if (class_exists('JBLund\DealerPortal\Page_Manager')) {
+            $page_manager = new \JBLund\DealerPortal\Page_Manager();
+            $page_manager->create_pages();
         }
     }
 

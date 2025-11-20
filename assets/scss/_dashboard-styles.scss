@@ -678,6 +678,10 @@
 	padding-top: $spacing-lg;
 	border-top: 1px solid #eee;
 
+	p {
+		margin: $spacing-sm 0;
+	}
+
 	a {
 		color: var(--jblund-link-color, #003366);
 		text-decoration: none;
@@ -685,6 +689,25 @@
 
 		&:hover {
 			text-decoration: underline;
+			color: var(--jblund-button-hover-color, #002244);
+		}
+	}
+
+	.registration-link {
+		margin-top: $spacing-md;
+		padding-top: $spacing-md;
+		border-top: 1px solid #eee;
+		font-size: 14px;
+		color: var(--jblund-secondary-text-color, #666);
+
+		a {
+			color: var(--jblund-button-color, #003366);
+			font-weight: 600;
+			margin-left: $spacing-xs;
+
+			&:hover {
+				color: var(--jblund-button-hover-color, #002244);
+			}
 		}
 	}
 }
@@ -1030,16 +1053,73 @@
 }
 
 .nda-already-accepted {
-	background: #d1f4e0;
-	color: #0d7a3f;
-	padding: $spacing-lg;
+	background: var(--jblund-hover-background, #f9f9f9);
+	padding: $spacing-xl;
 	border-radius: $radius-md;
-	border: 2px solid #28a745;
+	margin-top: $spacing-lg;
 	text-align: center;
 
-	h2 {
-		margin-top: 0;
-		color: #0d7a3f;
+	.acceptance-confirmation {
+		background: #d4edda;
+		border: 2px solid #28a745;
+		border-radius: $radius-md;
+		padding: $spacing-xl;
+		max-width: 600px;
+		margin: 0 auto;
+
+		.acceptance-icon {
+			display: block;
+			font-size: 64px;
+			color: #28a745;
+			margin-bottom: $spacing-md;
+			font-weight: bold;
+		}
+
+		h3 {
+			color: #155724;
+			font-size: 24px;
+			margin: 0 0 $spacing-md 0;
+		}
+
+		p {
+			color: #155724;
+			font-size: 16px;
+			line-height: 1.6;
+			margin-bottom: $spacing-lg;
+		}
+
+		.acceptance-actions {
+			margin-top: $spacing-lg;
+
+			a {
+				display: inline-block;
+				background: var(--jblund-button-color, #003366);
+				color: var(--jblund-button-text-color, #ffffff);
+				padding: $spacing-md $spacing-xl;
+				text-decoration: none;
+				border-radius: $radius-sm;
+				font-weight: 600;
+				transition: $transition-fast;
+
+				&:hover {
+					background: var(--jblund-button-hover-color, #002244);
+				}
+			}
+		}
+	}
+}
+
+.nda-subtitle {
+	&.nda-accepted-notice {
+		background: #d4edda;
+		color: #155724;
+		border: 2px solid #28a745;
+		border-radius: $radius-sm;
+		padding: $spacing-md $spacing-lg;
+		font-size: 16px;
+		font-weight: 600;
+		display: inline-block;
+		margin-top: $spacing-md;
 	}
 }
 

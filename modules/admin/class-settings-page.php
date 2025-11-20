@@ -217,6 +217,7 @@ class Settings_Page {
         $login_page = isset($portal_pages['login']) ? $portal_pages['login'] : '';
         $dashboard_page = isset($portal_pages['dashboard']) ? $portal_pages['dashboard'] : '';
         $profile_page = isset($portal_pages['profile']) ? $portal_pages['profile'] : '';
+        $registration_page = isset($portal_pages['registration']) ? $portal_pages['registration'] : '';
         $nda_page = isset($portal_pages['nda']) ? $portal_pages['nda'] : '';
 
         $pages = get_pages(array('sort_column' => 'post_title'));
@@ -279,6 +280,24 @@ class Settings_Page {
                             <p class="description">
                                 <?php _e('Add this shortcode to your profile page:', 'jblund-dealers'); ?>
                                 <code>[jblund_dealer_profile]</code>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row"><label for="registration_page"><?php _e('Registration Page', 'jblund-dealers'); ?></label></th>
+                        <td>
+                            <select name="jblund_dealers_portal_pages[registration]" id="registration_page" class="regular-text">
+                                <option value=""><?php _e('— Select Page —', 'jblund-dealers'); ?></option>
+                                <?php foreach ($pages as $page): ?>
+                                    <option value="<?php echo esc_attr($page->ID); ?>" <?php selected($registration_page, $page->ID); ?>>
+                                        <?php echo esc_html($page->post_title); ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                            <p class="description">
+                                <?php _e('Add this shortcode to your registration page:', 'jblund-dealers'); ?>
+                                <code>[jblund_dealer_registration]</code>
                             </p>
                         </td>
                     </tr>

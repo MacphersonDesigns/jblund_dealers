@@ -24,7 +24,7 @@ class Shortcodes {
         add_shortcode('jblund_dealer_dashboard', array($this, 'dashboard'));
         add_shortcode('jblund_dealer_profile', array($this, 'profile'));
         add_shortcode('jblund_dealer_login', array($this, 'login'));
-        
+
         // Enqueue styles for dealer portal pages
         add_action('wp_enqueue_scripts', array($this, 'enqueue_styles'));
     }
@@ -35,10 +35,10 @@ class Shortcodes {
     public function enqueue_styles() {
         // Only enqueue on pages with dealer portal shortcodes
         global $post;
-        if (is_a($post, 'WP_Post') && has_shortcode($post->post_content, 'jblund_dealer_dashboard') || 
-            has_shortcode($post->post_content, 'jblund_dealer_profile') || 
+        if (is_a($post, 'WP_Post') && has_shortcode($post->post_content, 'jblund_dealer_dashboard') ||
+            has_shortcode($post->post_content, 'jblund_dealer_profile') ||
             has_shortcode($post->post_content, 'jblund_dealer_login')) {
-            
+
             wp_enqueue_style(
                 'jblund-dealer-portal',
                 JBLUND_DEALERS_PLUGIN_URL . 'modules/dealer-portal/assets/css/dashboard.css',

@@ -22,6 +22,17 @@ if (empty($dealer_name)) {
     $dealer_name = $current_user->display_name . "'s Company";
 }
 
+// Check if NDA already accepted
+$nda_accepted = false;
+$acceptance_date = '';
+if (class_exists('JBLund\DealerPortal\NDA_Acceptance_Manager')) {
+    $acceptance_manager = new \JBLund\DealerPortal\NDA_Acceptance_Manager();
+    $nda_accepted = $acceptance_manager->is_accepted($current_user->ID);
+    if ($nda_accepted) {
+        $acceptance_date = \get_user_meta($current_user->ID, '_nda_acceptance_date', true);
+    }
+}
+
 // Get NDA content - check if using PDF version or text version
 $use_pdf = false;
 $pdf_url = '';
@@ -85,7 +96,14 @@ $allowed_html = [
 <div class="dealer-nda-acceptance">
     <div class="nda-header">
         <h1><?php \esc_html_e('Non-Disclosure Agreement', 'jblund-dealers'); ?></h1>
-        <p class="nda-subtitle"><?php \esc_html_e('Please review and sign the agreement below to access the dealer portal.', 'jblund-dealers'); ?></p>
+        <?php if ($nda_accepted): ?>
+            <p class="nda-subtitle nda-accepted-notice">
+                <?php \esc_html_e('✓ You accepted this agreement on', 'jblund-dealers'); ?>
+                <?php echo \esc_html(\date_i18n(\get_option('date_format'), \strtotime($acceptance_date))); ?>
+            </p>
+        <?php else: ?>
+            <p class="nda-subtitle"><?php \esc_html_e('Please review and sign the agreement below to access the dealer portal.', 'jblund-dealers'); ?></p>
+        <?php endif; ?>        
     </div>
 
     <div class="nda-content">
@@ -131,6 +149,7 @@ $allowed_html = [
             <?php endif; ?>
         </div>
 
+        <?php if (!$nda_accepted): ?>
         <form method="post" action="" class="nda-acceptance-form" id="nda-acceptance-form">
             <?php \wp_nonce_field('accept_nda_action', 'accept_nda_nonce'); ?>
             <input type="hidden" name="jblund_nda_action" value="submit" />
@@ -211,6 +230,20 @@ $allowed_html = [
                 </button>
             </div>
         </form>
+        <?php else: ?>
+        <div class="nda-already-accepted">
+            <div class="acceptance-confirmation">
+                <span class="acceptance-icon">✓</span>
+                <h3><?php \esc_html_e('Agreement Already Accepted', 'jblund-dealers'); ?></h3>
+                <p><?php \esc_html_e('You have already accepted this Non-Disclosure Agreement. You can review the terms above at any time.', 'jblund-dealers'); ?></p>
+                <div class="acceptance-actions">
+                    <a href="<?php echo \esc_url(\jblund_get_portal_page_url('dashboard') ?: \home_url('/dealer-dashboard/')); ?>" class="button-primary">
+                        <?php \esc_html_e('Return to Dashboard', 'jblund-dealers'); ?>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <?php endif; ?>
     </div>
 </div>
 

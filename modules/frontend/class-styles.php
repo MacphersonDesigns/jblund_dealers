@@ -73,12 +73,12 @@ class Styles {
 
         // Add to both dealer directory and dealer portal styles
         wp_add_inline_style('jblund-dealers-styles', $custom_css);
-        
+
         // Also add to dashboard if it's enqueued
         if (wp_style_is('jblund-dealers-dashboard', 'enqueued')) {
             wp_add_inline_style('jblund-dealers-dashboard', $custom_css);
         }
-        
+
         // Also add to dealer portal if it's enqueued (from shortcodes)
         if (wp_style_is('jblund-dealer-portal', 'enqueued')) {
             wp_add_inline_style('jblund-dealer-portal', $custom_css);

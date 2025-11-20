@@ -61,6 +61,24 @@ $redirect_to = isset( $_GET['redirect_to'] ) ? esc_url_raw( $_GET['redirect_to']
 					<?php esc_html_e( 'Forgot your password?', 'jblund-dealers' ); ?>
 				</a>
 			</p>
+			<?php
+			// Get registration page URL from settings
+			$portal_pages = get_option( 'jblund_dealers_portal_pages', array() );
+			$registration_page_id = isset( $portal_pages['registration'] ) ? $portal_pages['registration'] : 0;
+			
+			if ( $registration_page_id ) {
+				$registration_url = get_permalink( $registration_page_id );
+			} else {
+				// Fallback to default slug
+				$registration_url = home_url( '/dealer-registration/' );
+			}
+			?>
+			<p class="registration-link">
+				<?php esc_html_e( "Don't have an account?", 'jblund-dealers' ); ?>
+				<a href="<?php echo esc_url( $registration_url ); ?>">
+					<?php esc_html_e( 'Apply to become a dealer', 'jblund-dealers' ); ?>
+				</a>
+			</p>
 		</div>
 	</div>
 </div>
