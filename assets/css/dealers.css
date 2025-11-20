@@ -1,1 +1,881 @@
-﻿:root{--jblund-header-color: #0073aa;--jblund-card-background: #ffffff;--jblund-button-color: #0073aa;--jblund-button-hover-color: #005a87;--jblund-primary-text-color: #333333;--jblund-secondary-text-color: #666666;--jblund-border-color: #e0e0e0;--jblund-button-text-color: #ffffff;--jblund-icon-color: #0073aa;--jblund-link-color: #0073aa;--jblund-hover-background: #f9f9f9;--jblund-docks-color: #1e40af;--jblund-lifts-color: #dc2626;--jblund-trailers-color: #059669}.dealer-card{position:relative}.dealer-card-header{background:var(--jblund-header-color, #0073aa);color:var(--jblund-button-text-color, #ffffff);padding:15px 20px;border-radius:4px 4px 0 0;margin:-1px -1px 0 -1px;font-weight:bold;border-bottom:2px solid rgba(0,0,0,.1)}.dealer-card-header h3,.dealer-card-header .dealer-name{margin:0;font-size:1.3em;font-weight:800;text-transform:uppercase;color:inherit}.dealer-card-body{padding:20px}.dealer-card-body p{margin:10px 0}.dealer-card-body p:last-child{margin-bottom:0}.dealer-card-body>*{margin-bottom:15px}.dealer-card-body>*:last-child{margin-bottom:0}.dealer-contact-info{margin-bottom:15px}.dealer-address,.dealer-phone{margin:10px 0;color:var(--jblund-secondary-text-color, #666);display:flex;align-items:flex-start;gap:8px;font-size:.95em}.dealer-address strong,.dealer-phone strong{margin-right:5px}.dealer-address svg,.dealer-phone svg{width:16px;height:16px;flex-shrink:0;margin-top:3px;opacity:.7}.dealer-address a,.dealer-phone a{color:var(--jblund-link-color, #0073aa);text-decoration:none}.dealer-address a:hover,.dealer-phone a:hover{text-decoration:underline}.dealer-address-link{color:var(--jblund-link-color, #0073aa);text-decoration:none}.dealer-address-link:hover{text-decoration:underline}.dealer-website{margin:15px 0}.dealer-website-button{display:flex;align-items:center;justify-content:center;padding:10px 20px;background:var(--jblund-button-color, #0073aa);color:var(--jblund-button-text-color, #ffffff) !important;text-decoration:none;border-radius:4px;transition:all .2s ease;font-weight:600;text-align:center}.dealer-website-button:hover{background:var(--jblund-button-hover-color, #005a87);transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.15)}.dealer-services{display:flex;flex-direction:column;justify-items:flex-end;margin-top:20px;padding-top:15px;border-top:1px solid var(--jblund-border-color, #e0e0e0)}.dealer-services h4,.dealer-services strong{font-size:1em;margin-bottom:10px;color:var(--jblund-primary-text-color, #333);font-weight:600;display:block}.dealer-services ul{list-style:none;padding:0;margin:10px 0 0 0}.dealer-services ul li{padding:5px 0;color:var(--jblund-secondary-text-color, #666)}.dealer-services ul li:before{content:"✓";color:var(--jblund-icon-color, #0073aa);font-weight:bold;margin-right:8px}.dealer-services p{margin:5px 0;color:var(--jblund-secondary-text-color, #666)}.dealer-services p em{font-style:italic;opacity:.7}.dealer-services-icons,.service-icons{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}.service-icon{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px;border:0px solid rgba(0,0,0,0);border-radius:4px;background:#f5f5f5;min-width:50px;flex-grow:1;transition:all .2s ease;opacity:.4}.service-icon.active{opacity:1;background:#fff}.service-icon.active:hover{transform:translateY(-3px);box-shadow:0 4px 12px rgba(0,0,0,.2)}.service-icon .icon{font-size:1.5em;margin-bottom:4px;display:block;transition:all .3s ease}.service-icon .label{font-size:.75em;font-weight:600;color:#333;text-transform:uppercase;letter-spacing:.5px;transition:all .3s ease}.service-docks.active{border-color:var(--jblund-icon-color, var(--jblund-docks-color))}.service-docks.active .icon{color:var(--jblund-icon-color, var(--jblund-docks-color))}.service-lifts.active{border-color:var(--jblund-icon-color, var(--jblund-lifts-color))}.service-lifts.active .icon{color:var(--jblund-icon-color, var(--jblund-lifts-color))}.service-trailers.active{border-color:var(--jblund-icon-color, var(--jblund-trailers-color))}.service-trailers.active .icon{color:var(--jblund-icon-color, var(--jblund-trailers-color))}.sublocation-divider{margin:20px 0;border:none;border-top:2px solid var(--jblund-border-color, #e0e0e0);opacity:.5}.dealer-sublocations{margin-top:10px;padding-top:0}.dealer-sublocations h4{font-size:.95em;margin-bottom:15px;color:var(--jblund-primary-text-color, #333);font-weight:600;text-transform:uppercase;letter-spacing:.5px}.dealer-sublocation{background:var(--jblund-hover-background, #f9f9f9);border-left:3px solid var(--jblund-header-color, #0073aa);border-radius:3px;padding:15px;margin-bottom:10px;transition:all .2s ease}.dealer-sublocation:last-child{margin-bottom:0}.dealer-sublocation:hover{background:#f0f0f0;border-left-width:4px}.dealer-sublocation .sublocation-name{font-size:1em;margin:0 0 10px 0;color:var(--jblund-header-color, #0073aa);font-weight:700}.sublocation-contact-info{margin-bottom:10px}.sublocation-contact-info p{margin:5px 0;font-size:.95em;color:var(--jblund-secondary-text-color, #666);line-height:1.5}.sublocation-contact-info p strong{margin-right:5px}.sublocation-address a,.sublocation-phone a{color:var(--jblund-link-color, #0073aa);text-decoration:none}.sublocation-address a:hover,.sublocation-phone a:hover{text-decoration:underline}.sublocation-website{margin:15px 0}.sublocation-services{display:flex;flex-direction:column;margin-top:15px;padding-top:10px;border-top:1px solid var(--jblund-border-color, #e0e0e0)}.sublocation-services strong{font-size:.9em;margin-bottom:5px;color:var(--jblund-primary-text-color, #333);font-weight:600;display:block}.sublocation-services .dealer-services-icons{gap:5px}.sublocation-services .service-list{list-style:none;padding:0;margin:5px 0 0 0}.sublocation-services .service-list li{padding:5px 0;color:var(--jblund-secondary-text-color, #666)}.sublocation-services .service-list li:before{content:"✓";color:var(--jblund-icon-color, #0073aa);font-weight:bold;margin-right:8px}.jblund-dealers-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(300px, 1fr));gap:20px;margin:20px 0}.jblund-dealers-grid .dealer-card{background:var(--jblund-card-background, #ffffff);border:1px solid var(--jblund-border-color, #e0e0e0);border-radius:4px;transition:all .2s ease;overflow:hidden;display:flex;flex-direction:column}.jblund-dealers-grid .dealer-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.1);transform:translateY(-4px);border-color:var(--jblund-header-color, #0073aa)}@media(max-width: 1024px){.jblund-dealers-grid{grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));gap:15px}}@media(max-width: 768px){.jblund-dealers-grid{grid-template-columns:1fr;gap:15px}}.jblund-dealers-list{display:flex;flex-direction:column;gap:12px;margin:20px 0}.jblund-dealers-list .dealer-card{display:grid;grid-template-columns:200px 1fr 120px 200px;gap:15px;align-items:start;padding:12px 15px;margin-bottom:5px;background:var(--jblund-card-background, #ffffff);border:1px solid #f0f0f0;border-left:4px solid var(--jblund-header-color, #0066cc);border-radius:4px;min-height:60px;transition:all .2s ease}.jblund-dealers-list .dealer-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.08);border-left-width:5px}.jblund-dealers-list .dealer-card-header{display:none}.jblund-dealers-list .dealer-name-column{display:flex;flex-direction:column;justify-content:flex-start;align-self:center;padding-top:4px}.jblund-dealers-list .dealer-name-column h3{margin:0;font-size:1.3em;font-weight:800;text-transform:uppercase;line-height:1.5;color:var(--jblund-primary-text-color, #333)}.jblund-dealers-list .dealer-content-column{display:flex;flex-direction:column;align-self:center;gap:4px;padding-top:2px}.jblund-dealers-list .dealer-content-column .dealer-contact-item{display:flex;align-items:center;gap:4px}.jblund-dealers-list .dealer-content-column .contact-icon{width:14px;height:14px;opacity:.7}.jblund-dealers-list .dealer-content-column .dealer-address,.jblund-dealers-list .dealer-content-column .dealer-phone{margin:0;font-size:.85em}.jblund-dealers-list .dealer-content-column .dealer-address svg,.jblund-dealers-list .dealer-content-column .dealer-address .contact-icon,.jblund-dealers-list .dealer-content-column .dealer-phone svg,.jblund-dealers-list .dealer-content-column .dealer-phone .contact-icon{width:14px;height:14px}.jblund-dealers-list .dealer-website-column{display:flex;align-self:center;justify-content:center;padding-top:2px}.jblund-dealers-list .dealer-website-column .dealer-website-button{padding:6px 10px;font-size:.75em;white-space:nowrap}.jblund-dealers-list .dealer-services-column{display:flex;align-items:center;justify-content:flex-end;padding-top:2px}.jblund-dealers-list .dealer-services-column .service-icons{display:flex;flex-direction:row;gap:8px;align-items:center;justify-content:flex-end;margin:0}.jblund-dealers-list .dealer-services-column .service-icons .service-icon{min-width:45px;max-width:55px;padding:6px}.jblund-dealers-list .dealer-services-column .service-icons .service-icon .icon{font-size:1.2em;margin-bottom:2px}.jblund-dealers-list .dealer-services-column .service-icons .service-icon .label{font-size:.65em}.jblund-dealers-list .dealer-services-column .service-list{display:none}.jblund-dealers-list .dealer-sublocations{grid-column:1/-1;margin-top:10px;padding-top:10px;border-top:1px solid var(--jblund-border-color, #e0e0e0);display:flex;flex-direction:column;gap:5px}.jblund-dealers-list .dealer-sublocations h4{grid-column:1/-1;font-size:.8em;margin:0 0 5px 0;padding:0;color:var(--jblund-secondary-text-color, #666);font-weight:600;text-transform:uppercase;letter-spacing:.5px}.jblund-dealers-list .dealer-sublocation{display:grid;grid-template-columns:200px 1fr 120px 200px;gap:15px;align-items:center;margin:0 -15px;padding:10px 15px;background:var(--jblund-hover-background, #f9f9f9);border:none;border-left:3px solid var(--jblund-header-color, #0073aa);border-radius:0;transition:all .2s ease}.jblund-dealers-list .dealer-sublocation:hover{background:#f0f0f0}.jblund-dealers-list .dealer-sublocation h5,.jblund-dealers-list .dealer-sublocation p{margin:0}.jblund-dealers-list .dealer-sublocation h5{font-size:.95em;color:var(--jblund-header-color, #0073aa);font-weight:700}.jblund-dealers-list .dealer-sublocation p{font-size:.85em}.jblund-dealers-list .sublocation-name-col{display:flex;align-items:flex-start;padding-top:2px}.jblund-dealers-list .sublocation-name-col h5{margin:0;font-size:.95em;font-weight:700;color:#555;text-transform:uppercase}.jblund-dealers-list .sublocation-contact-col{display:flex;flex-direction:column;gap:4px;padding-top:2px}.jblund-dealers-list .sublocation-contact-col .sublocation-address,.jblund-dealers-list .sublocation-contact-col .sublocation-phone{display:flex;align-items:center;gap:4px;font-size:.85em;color:#666;margin:0}.jblund-dealers-list .sublocation-contact-col .sublocation-address .contact-icon,.jblund-dealers-list .sublocation-contact-col .sublocation-phone .contact-icon{width:14px;height:14px;opacity:.7}.jblund-dealers-list .sublocation-contact-col .sublocation-address a,.jblund-dealers-list .sublocation-contact-col .sublocation-phone a{color:var(--jblund-link-color, #0073aa);text-decoration:none}.jblund-dealers-list .sublocation-contact-col .sublocation-address a:hover,.jblund-dealers-list .sublocation-contact-col .sublocation-phone a:hover{text-decoration:underline}.jblund-dealers-list .sublocation-website-col{display:flex;align-items:flex-start;justify-content:center;padding-top:2px}.jblund-dealers-list .sublocation-website-col .sublocation-website-btn{padding:6px 10px;font-size:.75em}.jblund-dealers-list .sublocation-services-col{display:flex;align-items:flex-start;justify-content:flex-end;padding-top:2px}.jblund-dealers-list .sublocation-services-col .sublocation-services-icons{display:flex;flex-direction:row;gap:8px;align-items:center;justify-content:flex-end;margin:0}.jblund-dealers-list .sublocation-services-col .sublocation-services-icons .service-icon{min-width:45px;max-width:55px;padding:6px}.jblund-dealers-list .sublocation-services-col .sublocation-services-icons .service-icon .icon{font-size:1.2em;margin-bottom:2px}.jblund-dealers-list .sublocation-services-col .sublocation-services-icons .service-icon .label{font-size:.65em}@media(max-width: 1024px){.jblund-dealers-list .dealer-card{grid-template-columns:1fr;gap:10px;padding:15px}.jblund-dealers-list .dealer-website-column,.jblund-dealers-list .dealer-services-column{justify-content:flex-start}.jblund-dealers-list .dealer-sublocation{grid-template-columns:1fr;gap:5px}}.jblund-dealers-compact{display:grid;grid-template-columns:repeat(auto-fill, minmax(250px, 1fr));gap:15px;margin:20px 0}.jblund-dealers-compact .dealer-card{background:var(--jblund-card-background, #ffffff);border:1px solid var(--jblund-border-color, #e0e0e0);border-radius:4px;transition:all .2s ease;overflow:hidden;display:flex;flex-direction:column}.jblund-dealers-compact .dealer-card:hover{box-shadow:0 2px 12px rgba(0,0,0,.08);transform:translateY(-2px)}.jblund-dealers-compact .dealer-card-header{padding:10px 15px}.jblund-dealers-compact .dealer-card-header h3{font-size:1.1em}.jblund-dealers-compact .dealer-content{padding:15px}.jblund-dealers-compact .dealer-address,.jblund-dealers-compact .dealer-phone{font-size:.85em;margin:5px 0}.jblund-dealers-compact .dealer-address svg,.jblund-dealers-compact .dealer-phone svg{width:14px;height:14px}.jblund-dealers-compact .dealer-website-button{padding:8px 15px;font-size:.9em}.jblund-dealers-compact .dealer-services{margin-top:15px;padding-top:10px}.jblund-dealers-compact .dealer-services h4{font-size:.9em;margin-bottom:5px}.jblund-dealers-compact .service-icons{gap:6px}.jblund-dealers-compact .service-icons .service-icon{min-width:55px;padding:6px}.jblund-dealers-compact .service-icons .service-icon .icon{font-size:1.2em;margin-bottom:2px}.jblund-dealers-compact .service-icons .service-icon .label{font-size:.65em}.jblund-dealers-compact .service-list li{padding:3px 0;font-size:.85em}.jblund-dealers-compact .dealer-sublocations{margin-top:10px;padding-top:10px}.jblund-dealers-compact .dealer-sublocations h4{font-size:.85em;margin-bottom:6px}.jblund-dealers-compact .dealer-sublocation{padding:8px 10px;margin-bottom:6px}.jblund-dealers-compact .dealer-sublocation h5{font-size:.85em;margin-bottom:4px}.jblund-dealers-compact .dealer-sublocation p{font-size:.8em}@media(max-width: 1024px){.jblund-dealers-compact{grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));gap:10px}}@media(max-width: 768px){.jblund-dealers-compact{grid-template-columns:1fr}}
+@charset "UTF-8";
+/**
+ * JBLund Dealers - Frontend Styles
+ * Main SCSS entry point that imports all modules
+ */
+/**
+ * CSS Custom Properties (Variables)
+ * These can be overridden by settings in WordPress
+ */
+:root {
+  --jblund-header-color: #0073aa;
+  --jblund-card-background: #ffffff;
+  --jblund-button-color: #0073aa;
+  --jblund-button-hover-color: #005a87;
+  --jblund-primary-text-color: #333333;
+  --jblund-secondary-text-color: #666666;
+  --jblund-border-color: #e0e0e0;
+  --jblund-button-text-color: #ffffff;
+  --jblund-icon-color: #0073aa;
+  --jblund-link-color: #0073aa;
+  --jblund-hover-background: #f9f9f9;
+  --jblund-docks-color: #1e40af;
+  --jblund-lifts-color: #dc2626;
+  --jblund-trailers-color: #059669;
+}
+
+/* ==========================================================================
+   BORDER RADIUS
+   Used for: card corners, buttons, input fields
+   ========================================================================== */
+/**
+ * JBLund Dealers - Frontend Styles
+ * Main SCSS entry point that imports all modules
+ */
+/**
+ * Shared/Common Dealer Card Styles
+ * Styles used across all layout types
+ */
+/* Base Dealer Card */
+.dealer-card {
+  position: relative;
+}
+
+/* Dealer Card Header */
+.dealer-card-header {
+  background: var(--jblund-header-color, #0073aa);
+  color: var(--jblund-button-text-color, #ffffff);
+  padding: 15px 20px;
+  border-radius: 4px 4px 0 0;
+  margin: -1px -1px 0 -1px;
+  font-weight: bold;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+}
+.dealer-card-header h3,
+.dealer-card-header .dealer-name {
+  margin: 0;
+  font-size: 1.3em;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: inherit;
+}
+
+/* Dealer Card Body (Grid/Compact layouts) */
+.dealer-card-body {
+  padding: 20px;
+}
+.dealer-card-body p {
+  margin: 10px 0;
+}
+.dealer-card-body p:last-child {
+  margin-bottom: 0;
+}
+.dealer-card-body > * {
+  margin-bottom: 15px;
+}
+.dealer-card-body > *:last-child {
+  margin-bottom: 0;
+}
+
+/* Dealer Contact Info Section */
+.dealer-contact-info {
+  margin-bottom: 15px;
+}
+
+/* Contact Information */
+.dealer-address,
+.dealer-phone {
+  margin: 10px 0;
+  color: var(--jblund-secondary-text-color, #666);
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.95em;
+}
+.dealer-address strong,
+.dealer-phone strong {
+  margin-right: 5px;
+}
+.dealer-address svg,
+.dealer-phone svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  margin-top: 3px;
+  opacity: 0.7;
+}
+.dealer-address a,
+.dealer-phone a {
+  color: var(--jblund-link-color, #0073aa);
+  text-decoration: none;
+}
+.dealer-address a:hover,
+.dealer-phone a:hover {
+  text-decoration: underline;
+}
+
+.dealer-address-link {
+  color: var(--jblund-link-color, #0073aa);
+  text-decoration: none;
+}
+.dealer-address-link:hover {
+  text-decoration: underline;
+}
+
+/* Website Section & Button */
+.dealer-website {
+  margin: 15px 0;
+}
+
+.dealer-website-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  background: var(--jblund-button-color, #0073aa);
+  color: var(--jblund-button-text-color, #ffffff) !important;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  font-weight: 600;
+  text-align: center;
+}
+.dealer-website-button:hover {
+  background: var(--jblund-button-hover-color, #005a87);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* ==========================================================================
+   SERVICES SECTION
+   Displays docks, lifts, trailers as icons or list
+   Can be toggled between icon mode and text list mode in settings
+   ========================================================================== */
+.dealer-services {
+  display: flex;
+  flex-direction: column;
+  justify-items: flex-end;
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid var(--jblund-border-color, #e0e0e0);
+}
+.dealer-services h4,
+.dealer-services strong {
+  font-size: 1em;
+  margin-bottom: 10px;
+  color: var(--jblund-primary-text-color, #333);
+  font-weight: 600;
+  display: block;
+}
+.dealer-services ul {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 0 0;
+}
+.dealer-services ul li {
+  padding: 5px 0;
+  color: var(--jblund-secondary-text-color, #666);
+}
+.dealer-services ul li:before {
+  content: "✓";
+  color: var(--jblund-icon-color, #0073aa);
+  font-weight: bold;
+  margin-right: 8px;
+}
+.dealer-services p {
+  margin: 5px 0;
+  color: var(--jblund-secondary-text-color, #666);
+}
+.dealer-services p em {
+  font-style: italic;
+  opacity: 0.7;
+}
+
+/* ==========================================================================
+   SERVICE ICONS
+   Icon-based display of services (alternative to list)
+   ========================================================================== */
+.dealer-services-icons,
+.service-icons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+/* Service Icon */
+.service-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  border: 0px solid transparent;
+  border-radius: 4px;
+  background: #f5f5f5;
+  min-width: 50px;
+  flex-grow: 1;
+  transition: all 0.2s ease;
+  opacity: 0.4;
+}
+.service-icon.active {
+  opacity: 1;
+  background: white;
+}
+.service-icon.active:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+.service-icon .icon {
+  font-size: 1.5em;
+  margin-bottom: 4px;
+  display: block;
+  transition: all 0.3s ease;
+}
+.service-icon .label {
+  font-size: 0.75em;
+  font-weight: 600;
+  color: #333;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+}
+
+.service-docks.active {
+  border-color: var(--jblund-icon-color, var(--jblund-docks-color));
+}
+.service-docks.active .icon {
+  color: var(--jblund-icon-color, var(--jblund-docks-color));
+}
+
+.service-lifts.active {
+  border-color: var(--jblund-icon-color, var(--jblund-lifts-color));
+}
+.service-lifts.active .icon {
+  color: var(--jblund-icon-color, var(--jblund-lifts-color));
+}
+
+.service-trailers.active {
+  border-color: var(--jblund-icon-color, var(--jblund-trailers-color));
+}
+.service-trailers.active .icon {
+  color: var(--jblund-icon-color, var(--jblund-trailers-color));
+}
+
+/* Sub-locations Divider */
+.sublocation-divider {
+  margin: 20px 0;
+  border: none;
+  border-top: 2px solid var(--jblund-border-color, #e0e0e0);
+  opacity: 0.5;
+}
+
+/* Sub-locations Container */
+.dealer-sublocations {
+  margin-top: 10px;
+  padding-top: 0;
+}
+.dealer-sublocations h4 {
+  font-size: 0.95em;
+  margin-bottom: 15px;
+  color: var(--jblund-primary-text-color, #333);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Individual Sublocation Box */
+.dealer-sublocation {
+  background: var(--jblund-hover-background, #f9f9f9);
+  border-radius: 3px;
+  padding: 15px;
+  margin-bottom: 10px;
+  transition: all 0.2s ease;
+}
+.dealer-sublocation:last-child {
+  margin-bottom: 0;
+}
+.dealer-sublocation:hover {
+  background: #f0f0f0;
+}
+.dealer-sublocation .sublocation-name {
+  font-size: 1em;
+  margin: 0 0 10px 0;
+  color: var(--jblund-header-color, #0073aa);
+  font-weight: 700;
+}
+
+/* Sublocation Contact Info Section */
+.sublocation-contact-info {
+  margin-bottom: 10px;
+}
+.sublocation-contact-info p {
+  margin: 5px 0;
+  font-size: 0.95em;
+  color: var(--jblund-secondary-text-color, #666);
+  line-height: 1.5;
+}
+.sublocation-contact-info p strong {
+  margin-right: 5px;
+}
+
+/* Sublocation Address & Phone */
+.sublocation-address a,
+.sublocation-phone a {
+  color: var(--jblund-link-color, #0073aa);
+  text-decoration: none;
+}
+.sublocation-address a:hover,
+.sublocation-phone a:hover {
+  text-decoration: underline;
+}
+
+/* Sublocation Website Section */
+.sublocation-website {
+  margin: 15px 0;
+}
+
+/* Sublocation Services Section */
+.sublocation-services {
+  display: flex;
+  flex-direction: column;
+  margin-top: 15px;
+  padding-top: 10px;
+  border-top: 1px solid var(--jblund-border-color, #e0e0e0);
+}
+.sublocation-services strong {
+  font-size: 0.9em;
+  margin-bottom: 5px;
+  color: var(--jblund-primary-text-color, #333);
+  font-weight: 600;
+  display: block;
+}
+.sublocation-services .dealer-services-icons {
+  gap: 5px;
+}
+.sublocation-services .service-list {
+  list-style: none;
+  padding: 0;
+  margin: 5px 0 0 0;
+}
+.sublocation-services .service-list li {
+  padding: 5px 0;
+  color: var(--jblund-secondary-text-color, #666);
+}
+.sublocation-services .service-list li:before {
+  content: "✓";
+  color: var(--jblund-icon-color, #0073aa);
+  font-weight: bold;
+  margin-right: 8px;
+}
+
+/**
+ * JBLund Dealers - Frontend Styles
+ * Main SCSS entry point that imports all modules
+ */
+/**
+ * JBLund Dealers - Grid Layout (DEFAULT)
+ * Card-based grid layout with auto-fill columns
+ *
+ * EDIT THIS FILE TO:
+ * - Change number of columns (adjust minmax values in grid-template-columns)
+ * - Modify card spacing (gap between cards)
+ * - Adjust card hover effects (shadows, lift animation)
+ * - Change responsive breakpoints for mobile/tablet
+ *
+ * SHORTCODE: [jblund_dealers] or [jblund_dealers layout="grid"]
+ *
+ * STRUCTURE:
+ * - Auto-fill responsive grid (cards wrap automatically)
+ * - Min 300px per column, max 1fr (equal distribution)
+ * - Card uses .dealer-card-header and .dealer-card-body from _common.scss
+ */
+/* ==========================================================================
+   GRID CONTAINER
+   Auto-fill responsive grid - cards wrap based on available space
+   ========================================================================== */
+.jblund-dealers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  margin: 20px 0;
+  /* Individual Card Styling
+     Each card is a vertical column with header + body
+     ====================================================================== */
+}
+.jblund-dealers-grid .dealer-card {
+  background: var(--jblund-card-background, #ffffff);
+  border: 1px solid var(--jblund-border-color, #e0e0e0);
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.jblund-dealers-grid .dealer-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+  border-color: var(--jblund-header-color, #0073aa);
+}
+.jblund-dealers-grid {
+  /* Sublocations use default compact card style from _common.scss
+     No special grid-specific styling needed
+     ====================================================================== */
+}
+
+/* ==========================================================================
+   RESPONSIVE BREAKPOINTS
+   Adjust grid columns for smaller screens
+   ========================================================================== */
+@media (max-width: 1024px) {
+  .jblund-dealers-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 15px;
+  }
+}
+@media (max-width: 768px) {
+  .jblund-dealers-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+}
+/**
+ * JBLund Dealers - Frontend Styles
+ * Main SCSS entry point that imports all modules
+ */
+/**
+ * JBLund Dealers - List Layout
+ * Horizontal row-based layout with 4 columns per dealer
+ *
+ * EDIT THIS FILE TO:
+ * - Change column widths (grid-template-columns: 200px 1fr 120px 160px)
+ * - Adjust row spacing between dealers (gap value)
+ * - Modify column alignment (align-items, justify-content)
+ * - Update mobile stacking behavior (@media sections)
+ *
+ * SHORTCODE: [jblund_dealers layout="list"]
+ *
+ * COLUMN STRUCTURE (4 columns):
+ * Column 1: Dealer Name (200px fixed width, left-aligned)
+ * Column 2: Contact Info (1fr flexible width, address + phone)
+ * Column 3: Website Button (120px fixed width, centered)
+ * Column 4: Services Icons (160px fixed width, right-aligned)
+ *
+ * Each sublocation below uses the same 4-column structure
+ */
+/* ==========================================================================
+   LIST CONTAINER
+   Each dealer is a horizontal row, not a vertical card
+   ==========================================================================
+*/
+.jblund-dealers-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 20px 0;
+  /* Dealer Row (4-Column Grid Structure)
+     200px Name | 1fr Contact | 120px Website | 160px Services
+     ====================================================================== */
+}
+.jblund-dealers-list .dealer-card {
+  display: grid;
+  grid-template-columns: 200px 1fr 120px 200px;
+  gap: 15px;
+  align-items: start;
+  padding: 12px 15px;
+  margin-bottom: 5px;
+  background: var(--jblund-card-background, #ffffff);
+  border: 1px solid #f0f0f0;
+  border-left: 4px solid var(--jblund-header-color, #0066cc);
+  border-radius: 4px;
+  min-height: 60px;
+  transition: all 0.2s ease;
+}
+.jblund-dealers-list .dealer-card:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border-left-width: 5px;
+}
+.jblund-dealers-list {
+  /* Hide Card Header in List Layout
+     Name displays in column 1, not in a header section
+     ====================================================================== */
+}
+.jblund-dealers-list .dealer-card-header {
+  display: none;
+}
+.jblund-dealers-list {
+  /* =======================================================================
+     COLUMN 1: DEALER NAME
+     Fixed 200px width, left-aligned, uppercase styling
+     ======================================================================= */
+}
+.jblund-dealers-list .dealer-name-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-self: center;
+  padding-top: 4px;
+}
+.jblund-dealers-list .dealer-name-column h3 {
+  margin: 0;
+  font-size: 1.3em;
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: 1.5;
+  color: var(--jblund-primary-text-color, #333);
+}
+.jblund-dealers-list {
+  /* =======================================================================
+     COLUMN 2: CONTACT INFORMATION
+     Flexible width (1fr), displays address and phone with icons
+     ======================================================================= */
+  /* Column 2: Contact Info */
+}
+.jblund-dealers-list .dealer-content-column {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  gap: 4px;
+  padding-top: 2px;
+}
+.jblund-dealers-list .dealer-content-column .dealer-contact-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.jblund-dealers-list .dealer-content-column .contact-icon {
+  width: 14px;
+  height: 14px;
+  opacity: 0.7;
+}
+.jblund-dealers-list .dealer-content-column .dealer-address,
+.jblund-dealers-list .dealer-content-column .dealer-phone {
+  margin: 0;
+  font-size: 0.85em;
+}
+.jblund-dealers-list .dealer-content-column .dealer-address svg,
+.jblund-dealers-list .dealer-content-column .dealer-address .contact-icon,
+.jblund-dealers-list .dealer-content-column .dealer-phone svg,
+.jblund-dealers-list .dealer-content-column .dealer-phone .contact-icon {
+  width: 14px;
+  height: 14px;
+}
+.jblund-dealers-list {
+  /* =======================================================================
+     COLUMN 3: WEBSITE BUTTON
+     Fixed 120px width, centered, compact button styling
+     ======================================================================= */
+  /* Column 3: Website Button */
+}
+.jblund-dealers-list .dealer-website-column {
+  display: flex;
+  align-self: center;
+  justify-content: center;
+  padding-top: 2px;
+}
+.jblund-dealers-list .dealer-website-column .dealer-website-button {
+  padding: 6px 10px;
+  font-size: 0.75em;
+  white-space: nowrap;
+}
+.jblund-dealers-list {
+  /* =======================================================================
+     COLUMN 4: SERVICES
+     Fixed 160px width, right-aligned service icons
+     ======================================================================= */
+  /* Column 4: Services */
+}
+.jblund-dealers-list .dealer-services-column {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-top: 2px;
+}
+.jblund-dealers-list .dealer-services-column .service-icons {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+  justify-content: flex-end;
+  margin: 0;
+}
+.jblund-dealers-list .dealer-services-column .service-icons .service-icon {
+  min-width: 45px;
+  max-width: 55px;
+  padding: 6px;
+}
+.jblund-dealers-list .dealer-services-column .service-icons .service-icon .icon {
+  font-size: 1.2em;
+  margin-bottom: 2px;
+}
+.jblund-dealers-list .dealer-services-column .service-icons .service-icon .label {
+  font-size: 0.65em;
+}
+.jblund-dealers-list .dealer-services-column .service-list {
+  display: none;
+}
+.jblund-dealers-list {
+  /* =======================================================================
+     SUBLOCATIONS IN LIST LAYOUT
+     Spans all 4 columns below main dealer, uses same column structure
+     ======================================================================= */
+  /* Sub-locations in list layout */
+}
+.jblund-dealers-list .dealer-sublocations {
+  grid-column: 1/-1;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--jblund-border-color, #e0e0e0);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.jblund-dealers-list .dealer-sublocations h4 {
+  grid-column: 1/-1;
+  font-size: 0.8em;
+  margin: 0 0 5px 0;
+  padding: 0;
+  color: var(--jblund-secondary-text-color, #666);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.jblund-dealers-list .dealer-sublocation {
+  display: grid;
+  grid-template-columns: 200px 1fr 120px 200px;
+  gap: 15px;
+  align-items: center;
+  margin: 0 -15px;
+  padding: 10px 15px;
+  background: var(--jblund-hover-background, #f9f9f9);
+  border: none;
+  border-radius: 0;
+  transition: all 0.2s ease;
+}
+.jblund-dealers-list .dealer-sublocation:hover {
+  background: #f0f0f0;
+}
+.jblund-dealers-list .dealer-sublocation h5,
+.jblund-dealers-list .dealer-sublocation p {
+  margin: 0;
+}
+.jblund-dealers-list .dealer-sublocation h5 {
+  font-size: 0.95em;
+  color: var(--jblund-header-color, #0073aa);
+  font-weight: 700;
+}
+.jblund-dealers-list .dealer-sublocation p {
+  font-size: 0.85em;
+}
+.jblund-dealers-list .sublocation-name-col {
+  display: flex;
+  align-items: flex-start;
+  padding-top: 2px;
+}
+.jblund-dealers-list .sublocation-name-col h5 {
+  margin: 0;
+  font-size: 0.95em;
+  font-weight: 700;
+  color: #555;
+  text-transform: uppercase;
+}
+.jblund-dealers-list .sublocation-contact-col {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 2px;
+}
+.jblund-dealers-list .sublocation-contact-col .sublocation-address,
+.jblund-dealers-list .sublocation-contact-col .sublocation-phone {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.85em;
+  color: #666;
+  margin: 0;
+}
+.jblund-dealers-list .sublocation-contact-col .sublocation-address .contact-icon,
+.jblund-dealers-list .sublocation-contact-col .sublocation-phone .contact-icon {
+  width: 14px;
+  height: 14px;
+  opacity: 0.7;
+}
+.jblund-dealers-list .sublocation-contact-col .sublocation-address a,
+.jblund-dealers-list .sublocation-contact-col .sublocation-phone a {
+  color: var(--jblund-link-color, #0073aa);
+  text-decoration: none;
+}
+.jblund-dealers-list .sublocation-contact-col .sublocation-address a:hover,
+.jblund-dealers-list .sublocation-contact-col .sublocation-phone a:hover {
+  text-decoration: underline;
+}
+.jblund-dealers-list .sublocation-website-col {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 2px;
+}
+.jblund-dealers-list .sublocation-website-col .sublocation-website-btn {
+  padding: 6px 10px;
+  font-size: 0.75em;
+}
+.jblund-dealers-list .sublocation-services-col {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding-top: 2px;
+}
+.jblund-dealers-list .sublocation-services-col .sublocation-services-icons {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+  justify-content: flex-end;
+  margin: 0;
+}
+.jblund-dealers-list .sublocation-services-col .sublocation-services-icons .service-icon {
+  min-width: 45px;
+  max-width: 55px;
+  padding: 6px;
+}
+.jblund-dealers-list .sublocation-services-col .sublocation-services-icons .service-icon .icon {
+  font-size: 1.2em;
+  margin-bottom: 2px;
+}
+.jblund-dealers-list .sublocation-services-col .sublocation-services-icons .service-icon .label {
+  font-size: 0.65em;
+}
+
+/* ==========================================================================
+   RESPONSIVE: MOBILE STACKING
+   Below 1024px: Convert 4-column layout to stacked single column
+   ========================================================================== */
+@media (max-width: 1024px) {
+  .jblund-dealers-list .dealer-card {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 15px;
+  }
+  .jblund-dealers-list .dealer-website-column,
+  .jblund-dealers-list .dealer-services-column {
+    justify-content: flex-start;
+  }
+  .jblund-dealers-list .dealer-sublocation {
+    grid-template-columns: 1fr;
+    gap: 5px;
+  }
+}
+/**
+ * JBLund Dealers - Frontend Styles
+ * Main SCSS entry point that imports all modules
+ */
+/**
+ * Compact Layout Styles
+ * Smaller, denser grid layout
+ */
+.jblund-dealers-compact {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 15px;
+  margin: 20px 0;
+}
+.jblund-dealers-compact .dealer-card {
+  background: var(--jblund-card-background, #ffffff);
+  border: 1px solid var(--jblund-border-color, #e0e0e0);
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.jblund-dealers-compact .dealer-card:hover {
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+.jblund-dealers-compact .dealer-card-header {
+  padding: 10px 15px;
+}
+.jblund-dealers-compact .dealer-card-header h3 {
+  font-size: 1.1em;
+}
+.jblund-dealers-compact .dealer-content {
+  padding: 15px;
+}
+.jblund-dealers-compact .dealer-address,
+.jblund-dealers-compact .dealer-phone {
+  font-size: 0.85em;
+  margin: 5px 0;
+}
+.jblund-dealers-compact .dealer-address svg,
+.jblund-dealers-compact .dealer-phone svg {
+  width: 14px;
+  height: 14px;
+}
+.jblund-dealers-compact .dealer-website-button {
+  padding: 8px 15px;
+  font-size: 0.9em;
+}
+.jblund-dealers-compact .dealer-services {
+  margin-top: 15px;
+  padding-top: 10px;
+}
+.jblund-dealers-compact .dealer-services h4 {
+  font-size: 0.9em;
+  margin-bottom: 5px;
+}
+.jblund-dealers-compact .service-icons {
+  gap: 6px;
+}
+.jblund-dealers-compact .service-icons .service-icon {
+  min-width: 55px;
+  padding: 6px;
+}
+.jblund-dealers-compact .service-icons .service-icon .icon {
+  font-size: 1.2em;
+  margin-bottom: 2px;
+}
+.jblund-dealers-compact .service-icons .service-icon .label {
+  font-size: 0.65em;
+}
+.jblund-dealers-compact .service-list li {
+  padding: 3px 0;
+  font-size: 0.85em;
+}
+.jblund-dealers-compact .dealer-sublocations {
+  margin-top: 10px;
+  padding-top: 10px;
+}
+.jblund-dealers-compact .dealer-sublocations h4 {
+  font-size: 0.85em;
+  margin-bottom: 6px;
+}
+.jblund-dealers-compact .dealer-sublocation {
+  padding: 8px 10px;
+  margin-bottom: 6px;
+}
+.jblund-dealers-compact .dealer-sublocation h5 {
+  font-size: 0.85em;
+  margin-bottom: 4px;
+}
+.jblund-dealers-compact .dealer-sublocation p {
+  font-size: 0.8em;
+}
+
+/* ==========================================================================
+   RESPONSIVE BREAKPOINTS
+   Tablet: Even smaller minimum (220px)
+   Mobile: Single column stack
+   ========================================================================== */
+@media (max-width: 1024px) {
+  .jblund-dealers-compact {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 10px;
+  }
+}
+@media (max-width: 768px) {
+  .jblund-dealers-compact {
+    grid-template-columns: 1fr;
+  }
+}
+
+/*# sourceMappingURL=dealers.css.map */

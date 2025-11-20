@@ -276,7 +276,6 @@
 /* Individual Sublocation Box */
 .dealer-sublocation {
 	background: var(--jblund-hover-background, #f9f9f9);
-	border-left: 3px solid var(--jblund-header-color, #0073aa);
 	border-radius: $radius-sm;
 	padding: $spacing-md;
 	margin-bottom: $spacing-sm;
@@ -288,7 +287,6 @@
 
 	&:hover {
 		background: #f0f0f0;
-		border-left-width: 4px;
 	}
 
 	.sublocation-name {

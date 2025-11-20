@@ -75,7 +75,6 @@ class List_Layout extends Layout_Base {
         ?>
         <?php if ($dealer['company_address']) : ?>
             <div class="dealer-contact-item dealer-address-item">
-                <span class="contact-icon">📍</span>
                 <?php
                 $map_link = $this->generate_map_link(
                     $dealer['company_address'],
@@ -95,7 +94,6 @@ class List_Layout extends Layout_Base {
 
         <?php if ($dealer['company_phone']) : ?>
             <div class="dealer-contact-item dealer-phone-item">
-                <span class="contact-icon">📞</span>
                 <a href="tel:<?php echo esc_attr($dealer['company_phone']); ?>"><?php echo esc_html($dealer['company_phone']); ?></a>
             </div>
         <?php endif; ?>
@@ -137,13 +135,11 @@ class List_Layout extends Layout_Base {
                         <div class="sublocation-contact-col">
                             <?php if (!empty($location['address'])) : ?>
                                 <div class="sublocation-address">
-                                    <span class="contact-icon">📍</span>
                                     <?php echo esc_html($location['address']); ?>
                                 </div>
                             <?php endif; ?>
                             <?php if (!empty($location['phone'])) : ?>
                                 <div class="sublocation-phone">
-                                    <span class="contact-icon">📞</span>
                                     <a href="tel:<?php echo esc_attr($location['phone']); ?>"><?php echo esc_html($location['phone']); ?></a>
                                 </div>
                             <?php endif; ?>

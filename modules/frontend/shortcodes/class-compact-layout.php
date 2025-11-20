@@ -142,7 +142,7 @@ class Compact_Layout extends Layout_Base {
                         <?php if (!empty($location['name'])) : ?>
                             <h5 class="sublocation-name"><?php echo esc_html($location['name']); ?></h5>
                         <?php endif; ?>
-                        
+
                         <div class="sublocation-contact-info">
                             <?php if (!empty($location['address'])) : ?>
                                 <p class="sublocation-address">
@@ -150,7 +150,7 @@ class Compact_Layout extends Layout_Base {
                                     <?php echo esc_html($location['address']); ?>
                                 </p>
                             <?php endif; ?>
-                            
+
                             <?php if (!empty($location['phone'])) : ?>
                                 <p class="sublocation-phone">
                                     <strong><?php _e('Phone:', 'jblund-dealers'); ?></strong>
@@ -158,7 +158,7 @@ class Compact_Layout extends Layout_Base {
                                 </p>
                             <?php endif; ?>
                         </div>
-                        
+
                         <?php if (!empty($location['website'])) : ?>
                             <div class="sublocation-website">
                                 <a href="<?php echo esc_url($location['website']); ?>" target="_blank" rel="noopener noreferrer" class="dealer-website-button">
@@ -167,7 +167,7 @@ class Compact_Layout extends Layout_Base {
                                 </a>
                             </div>
                         <?php endif; ?>
-                        
+
                         <?php if (!empty($location['docks']) || !empty($location['lifts']) || !empty($location['trailers'])) : ?>
                             <div class="sublocation-services">
                                 <strong><?php _e('Services:', 'jblund-dealers'); ?></strong>
