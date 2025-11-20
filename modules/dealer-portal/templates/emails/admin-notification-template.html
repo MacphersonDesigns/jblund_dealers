@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0;" />
+	</head>
+	<body
+		style="
+			margin: 0;
+			padding: 0;
+			font-family: Arial, sans-serif;
+			background-color: #f4f4f4;
+		">
+		<table
+			width="100%"
+			cellpadding="0"
+			cellspacing="0"
+			border="0"
+			style="background-color: #f4f4f4; padding: 20px 0">
+			<tr>
+				<td align="center">
+					<table
+						width="600"
+						cellpadding="0"
+						cellspacing="0"
+						border="0"
+						style="
+							background-color: #ffffff;
+							border-radius: 8px;
+							overflow: hidden;
+							box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+						">
+						<!-- Header -->
+						<tr>
+							<td
+								style="
+									background-color: #ff0000;
+									padding: 30px 40px;
+									text-align: center;
+								">
+								<h1
+									style="
+										margin: 0;
+										color: #ffffff;
+										font-size: 24px;
+										font-weight: 600;
+									">
+									New Dealer Application
+								</h1>
+							</td>
+						</tr>
+
+						<!-- Body Content -->
+						<tr>
+							<td style="padding: 40px">
+								<!-- [EDITABLE:INTRO] -->
+								<p
+									style="
+										margin: 0 0 20px;
+										font-size: 16px;
+										color: #333333;
+										line-height: 1.6;
+									">
+									A new dealer application has been submitted and is awaiting
+									your review.
+								</p>
+								<!-- [/EDITABLE:INTRO] -->
+
+								<!-- Representative Info -->
+								<!-- [EDITABLE:REP_INFO] -->
+								<h3
+									style="
+										margin: 30px 0 15px;
+										font-size: 18px;
+										color: #ff0000;
+										border-bottom: 2px solid #ff0000;
+										padding-bottom: 10px;
+									">
+									Representative Information
+								</h3>
+								<!-- [/EDITABLE:REP_INFO] -->
+								<table
+									width="100%"
+									cellpadding="0"
+									cellspacing="0"
+									border="0"
+									style="margin-bottom: 20px">
+									<tr>
+										<td
+											style="
+												padding: 8px 0;
+												font-size: 14px;
+												color: #666;
+												width: 40%;
+											">
+											<strong>Name:</strong>
+										</td>
+										<td style="padding: 8px 0; font-size: 14px; color: #333">
+											{{rep_name}}
+										</td>
+									</tr>
+									<tr>
+										<td style="padding: 8px 0; font-size: 14px; color: #666">
+											<strong>Email:</strong>
+										</td>
+										<td style="padding: 8px 0; font-size: 14px; color: #333">
+											<a
+												href="mailto:{{rep_email}}"
+												style="color: #ff0000; text-decoration: none"
+												>{{rep_email}}</a
+											>
+										</td>
+									</tr>
+									<tr>
+										<td style="padding: 8px 0; font-size: 14px; color: #666">
+											<strong>Phone:</strong>
+										</td>
+										<td style="padding: 8px 0; font-size: 14px; color: #333">
+											{{rep_phone}}
+										</td>
+									</tr>
+								</table>
+
+								<!-- Company Info -->
+								<!-- [EDITABLE:COMPANY_INFO] -->
+								<h3
+									style="
+										margin: 30px 0 15px;
+										font-size: 18px;
+										color: #ff0000;
+										border-bottom: 2px solid #ff0000;
+										padding-bottom: 10px;
+									">
+									Company Information
+								</h3>
+								<!-- [/EDITABLE:COMPANY_INFO] -->
+								<table
+									width="100%"
+									cellpadding="0"
+									cellspacing="0"
+									border="0"
+									style="margin-bottom: 20px">
+									<tr>
+										<td
+											style="
+												padding: 8px 0;
+												font-size: 14px;
+												color: #666;
+												width: 40%;
+											">
+											<strong>Company Name:</strong>
+										</td>
+										<td style="padding: 8px 0; font-size: 14px; color: #333">
+											{{company}}
+										</td>
+									</tr>
+									<tr>
+										<td style="padding: 8px 0; font-size: 14px; color: #666">
+											<strong>Company Phone:</strong>
+										</td>
+										<td style="padding: 8px 0; font-size: 14px; color: #333">
+											{{company_phone}}
+										</td>
+									</tr>
+									<tr>
+										<td style="padding: 8px 0; font-size: 14px; color: #666">
+											<strong>Territory:</strong>
+										</td>
+										<td style="padding: 8px 0; font-size: 14px; color: #333">
+											{{territory}}
+										</td>
+									</tr>
+									<tr>
+										<td
+											style="
+												padding: 8px 0;
+												font-size: 14px;
+												color: #666;
+												vertical-align: top;
+											">
+											<strong>Address:</strong>
+										</td>
+										<td style="padding: 8px 0; font-size: 14px; color: #333">
+											{{company_address}}
+										</td>
+									</tr>
+									<tr>
+										<td style="padding: 8px 0; font-size: 14px; color: #666">
+											<strong>Website:</strong>
+										</td>
+										<td style="padding: 8px 0; font-size: 14px; color: #333">
+											<a
+												href="{{company_website}}"
+												style="color: #ff0000; text-decoration: none"
+												>{{company_website}}</a
+											>
+										</td>
+									</tr>
+								</table>
+
+								<!-- Services Offered -->
+								<!-- [EDITABLE:SERVICES] -->
+								<h3
+									style="
+										margin: 30px 0 15px;
+										font-size: 18px;
+										color: #ff0000;
+										border-bottom: 2px solid #ff0000;
+										padding-bottom: 10px;
+									">
+									Services Offered
+								</h3>
+								<!-- [/EDITABLE:SERVICES] -->
+								<table
+									width="100%"
+									cellpadding="0"
+									cellspacing="0"
+									border="0"
+									style="margin-bottom: 20px">
+									<tr>
+										<td
+											style="
+												padding: 8px 0;
+												font-size: 14px;
+												color: #666;
+												width: 40%;
+											">
+											<strong>Docks:</strong>
+										</td>
+										<td style="padding: 8px 0; font-size: 14px; color: #333">
+											{{docks}}
+										</td>
+									</tr>
+									<tr>
+										<td style="padding: 8px 0; font-size: 14px; color: #666">
+											<strong>Lifts:</strong>
+										</td>
+										<td style="padding: 8px 0; font-size: 14px; color: #333">
+											{{lifts}}
+										</td>
+									</tr>
+									<tr>
+										<td style="padding: 8px 0; font-size: 14px; color: #666">
+											<strong>Trailers:</strong>
+										</td>
+										<td style="padding: 8px 0; font-size: 14px; color: #333">
+											{{trailers}}
+										</td>
+									</tr>
+								</table>
+
+								<!-- Additional Notes -->
+								<!-- [EDITABLE:NOTES] -->
+								<h3
+									style="
+										margin: 30px 0 15px;
+										font-size: 18px;
+										color: #ff0000;
+										border-bottom: 2px solid #ff0000;
+										padding-bottom: 10px;
+									">
+									About Their Business
+								</h3>
+								<p
+									style="
+										margin: 0 0 20px;
+										padding: 15px;
+										background-color: #f8f9fa;
+										border-radius: 4px;
+										font-size: 14px;
+										color: #333;
+										line-height: 1.6;
+									">
+									{{notes}}
+								</p>
+								<!-- [/EDITABLE:NOTES] -->
+
+								<!-- CTA Button -->
+								<!-- [EDITABLE:CTA] -->
+								<table
+									width="100%"
+									cellpadding="0"
+									cellspacing="0"
+									border="0"
+									style="margin: 30px 0">
+									<tr>
+										<td align="center">
+											<table cellpadding="0" cellspacing="0" border="0">
+												<tr>
+													<td
+														style="
+															background-color: #ff0000;
+															border-radius: 4px;
+															text-align: center;
+														">
+														<a
+															href="{{admin_url}}"
+															style="
+																display: inline-block;
+																padding: 15px 40px;
+																color: #ffffff;
+																text-decoration: none;
+																font-size: 16px;
+																font-weight: 600;
+															">
+															Review Application
+														</a>
+													</td>
+												</tr>
+											</table>
+										</td>
+									</tr>
+								</table>
+								<!-- [/EDITABLE:CTA] -->
+
+								<!-- [EDITABLE:FOOTER_NOTE] -->
+								<p
+									style="
+										margin: 30px 0 0;
+										padding: 20px;
+										background-color: #f8f9fa;
+										border-radius: 4px;
+										font-size: 13px;
+										color: #666;
+										line-height: 1.6;
+									">
+									This application requires your review and approval before the
+									dealer can access the portal. Please review the information
+									carefully and approve or decline the application from the
+									admin dashboard.
+								</p>
+								<!-- [/EDITABLE:FOOTER_NOTE] -->
+							</td>
+						</tr>
+
+						<!-- Footer -->
+						<!-- [EDITABLE:FOOTER] -->
+						<tr>
+							<td
+								style="
+									background-color: #f8f9fa;
+									padding: 20px 40px;
+									text-align: center;
+									border-top: 1px solid #dee2e6;
+								">
+								<p
+									style="
+										margin: 0;
+										font-size: 13px;
+										color: #6c757d;
+										line-height: 1.5;
+									">
+									This is an automated notification from the JBLund Dealer
+									Portal.<br />
+									© 2025 JBLund. All rights reserved.
+								</p>
+							</td>
+						</tr>
+						<!-- [/EDITABLE:FOOTER] -->
+					</table>
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>

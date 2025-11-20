@@ -286,25 +286,39 @@ class NDA_Handler {
 
 		// Dealer hasn't accepted NDA
 		if ( ! $this->is_nda_accepted( $user->ID ) ) {
-			// Define dealer-specific restricted pages
-			$dealer_portal_pages = array(
-				'dealer-dashboard',
-				'dealer-profile',
-				'dealer-resources',  // Future pages
-			);
+			// Get all portal pages from settings
+			$portal_pages = \get_option( 'jblund_dealers_portal_pages', array() );
+			$password_change_page_id = isset( $portal_pages['password_change'] ) ? $portal_pages['password_change'] : 0;
 
-			// Check if current page is a dealer portal page
-			$is_dealer_portal_page = false;
-			foreach ( $dealer_portal_pages as $page_slug ) {
-				if ( \is_page( $page_slug ) ) {
-					$is_dealer_portal_page = true;
+			// Allow access to password change page (if it exists)
+			if ( $password_change_page_id && \is_page( $password_change_page_id ) ) {
+				return;
+			}
+
+			// Allow access to NDA page itself
+			if ( $is_nda_page ) {
+				return;
+			}
+
+			// Allow logout action
+			if ( isset( $_GET['action'] ) && $_GET['action'] === 'logout' ) {
+				return;
+			}
+
+			// Block ALL dealer-only pages until NDA is signed
+			// Check if current page is any portal page
+			$current_page_id = \get_the_ID();
+			$is_portal_page = false;
+
+			foreach ( $portal_pages as $page_type => $page_id ) {
+				if ( $page_id && $current_page_id === $page_id ) {
+					$is_portal_page = true;
 					break;
 				}
 			}
 
-			// Only redirect to NDA if trying to access dealer portal pages
-			// Allow access to all public pages (dealer directory, homepage, etc.)
-			if ( $is_dealer_portal_page && ! $is_nda_page ) {
+			// Redirect to NDA if accessing any dealer portal page
+			if ( $is_portal_page ) {
 				\wp_safe_redirect( $this->get_nda_page_url() );
 				exit;
 			}
@@ -366,14 +380,15 @@ class NDA_Handler {
 			\update_user_meta( $user_id, $this->acceptance_meta_key, \wp_json_encode( $acceptance_data ) );
 			\update_user_meta( $user_id, $this->accepted_meta_key, '1' );
 
-			// Trigger action for PDF generation and email
-			\do_action( 'jblund_dealer_nda_accepted', $user_id, $signature_data );
+            // Publish dealer post now that NDA is signed
+            $this->publish_dealer_post( $user_id );
 
-			// Redirect to dealer dashboard
-			\wp_safe_redirect( $this->get_dashboard_page_url() );
-			exit;
+            // Trigger action for PDF generation and email
+            \do_action( 'jblund_dealer_nda_accepted', $user_id, $signature_data );
 
-		} elseif ( isset( $_POST['jblund_decline_nda'] ) ) {
+            // Redirect to dealer dashboard
+            \wp_safe_redirect( $this->get_dashboard_page_url() );
+            exit;		} elseif ( isset( $_POST['jblund_decline_nda'] ) ) {
 			// User declined - log them out
 			\wp_logout();
 			\wp_safe_redirect( \home_url() );
@@ -511,5 +526,93 @@ class NDA_Handler {
 		}
 
 		return $page_id;
+	}
+
+	/**
+	 * Publish dealer post when NDA is signed
+	 *
+	 * Finds the dealer post associated with this user and publishes it
+	 *
+	 * @param int $user_id User ID who signed the NDA
+	 * @return bool True if dealer post was published, false otherwise
+	 */
+	private function publish_dealer_post( $user_id ) {
+		// Find dealer post by user_id
+		$dealer_posts = \get_posts(
+			array(
+				'post_type'      => 'dealer',
+				'post_status'    => 'draft',
+				'posts_per_page' => 1,
+				'meta_query'     => array(
+					array(
+						'key'     => '_dealer_user_id',
+						'value'   => $user_id,
+						'compare' => '=',
+					),
+				),
+			)
+		);
+
+		if ( empty( $dealer_posts ) ) {
+			return false;
+		}
+
+		$dealer_post = $dealer_posts[0];
+
+		// Publish the dealer post
+		$result = \wp_update_post(
+			array(
+				'ID'          => $dealer_post->ID,
+				'post_status' => 'publish',
+			)
+		);
+
+		if ( \is_wp_error( $result ) ) {
+			return false;
+		}
+
+		// Log activity on the associated registration if it exists
+		$registration_id = \get_post_meta( $dealer_post->ID, '_dealer_registration_id', true );
+		if ( $registration_id ) {
+			$this->log_dealer_publish_activity( $registration_id, $dealer_post->ID, $user_id );
+		}
+
+		return true;
+	}
+
+	/**
+	 * Log activity when dealer post is published via NDA acceptance
+	 *
+	 * @param int $registration_id Registration post ID
+	 * @param int $dealer_id Dealer post ID
+	 * @param int $user_id User ID
+	 * @return void
+	 */
+	private function log_dealer_publish_activity( $registration_id, $dealer_id, $user_id ) {
+		// Get current user info
+		$user      = \get_userdata( $user_id );
+		$user_name = $user ? $user->display_name : $user->user_login;
+
+		// Get existing activity log
+		$activity = \get_post_meta( $registration_id, '_registration_activity', true );
+		if ( ! is_array( $activity ) ) {
+			$activity = array();
+		}
+
+		// Create new activity entry
+		$entry = array(
+			'action'    => 'dealer_published',
+			'user'      => \sanitize_text_field( $user_name ),
+			'user_id'   => $user_id,
+			'timestamp' => \current_time( 'mysql' ),
+			'note'      => 'NDA signed - Dealer profile published and now visible on website',
+			'dealer_id' => $dealer_id,
+		);
+
+		// Add to activity log
+		$activity[] = $entry;
+
+		// Save updated activity
+		\update_post_meta( $registration_id, '_registration_activity', $activity );
 	}
 }

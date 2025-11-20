@@ -1,4 +1,4 @@
-# Divi Builder Integration Guide
+;# Divi Builder Integration Guide
 
 Complete guide for customizing JBLund Dealer Portal pages with Divi Builder.
 
@@ -141,20 +141,20 @@ The plugin templates include inline CSS that can be overridden with Divi's custo
 ```css
 /* Override dashboard card colors */
 .jblund-dealer-dashboard .dashboard-card {
-	background: #f9f9f9;
-	border-color: #003366;
+ background: #f9f9f9;
+ border-color: #003366;
 }
 
 /* Customize profile form styling */
 .jblund-dealer-profile .dealer-profile-form {
-	max-width: 100%;
-	padding: 30px;
+ max-width: 100%;
+ padding: 30px;
 }
 
 /* Adjust login form appearance */
 .jblund-dealer-login .login-container {
-	background: transparent;
-	box-shadow: none;
+ background: transparent;
+ box-shadow: none;
 }
 ```
 

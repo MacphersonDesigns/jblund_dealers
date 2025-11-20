@@ -1,0 +1,73 @@
+/**
+ * JBLund Dealers - Grid Layout (DEFAULT)
+ * Card-based grid layout with auto-fill columns
+ *
+ * EDIT THIS FILE TO:
+ * - Change number of columns (adjust minmax values in grid-template-columns)
+ * - Modify card spacing (gap between cards)
+ * - Adjust card hover effects (shadows, lift animation)
+ * - Change responsive breakpoints for mobile/tablet
+ *
+ * SHORTCODE: [jblund_dealers] or [jblund_dealers layout="grid"]
+ *
+ * STRUCTURE:
+ * - Auto-fill responsive grid (cards wrap automatically)
+ * - Min 300px per column, max 1fr (equal distribution)
+ * - Card uses .dealer-card-header and .dealer-card-body from _common.scss
+ */
+
+@use "variables" as *;
+
+/* ==========================================================================
+   GRID CONTAINER
+   Auto-fill responsive grid - cards wrap based on available space
+   ========================================================================== */
+
+.jblund-dealers-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+	gap: $spacing-lg;
+	margin: $spacing-lg 0;
+
+	/* Individual Card Styling
+	   Each card is a vertical column with header + body
+	   ====================================================================== */
+	.dealer-card {
+		background: var(--jblund-card-background, #ffffff);
+		border: 1px solid var(--jblund-border-color, #e0e0e0);
+		border-radius: $radius-md;
+		transition: $transition-fast;
+		overflow: hidden;
+		display: flex;
+		flex-direction: column;
+
+		&:hover {
+			box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+			transform: translateY(-4px);
+			border-color: var(--jblund-header-color, #0073aa);
+		}
+	}
+
+	/* Sublocations use default compact card style from _common.scss
+	   No special grid-specific styling needed
+	   ====================================================================== */
+}
+
+/* ==========================================================================
+   RESPONSIVE BREAKPOINTS
+   Adjust grid columns for smaller screens
+   ========================================================================== */
+// Responsive adjustments
+@media (max-width: $breakpoint-tablet) {
+	.jblund-dealers-grid {
+		grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+		gap: $spacing-md;
+	}
+}
+
+@media (max-width: $breakpoint-mobile) {
+	.jblund-dealers-grid {
+		grid-template-columns: 1fr;
+		gap: $spacing-md;
+	}
+}

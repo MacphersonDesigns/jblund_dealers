@@ -16,10 +16,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Security check - must be logged in
 if ( ! is_user_logged_in() ) {
+	$login_url = jblund_get_portal_page_url('login') ?: home_url( '/dealer-login/' );
 	echo '<div class="dealer-access-denied" style="max-width: 600px; margin: 40px auto; padding: 30px; background: #fff3cd; border: 2px solid #ffc107; border-radius: 8px; text-align: center;">';
 	echo '<h2 style="color: #856404; margin-top: 0;">Access Denied</h2>';
 	echo '<p style="color: #856404; margin-bottom: 20px;">You must be logged in to access the dealer profile.</p>';
-	echo '<a href="' . esc_url( home_url( '/dealer-login/' ) ) . '" style="display: inline-block; background: #003366; color: #fff; padding: 12px 30px; text-decoration: none; border-radius: 4px; font-weight: 600;">Login</a>';
+	echo '<a href="' . esc_url( $login_url ) . '" style="display: inline-block; background: #003366; color: #fff; padding: 12px 30px; text-decoration: none; border-radius: 4px; font-weight: 600;">Login</a>';
 	echo '</div>';
 	return;
 }
@@ -77,7 +78,7 @@ if ( isset( $_POST['update_dealer_profile'] ) && check_admin_referer( 'update_de
 	<div class="profile-header">
 		<h1><?php esc_html_e( 'My Profile', 'jblund-dealers' ); ?></h1>
 		<p class="back-link">
-			<a href="<?php echo esc_url( home_url( '/dealer-dashboard/' ) ); ?>">
+			<a href="<?php echo esc_url( jblund_get_portal_page_url('dashboard') ?: home_url( '/dealer-dashboard/' ) ); ?>">
 				← <?php esc_html_e( 'Back to Dashboard', 'jblund-dealers' ); ?>
 			</a>
 		</p>
@@ -185,153 +186,3 @@ if ( isset( $_POST['update_dealer_profile'] ) && check_admin_referer( 'update_de
 	</div>
 </div>
 
-<style>
-.jblund-dealer-profile {
-	max-width: 800px;
-	margin: 0 auto;
-	padding: 20px;
-}
-
-.profile-header {
-	margin-bottom: 30px;
-	padding-bottom: 20px;
-	border-bottom: 2px solid #003366;
-}
-
-.profile-header h1 {
-	margin: 0 0 10px 0;
-	color: #003366;
-	font-size: 32px;
-}
-
-.back-link a {
-	color: #003366;
-	text-decoration: none;
-	font-size: 14px;
-}
-
-.back-link a:hover {
-	text-decoration: underline;
-}
-
-.profile-message {
-	padding: 15px;
-	margin-bottom: 20px;
-	border-radius: 4px;
-	font-weight: 500;
-}
-
-.profile-message.success {
-	background: #d4edda;
-	color: #155724;
-	border: 1px solid #c3e6cb;
-}
-
-.profile-message.error {
-	background: #f8d7da;
-	color: #721c24;
-	border: 1px solid #f5c6cb;
-}
-
-.dealer-profile-form {
-	background: #fff;
-	border: 1px solid #ddd;
-	border-radius: 8px;
-	padding: 30px;
-	box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.form-section {
-	margin-bottom: 30px;
-}
-
-.form-section:last-of-type {
-	margin-bottom: 0;
-}
-
-.form-section h2 {
-	margin: 0 0 20px 0;
-	color: #003366;
-	font-size: 20px;
-	padding-bottom: 10px;
-	border-bottom: 1px solid #eee;
-}
-
-.form-field {
-	margin-bottom: 20px;
-}
-
-.form-field label {
-	display: block;
-	margin-bottom: 8px;
-	color: #333;
-	font-weight: 600;
-	font-size: 14px;
-}
-
-.form-field .required {
-	color: #c00;
-}
-
-.form-field input[type="text"],
-.form-field input[type="email"],
-.form-field input[type="tel"] {
-	width: 100%;
-	padding: 10px 12px;
-	border: 1px solid #ddd;
-	border-radius: 4px;
-	font-size: 14px;
-	transition: border-color 0.3s ease;
-}
-
-.form-field input:focus {
-	outline: none;
-	border-color: #003366;
-}
-
-.form-field input.readonly-field {
-	background: #f5f5f5;
-	color: #666;
-	cursor: not-allowed;
-}
-
-.field-description {
-	margin: 5px 0 0 0;
-	font-size: 12px;
-	color: #666;
-	font-style: italic;
-}
-
-.form-actions {
-	margin-top: 30px;
-	padding-top: 20px;
-	border-top: 1px solid #eee;
-}
-
-.submit-button {
-	background: #003366;
-	color: #fff;
-	padding: 12px 30px;
-	border: none;
-	border-radius: 4px;
-	font-size: 16px;
-	font-weight: 600;
-	cursor: pointer;
-	transition: background 0.3s ease;
-}
-
-.submit-button:hover {
-	background: #002244;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-	.profile-header h1 {
-		font-size: 24px;
-	}
-
-	.dealer-profile-form {
-		padding: 20px;
-	}
-}
-</style>

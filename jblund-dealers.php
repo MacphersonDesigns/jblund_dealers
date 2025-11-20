@@ -16,6 +16,9 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+// Start output buffering to prevent header warnings
+ob_start();
+
 // Define plugin constants
 define('JBLUND_DEALERS_VERSION', '1.3.0');
 define('JBLUND_DEALERS_PLUGIN_DIR', plugin_dir_path(__FILE__));
@@ -25,6 +28,7 @@ define('JBLUND_DEALERS_PLUGIN_URL', plugin_dir_url(__FILE__));
 // LOAD CORE MODULES
 // ==================================================
 require_once JBLUND_DEALERS_PLUGIN_DIR . 'modules/core/class-post-type.php';
+require_once JBLUND_DEALERS_PLUGIN_DIR . 'modules/core/class-registration-post-type.php';
 require_once JBLUND_DEALERS_PLUGIN_DIR . 'modules/core/class-meta-boxes.php';
 
 // ==================================================
@@ -33,6 +37,8 @@ require_once JBLUND_DEALERS_PLUGIN_DIR . 'modules/core/class-meta-boxes.php';
 require_once JBLUND_DEALERS_PLUGIN_DIR . 'modules/admin/class-admin-columns.php';
 require_once JBLUND_DEALERS_PLUGIN_DIR . 'modules/admin/class-settings.php';
 require_once JBLUND_DEALERS_PLUGIN_DIR . 'modules/admin/class-settings-page.php';
+require_once JBLUND_DEALERS_PLUGIN_DIR . 'modules/admin/class-dashboard-widget.php';
+require_once JBLUND_DEALERS_PLUGIN_DIR . 'modules/admin/class-message-scheduler.php';
 require_once JBLUND_DEALERS_PLUGIN_DIR . 'modules/admin/class-csv-handler.php';
 require_once JBLUND_DEALERS_PLUGIN_DIR . 'modules/admin/class-portal-fields.php';
 require_once JBLUND_DEALERS_PLUGIN_DIR . 'modules/admin/class-field-renderer.php';
@@ -62,11 +68,20 @@ if (!$skip_dealer_portal) {
     if (file_exists(JBLUND_DEALERS_PLUGIN_DIR . 'modules/dealer-portal/classes/class-nda-handler.php')) {
         require_once JBLUND_DEALERS_PLUGIN_DIR . 'modules/dealer-portal/classes/class-nda-handler.php';
     }
+    if (file_exists(JBLUND_DEALERS_PLUGIN_DIR . 'modules/dealer-portal/classes/class-nda-pdf-generator.php')) {
+        require_once JBLUND_DEALERS_PLUGIN_DIR . 'modules/dealer-portal/classes/class-nda-pdf-generator.php';
+    }
     if (file_exists(JBLUND_DEALERS_PLUGIN_DIR . 'modules/dealer-portal/classes/class-menu-visibility.php')) {
         require_once JBLUND_DEALERS_PLUGIN_DIR . 'modules/dealer-portal/classes/class-menu-visibility.php';
     }
     if (file_exists(JBLUND_DEALERS_PLUGIN_DIR . 'modules/dealer-portal/classes/class-registration-admin.php')) {
         require_once JBLUND_DEALERS_PLUGIN_DIR . 'modules/dealer-portal/classes/class-registration-admin.php';
+    }
+    if (file_exists(JBLUND_DEALERS_PLUGIN_DIR . 'modules/dealer-portal/classes/class-registration-form.php')) {
+        require_once JBLUND_DEALERS_PLUGIN_DIR . 'modules/dealer-portal/classes/class-registration-form.php';
+    }
+    if (file_exists(JBLUND_DEALERS_PLUGIN_DIR . 'modules/dealer-portal/classes/class-password-change-handler.php')) {
+        require_once JBLUND_DEALERS_PLUGIN_DIR . 'modules/dealer-portal/classes/class-password-change-handler.php';
     }
     if (file_exists(JBLUND_DEALERS_PLUGIN_DIR . 'modules/dealer-portal/classes/class-nda-editor.php')) {
         require_once JBLUND_DEALERS_PLUGIN_DIR . 'modules/dealer-portal/classes/class-nda-editor.php';
@@ -97,9 +112,12 @@ class JBLund_Dealers_Plugin {
     public function __construct() {
         // Initialize core components
         new \JBLund\Core\Post_Type();
+        new \JBLund\Core\Registration_Post_Type();
         new \JBLund\Core\Meta_Boxes();
         new \JBLund\Admin\Admin_Columns();
         new \JBLund\Admin\Settings();
+        new \JBLund\Admin\Dashboard_Widget();
+        new \JBLund\Admin\Message_Scheduler();
         new \JBLund\Frontend\Styles();
         new \JBLund\Frontend\Shortcode();
 
@@ -119,11 +137,20 @@ class JBLund_Dealers_Plugin {
         if (class_exists('JBLund\DealerPortal\NDA_Handler')) {
             new \JBLund\DealerPortal\NDA_Handler();
         }
+        if (class_exists('JBLund\DealerPortal\NDA_PDF_Generator')) {
+            new \JBLund\DealerPortal\NDA_PDF_Generator();
+        }
         if (class_exists('JBLund\DealerPortal\Menu_Visibility')) {
             new \JBLund\DealerPortal\Menu_Visibility();
         }
         if (class_exists('JBLund\DealerPortal\Registration_Admin')) {
             new \JBLund\DealerPortal\Registration_Admin();
+        }
+        if (class_exists('JBLund\DealerPortal\Registration_Form')) {
+            new \JBLund\DealerPortal\Registration_Form();
+        }
+        if (class_exists('JBLund\DealerPortal\Password_Change_Handler')) {
+            new \JBLund\DealerPortal\Password_Change_Handler();
         }
         if (class_exists('JBLund\DealerPortal\NDA_Editor')) {
             new \JBLund\DealerPortal\NDA_Editor();
@@ -294,9 +321,12 @@ function jblund_get_dealer_representative($user_id = null) {
  * Plugin activation hook
  */
 function jblund_dealers_activate() {
-    // Trigger the post type registration from the module
+    // Trigger the post type registration from the modules
     $post_type = new \JBLund\Core\Post_Type();
     $post_type->register_dealer_post_type();
+
+    $registration_post_type = new \JBLund\Core\Registration_Post_Type();
+    $registration_post_type->register_dealer_registration_post_type();
 
     // Create dealer role
     if (class_exists('JBLund\DealerPortal\Dealer_Role')) {

@@ -71,6 +71,12 @@ class Page_Manager {
 				'shortcode' => '[jblund_dealer_login]',
 				'template'  => 'dealer-login',
 			),
+			'password_change' => array(
+				'title'     => \__( 'Change Password', 'jblund-dealers' ),
+				'slug'      => 'dealer-password-change',
+				'shortcode' => '[jblund_force_password_change]',
+				'template'  => 'password-change',
+			),
 			'nda'       => array(
 				'title'     => \__( 'Dealer NDA Acceptance', 'jblund-dealers' ),
 				'slug'      => 'dealer-nda-acceptance',

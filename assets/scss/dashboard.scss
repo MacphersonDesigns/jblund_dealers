@@ -1,0 +1,10 @@
+/**
+ * JBLund Dealers - Dashboard Styles Compilation
+ * Entry point for dealer portal dashboard styles
+ */
+
+// Import shared variables for consistency
+@use "variables";
+
+// Import dashboard-specific styles
+@use "dashboard-styles";

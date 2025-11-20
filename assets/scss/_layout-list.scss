@@ -1,0 +1,342 @@
+/**
+ * JBLund Dealers - List Layout
+ * Horizontal row-based layout with 4 columns per dealer
+ *
+ * EDIT THIS FILE TO:
+ * - Change column widths (grid-template-columns: 200px 1fr 120px 160px)
+ * - Adjust row spacing between dealers (gap value)
+ * - Modify column alignment (align-items, justify-content)
+ * - Update mobile stacking behavior (@media sections)
+ *
+ * SHORTCODE: [jblund_dealers layout="list"]
+ *
+ * COLUMN STRUCTURE (4 columns):
+ * Column 1: Dealer Name (200px fixed width, left-aligned)
+ * Column 2: Contact Info (1fr flexible width, address + phone)
+ * Column 3: Website Button (120px fixed width, centered)
+ * Column 4: Services Icons (160px fixed width, right-aligned)
+ *
+ * Each sublocation below uses the same 4-column structure
+ */
+
+@use "variables" as *;
+
+/* ==========================================================================
+   LIST CONTAINER
+   Each dealer is a horizontal row, not a vertical card
+   ==========================================================================
+*/
+
+.jblund-dealers-list {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	margin: $spacing-lg 0;
+
+	/* Dealer Row (4-Column Grid Structure)
+	   200px Name | 1fr Contact | 120px Website | 160px Services
+	   ====================================================================== */
+	.dealer-card {
+		display: grid;
+		grid-template-columns: 200px 1fr 120px 200px;
+		gap: $spacing-md;
+		align-items: start;
+		padding: 12px $spacing-md;
+		margin-bottom: $spacing-xs;
+		background: var(--jblund-card-background, #ffffff);
+		border: 1px solid #f0f0f0;
+		border-left: 4px solid var(--jblund-header-color, #0066cc);
+		border-radius: $radius-md;
+		min-height: 60px;
+		transition: $transition-fast;
+
+		&:hover {
+			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+			border-left-width: 5px;
+		}
+	}
+
+	/* Hide Card Header in List Layout
+	   Name displays in column 1, not in a header section
+	   ====================================================================== */
+	// Override card header for list layout
+	.dealer-card-header {
+		display: none; // Not used in list layout
+	}
+
+	/* =======================================================================
+	   COLUMN 1: DEALER NAME
+	   Fixed 200px width, left-aligned, uppercase styling
+	   ======================================================================= */
+
+	.dealer-name-column {
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		align-self: center;
+		padding-top: 4px;
+
+		h3 {
+			margin: 0;
+			font-size: 1.3em;
+			font-weight: 800;
+			text-transform: uppercase;
+			line-height: 1.5;
+			color: var(--jblund-primary-text-color, #333);
+		}
+	}
+
+	/* =======================================================================
+	   COLUMN 2: CONTACT INFORMATION
+	   Flexible width (1fr), displays address and phone with icons
+	   ======================================================================= */
+	/* Column 2: Contact Info */
+	.dealer-content-column {
+		display: flex;
+		flex-direction: column;
+		align-self: center;
+		gap: 4px;
+		padding-top: 2px;
+
+		.dealer-contact-item {
+			display: flex;
+			align-items: center;
+			gap: 4px;
+		}
+
+		.contact-icon {
+			width: 14px;
+			height: 14px;
+			opacity: 0.7;
+		}
+
+		.dealer-address,
+		.dealer-phone {
+			margin: 0;
+			font-size: 0.85em;
+
+			svg,
+			.contact-icon {
+				width: 14px;
+				height: 14px;
+			}
+		}
+	}
+
+	/* =======================================================================
+	   COLUMN 3: WEBSITE BUTTON
+	   Fixed 120px width, centered, compact button styling
+	   ======================================================================= */
+	/* Column 3: Website Button */
+	.dealer-website-column {
+		display: flex;
+		align-self: center;
+		justify-content: center;
+		padding-top: 2px;
+
+		.dealer-website-button {
+			padding: 6px $spacing-sm;
+			font-size: 0.75em;
+			white-space: nowrap;
+		}
+	}
+
+	/* =======================================================================
+	   COLUMN 4: SERVICES
+	   Fixed 160px width, right-aligned service icons
+	   ======================================================================= */
+	/* Column 4: Services */
+	.dealer-services-column {
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+		padding-top: 2px;
+
+		.service-icons {
+			display: flex;
+			flex-direction: row;
+			gap: 8px;
+			align-items: center;
+			justify-content: flex-end;
+			margin: 0;
+
+			.service-icon {
+				min-width: 45px;
+				max-width: 55px;
+				padding: 6px;
+
+				.icon {
+					font-size: 1.2em;
+					margin-bottom: 2px;
+				}
+
+				.label {
+					font-size: 0.65em;
+				}
+			}
+		}
+
+		.service-list {
+			display: none; // Hide traditional list in list layout
+		}
+	}
+
+	/* =======================================================================
+	   SUBLOCATIONS IN LIST LAYOUT
+	   Spans all 4 columns below main dealer, uses same column structure
+	   ======================================================================= */
+	/* Sub-locations in list layout */
+	.dealer-sublocations {
+		grid-column: 1 / -1;
+		margin-top: 8px;
+		padding-top: 0;
+		border-top: none;
+		display: flex;
+		flex-direction: column;
+		gap: $spacing-xs;
+
+		h4 {
+			display: none;
+		}
+	}
+
+	.dealer-sublocation {
+		display: grid;
+		grid-template-columns: 200px 1fr 120px 200px;
+		gap: $spacing-md;
+		align-items: center;
+		margin: 0;
+		background: #f9f9f9;
+		border: none;
+		border-left: none;
+		border-radius: $radius-md;
+
+		h5,
+		p {
+			margin: 0;
+		}
+
+		h5 {
+			font-size: 0.95em;
+			color: #555;
+		}
+
+		p {
+			font-size: 0.85em;
+		}
+	}
+
+	.sublocation-name-col {
+		display: flex;
+		align-items: flex-start;
+		padding-top: 2px;
+
+		h5 {
+			margin: 0;
+			font-size: 0.95em;
+			font-weight: 700;
+			color: #555;
+			text-transform: uppercase;
+		}
+	}
+
+	.sublocation-contact-col {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+		padding-top: 2px;
+
+		.sublocation-address,
+		.sublocation-phone {
+			display: flex;
+			align-items: center;
+			gap: 4px;
+			font-size: 0.85em;
+			color: #666;
+			margin: 0;
+
+			.contact-icon {
+				width: 14px;
+				height: 14px;
+				opacity: 0.7;
+			}
+
+			a {
+				color: var(--jblund-link-color, #0073aa);
+				text-decoration: none;
+
+				&:hover {
+					text-decoration: underline;
+				}
+			}
+		}
+	}
+
+	.sublocation-website-col {
+		display: flex;
+		align-items: flex-start;
+		justify-content: center;
+		padding-top: 2px;
+
+		.sublocation-website-btn {
+			padding: 6px $spacing-sm;
+			font-size: 0.75em;
+		}
+	}
+
+	.sublocation-services-col {
+		display: flex;
+		align-items: flex-start;
+		justify-content: flex-end;
+		padding-top: 2px;
+
+		.sublocation-services-icons {
+			display: flex;
+			flex-direction: row;
+			gap: 8px;
+			align-items: center;
+			justify-content: flex-end;
+			margin: 0;
+
+			.service-icon {
+				min-width: 45px;
+				max-width: 55px;
+				padding: 6px;
+
+				.icon {
+					font-size: 1.2em;
+					margin-bottom: 2px;
+				}
+
+				.label {
+					font-size: 0.65em;
+				}
+			}
+		}
+	}
+}
+
+/* ==========================================================================
+   RESPONSIVE: MOBILE STACKING
+   Below 1024px: Convert 4-column layout to stacked single column
+   ========================================================================== */
+// Responsive: Stack to vertical on mobile
+@media (max-width: $breakpoint-tablet) {
+	.jblund-dealers-list {
+		.dealer-card {
+			grid-template-columns: 1fr;
+			gap: $spacing-sm;
+			padding: $spacing-md;
+		}
+
+		.dealer-website-column,
+		.dealer-services-column {
+			justify-content: flex-start;
+		}
+
+		.dealer-sublocation {
+			grid-template-columns: 1fr;
+			gap: $spacing-xs;
+		}
+	}
+}

@@ -1,0 +1,11 @@
+A new dealer application has been submitted and is awaiting your review.
+
+Representative: {{rep_name}}
+Email: {{rep_email}}
+Company: {{company}}
+Territory: {{territory}}
+
+Review and approve/decline the application here:
+{{admin_url}}
+
+This is an automated notification from the JBLund Dealer Portal.

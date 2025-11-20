@@ -17,10 +17,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Security check - must be logged in
 if ( ! is_user_logged_in() ) {
+	$login_url = jblund_get_portal_page_url('login') ?: home_url( '/dealer-login/' );
 	echo '<div class="dealer-access-denied" style="max-width: 600px; margin: 40px auto; padding: 30px; background: #fff3cd; border: 2px solid #ffc107; border-radius: 8px; text-align: center;">';
 	echo '<h2 style="color: #856404; margin-top: 0;">Access Denied</h2>';
 	echo '<p style="color: #856404; margin-bottom: 20px;">You must be logged in to access the dealer dashboard.</p>';
-	echo '<a href="' . esc_url( home_url( '/dealer-login/' ) ) . '" style="display: inline-block; background: #003366; color: #fff; padding: 12px 30px; text-decoration: none; border-radius: 4px; font-weight: 600;">Login</a>';
+	echo '<a href="' . esc_url( $login_url ) . '" style="display: inline-block; background: #003366; color: #fff; padding: 12px 30px; text-decoration: none; border-radius: 4px; font-weight: 600;">Login</a>';
 	echo '</div>';
 	return;
 }
@@ -78,13 +79,13 @@ $required_documents = isset( $settings['required_documents'] ) ? $settings['requ
 				<h2><?php esc_html_e( 'Quick Links', 'jblund-dealers' ); ?></h2>
 				<ul class="link-list">
 					<li>
-						<a href="<?php echo esc_url( home_url( '/dealer-profile/' ) ); ?>" class="dashboard-link">
+						<a href="<?php echo esc_url( jblund_get_portal_page_url('profile') ?: home_url( '/dealer-profile/' ) ); ?>" class="dashboard-link">
 							<span class="link-icon">👤</span>
 							<span class="link-text"><?php esc_html_e( 'My Profile', 'jblund-dealers' ); ?></span>
 						</a>
 					</li>
 					<li>
-						<a href="<?php echo esc_url( home_url( '/dealer-nda-acceptance/' ) ); ?>" class="dashboard-link">
+						<a href="<?php echo esc_url( jblund_get_portal_page_url('nda') ?: home_url( '/dealer-nda-acceptance/' ) ); ?>" class="dashboard-link">
 							<span class="link-icon">📄</span>
 							<span class="link-text"><?php esc_html_e( 'View NDA', 'jblund-dealers' ); ?></span>
 						</a>
@@ -311,205 +312,3 @@ $required_documents = isset( $settings['required_documents'] ) ? $settings['requ
 		</div>		</div>
 	</div>
 </div>
-
-<style>
-.jblund-dealer-dashboard {
-	max-width: 1200px;
-	margin: 0 auto;
-	padding: 20px;
-}
-
-.dashboard-header {
-	margin-bottom: 30px;
-	padding-bottom: 20px;
-	border-bottom: 2px solid #003366;
-}
-
-.dashboard-header h1 {
-	margin: 0 0 10px 0;
-	color: #003366;
-	font-size: 32px;
-}
-
-.welcome-message {
-	margin: 0;
-	font-size: 18px;
-	color: #666;
-}
-
-.dashboard-grid {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-	gap: 20px;
-	margin-bottom: 30px;
-}
-
-.dashboard-card {
-	background: #fff;
-	border: 1px solid #ddd;
-	border-radius: 8px;
-	padding: 20px;
-	box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.dashboard-card h2 {
-	margin: 0 0 15px 0;
-	color: #003366;
-	font-size: 20px;
-	padding-bottom: 10px;
-	border-bottom: 1px solid #eee;
-}
-
-.card-description {
-	color: #666;
-	font-size: 14px;
-	margin-bottom: 15px;
-}
-
-.link-list {
-	list-style: none;
-	padding: 0;
-	margin: 0;
-}
-
-.link-list li {
-	margin-bottom: 10px;
-}
-
-.dashboard-link {
-	display: flex;
-	align-items: center;
-	padding: 10px;
-	background: #f5f5f5;
-	border-radius: 4px;
-	text-decoration: none;
-	color: #333;
-	transition: background 0.3s ease;
-}
-
-.dashboard-link:hover {
-	background: #e0e0e0;
-}
-
-.dashboard-link.logout-link:hover {
-	background: #ffe0e0;
-	color: #c00;
-}
-
-.link-icon {
-	font-size: 20px;
-	margin-right: 10px;
-}
-
-.link-text {
-	font-weight: 500;
-}
-
-/* Updates Styling */
-.updates-list {
-	max-height: 400px;
-	overflow-y: auto;
-}
-
-.update-item {
-	padding: 15px;
-	margin-bottom: 15px;
-	background: #f0f7ff;
-	border-left: 4px solid #003366;
-	border-radius: 4px;
-}
-
-.update-item:last-child {
-	margin-bottom: 0;
-}
-
-.update-title {
-	margin: 0 0 8px 0;
-	color: #003366;
-	font-size: 16px;
-	display: flex;
-	align-items: center;
-	gap: 8px;
-}
-
-.update-icon {
-	font-size: 18px;
-}
-
-.update-message {
-	margin: 0 0 8px 0;
-	color: #333;
-	line-height: 1.5;
-}
-
-.update-date {
-	margin: 0;
-	color: #666;
-	font-size: 13px;
-}
-
-.update-date small {
-	font-style: italic;
-}
-
-.no-updates {
-	color: #666;
-	font-style: italic;
-	text-align: center;
-	padding: 20px;
-}
-
-.status-info {
-	display: flex;
-	flex-direction: column;
-	gap: 12px;
-}
-
-.status-item {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: 8px 0;
-	border-bottom: 1px solid #f0f0f0;
-}
-
-.status-item:last-child {
-	border-bottom: none;
-}
-
-.status-label {
-	font-weight: 600;
-	color: #666;
-}
-
-.status-value {
-	color: #333;
-}
-
-.status-value.status-accepted {
-	color: #28a745;
-	font-weight: 600;
-}
-
-.no-updates {
-	color: #999;
-	font-style: italic;
-	text-align: center;
-	padding: 20px;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-	.dashboard-grid {
-		grid-template-columns: 1fr;
-	}
-
-	.dashboard-header h1 {
-		font-size: 24px;
-	}
-
-	.welcome-message {
-		font-size: 16px;
-	}
-}
-</style>

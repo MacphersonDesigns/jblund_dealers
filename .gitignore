@@ -49,3 +49,16 @@ wp-config.php
 
 .ds_store
 Thumbs.db
+
+# Node modules
+node_modules/
+
+# npm logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Compiled CSS (generated from SCSS - keep source SCSS in repo)
+# assets/css/dealers.css
+# assets/css/dealers.css.map
+# modules/dealer-portal/assets/css/dashboard.css.map

@@ -301,11 +301,16 @@ class Portal_Fields {
                             <label style="display: block; margin-bottom: 5px;">
                                 <strong><?php _e('Document URL:', 'jblund-dealers'); ?></strong>
                             </label>
-                            <input type="url"
-                                   name="jblund_dealers_settings[required_documents][${documentIndex}][url]"
-                                   class="large-text"
-                                   placeholder="<?php _e('https://example.com/form', 'jblund-dealers'); ?>" />
-                            <p class="description"><?php _e('Link to the form or document page', 'jblund-dealers'); ?></p>
+                            <div style="display: flex; gap: 10px; align-items: flex-start;">
+                                <input type="url"
+                                       name="jblund_dealers_settings[required_documents][${documentIndex}][url]"
+                                       class="large-text document-url-input"
+                                       placeholder="<?php _e('https://example.com/form or upload file below', 'jblund-dealers'); ?>" />
+                                <button type="button" class="button button-secondary upload-document-btn" data-index="${documentIndex}">
+                                    <span class="dashicons dashicons-upload" style="margin-top: 3px;"></span> <?php _e('Upload File', 'jblund-dealers'); ?>
+                                </button>
+                            </div>
+                            <p class="description"><?php _e('Enter a URL or upload a PDF/document file', 'jblund-dealers'); ?></p>
                         </div>
 
                         <div style="margin-bottom: 10px;">
@@ -329,6 +334,27 @@ class Portal_Fields {
                 if (confirm('<?php _e('Are you sure you want to remove this document?', 'jblund-dealers'); ?>')) {
                     $(this).closest('.document-row').remove();
                 }
+            });
+
+            // Upload document file
+            $(document).on('click', '.upload-document-btn', function(e) {
+                e.preventDefault();
+                var button = $(this);
+                var urlInput = button.siblings('.document-url-input');
+
+                var mediaUploader = wp.media({
+                    title: '<?php _e('Upload Document', 'jblund-dealers'); ?>',
+                    button: { text: '<?php _e('Use this file', 'jblund-dealers'); ?>' },
+                    multiple: false,
+                    library: { type: ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'] }
+                });
+
+                mediaUploader.on('select', function() {
+                    var attachment = mediaUploader.state().get('selection').first().toJSON();
+                    urlInput.val(attachment.url);
+                });
+
+                mediaUploader.open();
             });
         });
         </script>
@@ -383,12 +409,17 @@ class Portal_Fields {
                 <label style="display: block; margin-bottom: 5px;">
                     <strong><?php _e('Document URL:', 'jblund-dealers'); ?></strong>
                 </label>
-                <input type="url"
-                       name="jblund_dealers_settings[required_documents][<?php echo $index; ?>][url]"
-                       value="<?php echo esc_attr($url); ?>"
-                       class="large-text"
-                       placeholder="<?php _e('https://example.com/form', 'jblund-dealers'); ?>" />
-                <p class="description"><?php _e('Link to the form or document page', 'jblund-dealers'); ?></p>
+                <div style="display: flex; gap: 10px; align-items: flex-start;">
+                    <input type="url"
+                           name="jblund_dealers_settings[required_documents][<?php echo $index; ?>][url]"
+                           value="<?php echo esc_attr($url); ?>"
+                           class="large-text document-url-input"
+                           placeholder="<?php _e('https://example.com/form or upload file below', 'jblund-dealers'); ?>" />
+                    <button type="button" class="button button-secondary upload-document-btn" data-index="<?php echo $index; ?>">
+                        <span class="dashicons dashicons-upload" style="margin-top: 3px;"></span> <?php _e('Upload File', 'jblund-dealers'); ?>
+                    </button>
+                </div>
+                <p class="description"><?php _e('Enter a URL or upload a PDF/document file', 'jblund-dealers'); ?></p>
             </div>
 
             <div style="margin-bottom: 10px;">
