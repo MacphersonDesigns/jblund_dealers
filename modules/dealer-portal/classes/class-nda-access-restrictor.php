@@ -127,13 +127,13 @@ class NDA_Access_Restrictor {
 		$user = \wp_get_current_user();
 		$is_nda_page = \is_page( $this->nda_page_slug );
 
-		// Only restrict dealer role - allow dealers to view NDA page
+		// Allow admins/staff to view NDA page (to see what dealers are accepting)
+		if ( Dealer_Role::can_bypass_dealer_restrictions( $user ) ) {
+			return;
+		}
+
+		// Only restrict dealer role
 		if ( ! Dealer_Role::is_dealer( $user ) ) {
-			// Non-dealers (including admins) shouldn't access NDA page
-			if ( $is_nda_page ) {
-				\wp_safe_redirect( \admin_url() );
-				exit;
-			}
 			return;
 		}
 
