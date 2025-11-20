@@ -273,45 +273,51 @@
 	}
 }
 
-/* Individual Sublocation Item */
-.sublocation-item {
-	margin-bottom: $spacing-md;
-	padding-bottom: $spacing-md;
-	border-bottom: 1px solid var(--jblund-border-color, #e0e0e0);
+/* Individual Sublocation Box */
+.dealer-sublocation {
+	background: var(--jblund-hover-background, #f9f9f9);
+	border-left: 3px solid var(--jblund-header-color, #0073aa);
+	border-radius: $radius-sm;
+	padding: $spacing-md;
+	margin-bottom: $spacing-sm;
+	transition: $transition-fast;
 
 	&:last-child {
 		margin-bottom: 0;
-		padding-bottom: 0;
-		border-bottom: none;
+	}
+
+	&:hover {
+		background: #f0f0f0;
+		border-left-width: 4px;
 	}
 
 	.sublocation-name {
-		font-size: 0.95em;
-		margin: 0 0 $spacing-xs 0;
+		font-size: 1em;
+		margin: 0 0 $spacing-sm 0;
 		color: var(--jblund-header-color, #0073aa);
 		font-weight: 700;
 	}
+}
+
+/* Sublocation Contact Info Section */
+.sublocation-contact-info {
+	margin-bottom: $spacing-sm;
 
 	p {
 		margin: $spacing-xs 0;
-		font-size: 0.9em;
+		font-size: 0.95em;
 		color: var(--jblund-secondary-text-color, #666);
 		line-height: 1.5;
+
+		strong {
+			margin-right: 5px;
+		}
 	}
 }
 
-/* Sublocation Contact Info */
+/* Sublocation Address & Phone */
 .sublocation-address,
 .sublocation-phone {
-	display: flex;
-	align-items: center;
-	gap: 6px;
-	
-	.contact-icon {
-		font-size: 1em;
-		opacity: 0.7;
-	}
-
 	a {
 		color: var(--jblund-link-color, #0073aa);
 		text-decoration: none;
@@ -322,25 +328,26 @@
 	}
 }
 
-/* Sublocation Website Link */
+/* Sublocation Website Section */
 .sublocation-website {
-	.sublocation-link {
-		display: inline-flex;
-		align-items: center;
-		gap: 4px;
-		color: var(--jblund-link-color, #0073aa);
-		text-decoration: none;
-		font-weight: 600;
-		
-		&:hover {
-			text-decoration: underline;
-		}
-	}
+	margin: $spacing-md 0;
 }
 
-/* Sublocation Services */
+/* Sublocation Services Section */
 .sublocation-services {
-	margin-top: $spacing-sm;
+	display: flex;
+	flex-direction: column;
+	margin-top: $spacing-md;
+	padding-top: $spacing-sm;
+	border-top: 1px solid var(--jblund-border-color, #e0e0e0);
+
+	strong {
+		font-size: 0.9em;
+		margin-bottom: $spacing-xs;
+		color: var(--jblund-primary-text-color, #333);
+		font-weight: 600;
+		display: block;
+	}
 
 	.dealer-services-icons {
 		gap: $spacing-xs;
@@ -350,22 +357,16 @@
 		list-style: none;
 		padding: 0;
 		margin: $spacing-xs 0 0 0;
-		display: flex;
-		flex-wrap: wrap;
-		gap: $spacing-sm;
 
 		li {
-			padding: 4px 8px;
-			background: #f5f5f5;
-			border-radius: $radius-sm;
-			font-size: 0.85em;
+			padding: $spacing-xs 0;
 			color: var(--jblund-secondary-text-color, #666);
 
 			&:before {
 				content: "✓";
 				color: var(--jblund-icon-color, #0073aa);
 				font-weight: bold;
-				margin-right: 4px;
+				margin-right: 8px;
 			}
 		}
 	}
