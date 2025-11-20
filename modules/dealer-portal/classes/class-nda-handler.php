@@ -66,6 +66,41 @@ class NDA_Handler {
 
 		// Register shortcode
 		\add_shortcode( 'jblund_nda_acceptance', array( $this, 'nda_acceptance_shortcode' ) );
+
+		// Enqueue scripts for NDA page
+		\add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+	}
+
+	/**
+	 * Enqueue scripts for NDA acceptance page
+	 *
+	 * @return void
+	 */
+	public function enqueue_scripts() {
+		global $post;
+
+		// Only enqueue on pages with the NDA shortcode
+		if ( ! \is_a( $post, 'WP_Post' ) || ! \has_shortcode( $post->post_content, 'jblund_nda_acceptance' ) ) {
+			return;
+		}
+
+		// Enqueue Signature Pad library from CDN
+		\wp_enqueue_script(
+			'signature-pad-lib',
+			'https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js',
+			array(),
+			'4.1.7',
+			true
+		);
+
+		// Enqueue our custom signature pad integration
+		\wp_enqueue_script(
+			'jblund-signature-pad',
+			JBLUND_DEALERS_PLUGIN_URL . 'modules/dealer-portal/assets/js/signature-pad.js',
+			array( 'jquery', 'signature-pad-lib' ),
+			JBLUND_DEALERS_VERSION,
+			true
+		);
 	}
 
 	/**

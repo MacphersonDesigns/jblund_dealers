@@ -103,7 +103,7 @@ $allowed_html = [
             </p>
         <?php else: ?>
             <p class="nda-subtitle"><?php \esc_html_e('Please review and sign the agreement below to access the dealer portal.', 'jblund-dealers'); ?></p>
-        <?php endif; ?>        
+        <?php endif; ?>
     </div>
 
     <div class="nda-content">
@@ -194,24 +194,16 @@ $allowed_html = [
                 </p>
 
                 <div class="signature-pad-wrapper">
-                    <div class="signature-pad-notice">
-                        <p><strong><?php \esc_html_e('Note:', 'jblund-dealers'); ?></strong> <?php \esc_html_e('Signature functionality requires JavaScript integration (Signature Pad). This will be implemented in Phase 2.', 'jblund-dealers'); ?></p>
-                        <p><?php \esc_html_e('For now, you can test the form submission without a signature.', 'jblund-dealers'); ?></p>
-                    </div>
-
-                    <!-- Signature canvas will be added here in Phase 2 -->
-                    <div class="signature-placeholder">
-                        <canvas id="signature-canvas" width="600" height="200" style="border: 2px dashed #ccc; background: #f9f9f9;"></canvas>
-                    </div>
-
-                    <div class="signature-actions">
-                        <button type="button" id="clear-signature" class="button-secondary" disabled>
-                            <?php \esc_html_e('Clear Signature', 'jblund-dealers'); ?>
-                        </button>
-                    </div>
-
-                    <input type="hidden" id="signature_data" name="signature_data" value="" />
+                    <canvas id="signature-canvas" width="600" height="200"></canvas>
                 </div>
+
+                <div class="signature-actions">
+                    <button type="button" id="clear-signature" class="button-secondary">
+                        <?php \esc_html_e('Clear Signature', 'jblund-dealers'); ?>
+                    </button>
+                </div>
+
+                <input type="hidden" id="signature_data" name="signature_data" value="" />
             </div>
 
             <div class="nda-form-section acceptance-section">
