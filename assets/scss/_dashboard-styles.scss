@@ -6,14 +6,14 @@
 @use "variables" as *;
 
 /* Dashboard Container */
-.dealer-dashboard-container {
+.jblund-dealer-dashboard {
 	max-width: 1200px;
 	margin: 0 auto;
 	padding: $spacing-lg;
 }
 
 /* Dashboard Header */
-.dashboard-welcome {
+.dashboard-header {
 	background: linear-gradient(135deg, var(--jblund-header-color, #0073aa) 0%, var(--jblund-button-hover-color, #005177) 100%);
 	color: var(--jblund-button-text-color, #ffffff);
 	padding: $spacing-xl;
@@ -28,10 +28,11 @@
 		color: var(--jblund-button-text-color, #ffffff);
 	}
 
-	p {
+	p, .welcome-message {
 		margin: 0;
 		font-size: 1.1em;
 		opacity: 0.95;
+		color: var(--jblund-button-text-color, #ffffff);
 	}
 }
 
@@ -550,11 +551,11 @@
 
 /* Print Styles */
 @media print {
-	.dealer-dashboard-container {
+	.jblund-dealer-dashboard {
 		padding: 0;
 	}
 
-	.dashboard-welcome {
+	.dashboard-header {
 		background: #ffffff;
 		color: #000000;
 		border: 2px solid #000;
