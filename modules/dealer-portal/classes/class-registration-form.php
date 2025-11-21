@@ -576,13 +576,13 @@ class Registration_Form {
 
         // Get all registration data
         $rep_phone = get_post_meta($registration_id, '_registration_phone', true);
-        $company_phone = get_post_meta($registration_id, '_company_phone', true);
-        $company_address = get_post_meta($registration_id, '_company_address', true);
-        $company_website = get_post_meta($registration_id, '_company_website', true);
-        $docks = get_post_meta($registration_id, '_docks', true) === '1' ? __('Yes', 'jblund-dealers') : __('No', 'jblund-dealers');
-        $lifts = get_post_meta($registration_id, '_lifts', true) === '1' ? __('Yes', 'jblund-dealers') : __('No', 'jblund-dealers');
-        $trailers = get_post_meta($registration_id, '_trailers', true) === '1' ? __('Yes', 'jblund-dealers') : __('No', 'jblund-dealers');
-        $notes = get_post_meta($registration_id, '_notes', true);
+        $company_phone = get_post_meta($registration_id, '_registration_company_phone', true);
+        $company_address = get_post_meta($registration_id, '_registration_company_address', true);
+        $company_website = get_post_meta($registration_id, '_registration_company_website', true);
+        $docks = get_post_meta($registration_id, '_registration_docks', true) === '1' ? __('Yes', 'jblund-dealers') : __('No', 'jblund-dealers');
+        $lifts = get_post_meta($registration_id, '_registration_lifts', true) === '1' ? __('Yes', 'jblund-dealers') : __('No', 'jblund-dealers');
+        $trailers = get_post_meta($registration_id, '_registration_trailers', true) === '1' ? __('Yes', 'jblund-dealers') : __('No', 'jblund-dealers');
+        $notes = get_post_meta($registration_id, '_registration_notes', true);
         $admin_url = admin_url('edit.php?post_type=dealer&page=dealer-registrations');
 
         // Build shortcode replacements array
