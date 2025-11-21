@@ -1,0 +1,150 @@
+/**
+ * Signed NDAs Admin Page Styles
+ *
+ * @package JBLund_Dealers
+ */
+
+/* Main Table */
+.signed-ndas-table {
+    margin-top: 20px;
+}
+
+.signed-ndas-table th {
+    font-weight: 600;
+    background: #f6f7f7;
+}
+
+.signed-ndas-table td {
+    vertical-align: middle;
+}
+
+.signed-ndas-table .signature-indicator {
+    display: inline-block;
+    color: #46b450;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.signed-ndas-table .post-state {
+    font-size: 12px;
+    color: #646970;
+}
+
+.signed-ndas-table .no-dealer-post {
+    color: #d63638;
+    font-size: 13px;
+}
+
+.signed-ndas-table code {
+    background: #f0f0f1;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 12px;
+}
+
+/* Actions Column */
+.actions-column {
+    white-space: nowrap;
+}
+
+.actions-column .button {
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+/* Statistics */
+.signed-ndas-stats {
+    margin-top: 30px;
+    padding: 20px;
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-radius: 4px;
+}
+
+.signed-ndas-stats h3 {
+    margin-top: 0;
+    color: #1d2327;
+}
+
+.signed-ndas-stats ul {
+    margin: 10px 0;
+    padding-left: 20px;
+}
+
+.signed-ndas-stats li {
+    margin: 8px 0;
+    font-size: 14px;
+}
+
+/* Signature Viewer Modal */
+.signature-modal {
+    position: fixed;
+    z-index: 100000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.signature-modal-content {
+    background: #fff;
+    margin: 5% auto;
+    padding: 30px;
+    width: 90%;
+    max-width: 600px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.signature-modal-content h2 {
+    margin-top: 0;
+    color: #1d2327;
+}
+
+.signature-close {
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #646970;
+    line-height: 1;
+}
+
+.signature-close:hover {
+    color: #1d2327;
+}
+
+.signature-display {
+    margin-top: 20px;
+    padding: 20px;
+    background: #f6f7f7;
+    border: 2px dashed #c3c4c7;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.signature-display img {
+    max-width: 100%;
+    height: auto;
+    display: inline-block;
+}
+
+/* Responsive */
+@media screen and (max-width: 782px) {
+    .signed-ndas-table {
+        font-size: 13px;
+    }
+
+    .actions-column .button {
+        display: block;
+        margin: 5px 0;
+        width: 100%;
+    }
+
+    .signature-modal-content {
+        width: 95%;
+        padding: 20px;
+        margin: 10% auto;
+    }
+}

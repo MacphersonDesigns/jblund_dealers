@@ -263,7 +263,7 @@ $allowed_html = [
                 <div class="signed-signature">
                     <strong><?php \esc_html_e('Digital Signature:', 'jblund-dealers'); ?></strong>
                     <div class="signature-display">
-                        <img src="<?php echo \esc_url($acceptance_data['signature_data']); ?>" alt="<?php \esc_attr_e('Digital Signature', 'jblund-dealers'); ?>" />
+                        <img src="<?php echo \esc_attr($acceptance_data['signature_data']); ?>" alt="<?php \esc_attr_e('Digital Signature', 'jblund-dealers'); ?>" />
                     </div>
                 </div>
                 <?php endif; ?>

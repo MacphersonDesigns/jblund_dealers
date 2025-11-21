@@ -24,6 +24,11 @@ define('JBLUND_DEALERS_VERSION', '1.3.0');
 define('JBLUND_DEALERS_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('JBLUND_DEALERS_PLUGIN_URL', plugin_dir_url(__FILE__));
 
+// Load Composer autoloader for TCPDF and other dependencies
+if (file_exists(JBLUND_DEALERS_PLUGIN_DIR . 'vendor/autoload.php')) {
+    require_once JBLUND_DEALERS_PLUGIN_DIR . 'vendor/autoload.php';
+}
+
 // Load core includes
 require_once JBLUND_DEALERS_PLUGIN_DIR . 'includes/class-loader.php';
 require_once JBLUND_DEALERS_PLUGIN_DIR . 'includes/class-plugin.php';

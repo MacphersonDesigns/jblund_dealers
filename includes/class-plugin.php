@@ -68,6 +68,9 @@ class Plugin {
 
             // Settings page renderer
             $this->settings_page = new \JBLund\Admin\Settings_Page();
+
+            // Signed NDAs List
+            \JBLund\Admin\Signed_NDAs_List::get_instance();
         }
     }
 

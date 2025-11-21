@@ -26,8 +26,7 @@ class NDA_PDF_Generator {
      * Constructor
      */
     public function __construct() {
-        // Disabled: TCPDF library not included
-        // add_action('jblund_dealer_nda_accepted', array($this, 'generate_nda_pdf'), 10, 2);
+        add_action('jblund_dealer_nda_accepted', array($this, 'generate_nda_pdf'), 10, 2);
         add_action('init', array($this, 'ensure_upload_directory'));
     }
 
@@ -61,9 +60,10 @@ class NDA_PDF_Generator {
      * @param string $signature_data Base64 signature data
      */
     public function generate_nda_pdf($user_id, $signature_data) {
-        // Load TCPDF
+        // TCPDF is loaded via Composer autoloader
         if (!class_exists('TCPDF')) {
-            require_once(ABSPATH . 'wp-includes/class-tcpdf.php');
+            error_log('TCPDF class not found. Make sure Composer dependencies are installed.');
+            return false;
         }
 
         // Get user data
@@ -72,9 +72,12 @@ class NDA_PDF_Generator {
             return false;
         }
 
-        // Get NDA content
-        $settings = get_option('jblund_dealers_settings', array());
-        $nda_content = isset($settings['nda_content']) ? $settings['nda_content'] : $this->get_default_nda_content();
+        // Get NDA content from NDA Editor (single source of truth)
+        if (class_exists('JBLund\DealerPortal\NDA_Editor')) {
+            $nda_content = \JBLund\DealerPortal\NDA_Editor::get_content();
+        } else {
+            $nda_content = $this->get_default_nda_content();
+        }
 
         // Get acceptance data
         $acceptance_data = json_decode(get_user_meta($user_id, '_dealer_nda_acceptance', true), true);
