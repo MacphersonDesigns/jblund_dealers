@@ -113,6 +113,9 @@ class Plugin {
         if (class_exists('JBLund\DealerPortal\Shortcodes')) {
             new \JBLund\DealerPortal\Shortcodes();
         }
+        if (class_exists('JBLund\DealerPortal\Dealer_Profile_Manager')) {
+            \JBLund\DealerPortal\Dealer_Profile_Manager::get_instance();
+        }
     }
 
     /**

@@ -21,6 +21,13 @@ if (!defined('ABSPATH')) {
 class Dealer_Profile_Manager {
 
     /**
+     * Singleton instance
+     *
+     * @var Dealer_Profile_Manager
+     */
+    private static $instance = null;
+
+    /**
      * Fields that dealers CAN edit
      */
     const DEALER_EDITABLE_FIELDS = array(
@@ -71,11 +78,48 @@ class Dealer_Profile_Manager {
     );
 
     /**
+     * Get singleton instance
+     *
+     * @return Dealer_Profile_Manager
+     */
+    public static function get_instance() {
+        if (null === self::$instance) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
+
+    /**
      * Constructor
      */
-    public function __construct() {
-        add_action('wp_ajax_upload_dealer_document', array($this, 'handle_document_upload'));
-        add_action('wp_ajax_delete_dealer_document', array($this, 'handle_document_delete'));
+    private function __construct() {
+        add_action('wp_ajax_jblund_upload_dealer_document', array($this, 'handle_document_upload'));
+        add_action('wp_ajax_jblund_delete_dealer_document', array($this, 'handle_document_delete'));
+        add_action('wp_enqueue_scripts', array($this, 'enqueue_profile_scripts'));
+    }
+
+    /**
+     * Enqueue profile editing scripts
+     */
+    public function enqueue_profile_scripts() {
+        // Only load on dealer profile page
+        if (!is_page() || !has_shortcode(get_post()->post_content, 'jblund_dealer_profile')) {
+            return;
+        }
+
+        wp_enqueue_script(
+            'jblund-dealer-profile',
+            plugins_url('assets/js/dealer-profile.js', dirname(dirname(dirname(__FILE__)))),
+            array('jquery'),
+            '2.0.0',
+            true
+        );
+
+        wp_localize_script('jblund-dealer-profile', 'jblundDealerProfile', array(
+            'ajaxUrl' => admin_url('admin-ajax.php'),
+            'uploadNonce' => wp_create_nonce('jblund_upload_document'),
+            'deleteNonce' => wp_create_nonce('jblund_delete_document'),
+        ));
     }
 
     /**
@@ -114,67 +158,78 @@ class Dealer_Profile_Manager {
     /**
      * Update dealer profile (user account + linked dealer post)
      *
+     * @param int $post_id Dealer post ID
      * @param array $data Form data
-     * @param int $user_id User ID
      * @return array Array with 'success' boolean and 'message' string
      */
-    public function update_dealer_profile($data, $user_id = null) {
-        if (empty($user_id)) {
-            $user_id = get_current_user_id();
-        }
-
+    public function update_dealer_profile($post_id, $data) {
+        $user_id = get_current_user_id();
         $is_admin = current_user_can('manage_options');
-        $dealer_post = $this->get_dealer_post($user_id);
 
-        // Start transaction-like updates
-        $errors = array();
-        $updated = array();
-
-        // 1. Update user account fields
-        if (isset($data['user_email']) || isset($data['display_name'])) {
-            $user_data = array('ID' => $user_id);
-
-            if (isset($data['user_email'])) {
-                $user_data['user_email'] = sanitize_email($data['user_email']);
-            }
-
-            if (isset($data['display_name'])) {
-                $user_data['display_name'] = sanitize_text_field($data['display_name']);
-            }
-
-            $result = wp_update_user($user_data);
-
-            if (is_wp_error($result)) {
-                $errors[] = __('Error updating user account: ', 'jblund-dealers') . $result->get_error_message();
-            } else {
-                $updated[] = 'user_account';
-            }
-        }
-
-        // 2. Update dealer post if linked
-        if ($dealer_post && $this->can_edit_dealer_post($user_id, $dealer_post->ID)) {
-            $post_updated = $this->update_dealer_post_fields($dealer_post->ID, $data, $is_admin);
-
-            if ($post_updated['success']) {
-                $updated[] = 'dealer_post';
-            } else {
-                $errors[] = $post_updated['message'];
-            }
-        }
-
-        // Return result
-        if (empty($errors)) {
-            return array(
-                'success' => true,
-                'message' => __('Profile updated successfully!', 'jblund-dealers'),
-                'updated' => $updated,
-            );
-        } else {
+        // Verify user can edit this post
+        if (!$this->can_edit_dealer_post($user_id, $post_id)) {
             return array(
                 'success' => false,
-                'message' => implode(' ', $errors),
+                'message' => __('You do not have permission to edit this profile.', 'jblund-dealers'),
             );
         }
+
+        // Update post title (company name)
+        if (isset($data['company_name'])) {
+            $company_name = sanitize_text_field($data['company_name']);
+            wp_update_post(array(
+                'ID' => $post_id,
+                'post_title' => $company_name,
+            ));
+        }
+
+        // Update company fields
+        $fields_map = array(
+            'company_address' => '_dealer_company_address',
+            'company_phone' => '_dealer_company_phone',
+            'website' => '_dealer_website',
+        );
+
+        foreach ($fields_map as $form_field => $meta_key) {
+            if (isset($data[$form_field])) {
+                $value = $form_field === 'website' ? esc_url_raw($data[$form_field]) : sanitize_text_field($data[$form_field]);
+                update_post_meta($post_id, $meta_key, $value);
+            }
+        }
+
+        // Update services (boolean checkboxes)
+        update_post_meta($post_id, '_dealer_docks', isset($data['docks']) ? '1' : '');
+        update_post_meta($post_id, '_dealer_lifts', isset($data['lifts']) ? '1' : '');
+        update_post_meta($post_id, '_dealer_trailers', isset($data['trailers']) ? '1' : '');
+
+        // Update sub-locations
+        if (isset($data['sublocations']) && is_array($data['sublocations'])) {
+            $sublocations = array();
+            
+            foreach ($data['sublocations'] as $sublocation) {
+                // Skip empty sub-locations
+                if (empty($sublocation['name']) && empty($sublocation['address'])) {
+                    continue;
+                }
+
+                $sublocations[] = array(
+                    'name' => sanitize_text_field($sublocation['name'] ?? ''),
+                    'address' => sanitize_textarea_field($sublocation['address'] ?? ''),
+                    'phone' => sanitize_text_field($sublocation['phone'] ?? ''),
+                    'website' => esc_url_raw($sublocation['website'] ?? ''),
+                    'docks' => isset($sublocation['docks']) ? '1' : '',
+                    'lifts' => isset($sublocation['lifts']) ? '1' : '',
+                    'trailers' => isset($sublocation['trailers']) ? '1' : '',
+                );
+            }
+
+            update_post_meta($post_id, '_dealer_sublocations', $sublocations);
+        }
+
+        return array(
+            'success' => true,
+            'message' => __('Profile updated successfully!', 'jblund-dealers'),
+        );
     }
 
     /**
@@ -289,64 +344,76 @@ class Dealer_Profile_Manager {
      * Handle document upload via AJAX
      */
     public function handle_document_upload() {
-        check_ajax_referer('dealer_document_upload', 'nonce');
+        check_ajax_referer('jblund_upload_document', 'nonce');
 
         if (!is_user_logged_in()) {
-            wp_send_json_error(__('You must be logged in.', 'jblund-dealers'));
+            wp_send_json_error(array('message' => __('You must be logged in.', 'jblund-dealers')));
         }
 
         $user_id = get_current_user_id();
-        $dealer_post = $this->get_dealer_post($user_id);
+        $dealer_post_id = get_user_meta($user_id, '_dealer_post_id', true);
 
-        if (!$dealer_post || !$this->can_edit_dealer_post($user_id, $dealer_post->ID)) {
-            wp_send_json_error(__('You do not have permission to upload documents.', 'jblund-dealers'));
+        if (!$dealer_post_id || !$this->can_edit_dealer_post($user_id, $dealer_post_id)) {
+            wp_send_json_error(array('message' => __('You do not have permission to upload documents.', 'jblund-dealers')));
         }
 
-        $document_type = sanitize_text_field($_POST['document_type'] ?? '');
-
-        if (!array_key_exists($document_type, self::ALLOWED_DOCUMENT_TYPES)) {
-            wp_send_json_error(__('Invalid document type.', 'jblund-dealers'));
-        }
-
-        // Handle file upload
-        if (empty($_FILES['document_file'])) {
-            wp_send_json_error(__('No file uploaded.', 'jblund-dealers'));
+        // Handle multiple file uploads
+        if (empty($_FILES['files'])) {
+            wp_send_json_error(array('message' => __('No files uploaded.', 'jblund-dealers')));
         }
 
         require_once(ABSPATH . 'wp-admin/includes/file.php');
+        require_once(ABSPATH . 'wp-admin/includes/image.php');
+        require_once(ABSPATH . 'wp-admin/includes/media.php');
 
-        $upload_overrides = array(
-            'test_form' => false,
-            'mimes' => array(
-                'pdf' => 'application/pdf',
-                'jpg|jpeg' => 'image/jpeg',
-                'png' => 'image/png',
-            ),
-        );
+        $uploaded_documents = array();
+        $document_ids = get_post_meta($dealer_post_id, '_dealer_documents', true) ?: array();
 
-        $uploaded_file = $_FILES['document_file'];
-        $upload = wp_handle_upload($uploaded_file, $upload_overrides);
+        $files = $_FILES['files'];
+        $file_count = count($files['name']);
 
-        if (isset($upload['error'])) {
-            wp_send_json_error($upload['error']);
+        for ($i = 0; $i < $file_count; $i++) {
+            // Prepare individual file array
+            $file = array(
+                'name' => $files['name'][$i],
+                'type' => $files['type'][$i],
+                'tmp_name' => $files['tmp_name'][$i],
+                'error' => $files['error'][$i],
+                'size' => $files['size'][$i]
+            );
+
+            // Upload file
+            $attachment_id = media_handle_sideload($file, $dealer_post_id);
+
+            if (is_wp_error($attachment_id)) {
+                continue; // Skip failed uploads
+            }
+
+            // Add to document array
+            $document_ids[] = $attachment_id;
+
+            // Get document info for response
+            $file_path = get_attached_file($attachment_id);
+            $uploaded_documents[] = array(
+                'id' => $attachment_id,
+                'title' => get_the_title($attachment_id),
+                'url' => wp_get_attachment_url($attachment_id),
+                'filename' => basename($file_path),
+                'size' => size_format(filesize($file_path)),
+                'date' => get_the_date('Y-m-d', $attachment_id),
+            );
         }
 
-        // Store document info
-        $documents = $this->get_dealer_documents($dealer_post->ID);
+        if (empty($uploaded_documents)) {
+            wp_send_json_error(array('message' => __('No files were successfully uploaded.', 'jblund-dealers')));
+        }
 
-        $documents[$document_type] = array(
-            'url' => $upload['url'],
-            'file' => $upload['file'],
-            'type' => $uploaded_file['type'],
-            'uploaded_date' => current_time('mysql'),
-            'uploaded_by' => $user_id,
-        );
-
-        update_post_meta($dealer_post->ID, '_dealer_documents', $documents);
+        // Update post meta with document IDs
+        update_post_meta($dealer_post_id, '_dealer_documents', $document_ids);
 
         wp_send_json_success(array(
-            'message' => __('Document uploaded successfully.', 'jblund-dealers'),
-            'document' => $documents[$document_type],
+            'message' => __('Documents uploaded successfully.', 'jblund-dealers'),
+            'documents' => $uploaded_documents,
         ));
     }
 
@@ -354,35 +421,36 @@ class Dealer_Profile_Manager {
      * Handle document deletion via AJAX
      */
     public function handle_document_delete() {
-        check_ajax_referer('dealer_document_delete', 'nonce');
+        check_ajax_referer('jblund_delete_document', 'nonce');
 
         if (!is_user_logged_in()) {
-            wp_send_json_error(__('You must be logged in.', 'jblund-dealers'));
+            wp_send_json_error(array('message' => __('You must be logged in.', 'jblund-dealers')));
         }
 
         $user_id = get_current_user_id();
-        $dealer_post = $this->get_dealer_post($user_id);
+        $dealer_post_id = get_user_meta($user_id, '_dealer_post_id', true);
 
-        if (!$dealer_post || !$this->can_edit_dealer_post($user_id, $dealer_post->ID)) {
-            wp_send_json_error(__('You do not have permission to delete documents.', 'jblund-dealers'));
+        if (!$dealer_post_id || !$this->can_edit_dealer_post($user_id, $dealer_post_id)) {
+            wp_send_json_error(array('message' => __('You do not have permission to delete documents.', 'jblund-dealers')));
         }
 
-        $document_type = sanitize_text_field($_POST['document_type'] ?? '');
-        $documents = $this->get_dealer_documents($dealer_post->ID);
+        $document_id = intval($_POST['document_id'] ?? 0);
+        $document_ids = get_post_meta($dealer_post_id, '_dealer_documents', true) ?: array();
 
-        if (!isset($documents[$document_type])) {
-            wp_send_json_error(__('Document not found.', 'jblund-dealers'));
+        // Check if document belongs to this dealer
+        if (!in_array($document_id, $document_ids, true)) {
+            wp_send_json_error(array('message' => __('Document not found.', 'jblund-dealers')));
         }
 
-        // Delete physical file
-        if (isset($documents[$document_type]['file']) && file_exists($documents[$document_type]['file'])) {
-            @unlink($documents[$document_type]['file']);
+        // Delete attachment
+        if (wp_delete_attachment($document_id, true)) {
+            // Remove from document array
+            $document_ids = array_diff($document_ids, array($document_id));
+            update_post_meta($dealer_post_id, '_dealer_documents', array_values($document_ids));
+
+            wp_send_json_success(array('message' => __('Document deleted successfully.', 'jblund-dealers')));
+        } else {
+            wp_send_json_error(array('message' => __('Failed to delete document.', 'jblund-dealers')));
         }
-
-        // Remove from meta
-        unset($documents[$document_type]);
-        update_post_meta($dealer_post->ID, '_dealer_documents', $documents);
-
-        wp_send_json_success(__('Document deleted successfully.', 'jblund-dealers'));
     }
 }
