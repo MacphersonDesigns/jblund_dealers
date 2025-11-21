@@ -91,7 +91,8 @@ class Password_Change_Handler {
         }
 
         // Don't redirect if on logout or admin
-        if (is_admin() || isset($_GET['action']) && $_GET['action'] === 'logout') {
+        $action = isset($_GET['action']) ? sanitize_text_field($_GET['action']) : '';
+        if (is_admin() || $action === 'logout') {
             return;
         }
 
