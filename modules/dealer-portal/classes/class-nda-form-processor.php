@@ -90,17 +90,24 @@ class NDA_Form_Processor {
 		$signature_data = isset( $_POST['signature_data'] ) ? \sanitize_textarea_field( \wp_unslash( $_POST['signature_data'] ) ) : '';
 
 		// Store acceptance
-		$this->acceptance_manager->accept_nda( $user_id, $signature_data );
+		$acceptance_data = $this->acceptance_manager->accept_nda( $user_id, $signature_data );
 
 		// Publish dealer post
 		$this->publish_dealer_post( $user_id );
 
+		// Send admin notification email
+		$this->send_admin_notification( $user_id, $acceptance_data );
+
 		// Trigger action for PDF generation and email
 		\do_action( 'jblund_dealer_nda_accepted', $user_id, $signature_data );
 
-		// Redirect to dashboard
-		$dashboard_url = $this->get_dashboard_page_url();
-		\wp_safe_redirect( $dashboard_url );
+		// Redirect to NDA page with success parameter
+		$nda_url = \jblund_get_portal_page_url( 'nda' );
+		if ( ! $nda_url ) {
+			$nda_url = \home_url( '/dealer-nda-acceptance/' );
+		}
+		
+		\wp_safe_redirect( \add_query_arg( 'nda_accepted', '1', $nda_url ) );
 		exit;
 	}
 
@@ -114,6 +121,76 @@ class NDA_Form_Processor {
 		\wp_logout();
 		\wp_safe_redirect( \home_url() );
 		exit;
+	}
+
+	/**
+	 * Send admin notification email when NDA is accepted
+	 *
+	 * @param int $user_id User ID.
+	 * @param array $acceptance_data Acceptance data.
+	 * @return void
+	 */
+	private function send_admin_notification( $user_id, $acceptance_data ) {
+		$user = \get_userdata( $user_id );
+		if ( ! $user ) {
+			return;
+		}
+
+		// Get admin email from settings or use default
+		$settings = \get_option( 'jblund_dealers_settings', array() );
+		$admin_email = isset( $settings['admin_notification_email'] ) ? $settings['admin_notification_email'] : \get_option( 'admin_email' );
+
+		// Email subject
+		$subject = \sprintf(
+			\__( '[%s] Dealer NDA Accepted - %s', 'jblund-dealers' ),
+			\get_bloginfo( 'name' ),
+			$acceptance_data['representative_name']
+		);
+
+		// Format acceptance date
+		$acceptance_date = \date_i18n(
+			\get_option( 'date_format' ) . ' ' . \get_option( 'time_format' ),
+			\strtotime( $acceptance_data['acceptance_date'] )
+		);
+
+		// NDA page URL
+		$nda_url = \jblund_get_portal_page_url( 'nda' );
+		if ( ! $nda_url ) {
+			$nda_url = \home_url( '/dealer-nda-acceptance/' );
+		}
+
+		// Email body
+		$message = \sprintf(
+			\__( "A dealer has accepted the Non-Disclosure Agreement.\n\n" .
+				"Representative Name: %s\n" .
+				"Dealer Company: %s\n" .
+				"User Email: %s\n" .
+				"Username: %s\n" .
+				"IP Address: %s\n" .
+				"Acceptance Date: %s\n\n" .
+				"The dealer's post has been automatically published and they now have full portal access.\n\n" .
+				"View Dealer Profile:\n%s\n\n" .
+				"View Signed NDA:\n%s",
+				'jblund-dealers'
+			),
+			$acceptance_data['representative_name'],
+			$acceptance_data['dealer_company'],
+			$user->user_email,
+			$user->user_login,
+			$acceptance_data['ip_address'],
+			$acceptance_date,
+			\admin_url( 'user-edit.php?user_id=' . $user_id ),
+			$nda_url
+		);
+
+		// Email headers
+		$headers = array(
+			'Content-Type: text/plain; charset=UTF-8',
+			'From: ' . \get_bloginfo( 'name' ) . ' <' . \get_option( 'admin_email' ) . '>',
+		);
+
+		// Send email
+		\wp_mail( $admin_email, $subject, $message, $headers );
 	}
 
 	/**

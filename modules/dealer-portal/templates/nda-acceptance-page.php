@@ -25,11 +25,15 @@ if (empty($dealer_name)) {
 // Check if NDA already accepted
 $nda_accepted = false;
 $acceptance_date = '';
+$acceptance_data = null;
+$just_accepted = isset($_GET['nda_accepted']) && $_GET['nda_accepted'] === '1';
+
 if (class_exists('JBLund\DealerPortal\NDA_Acceptance_Manager')) {
     $acceptance_manager = new \JBLund\DealerPortal\NDA_Acceptance_Manager();
     $nda_accepted = $acceptance_manager->is_accepted($current_user->ID);
     if ($nda_accepted) {
-        $acceptance_date = \get_user_meta($current_user->ID, '_nda_acceptance_date', true);
+        $acceptance_data = $acceptance_manager->get_acceptance_data($current_user->ID);
+        $acceptance_date = isset($acceptance_data['acceptance_date']) ? $acceptance_data['acceptance_date'] : '';
     }
 }
 
@@ -94,6 +98,14 @@ $allowed_html = [
 ?>
 
 <div class="dealer-nda-acceptance">
+    <?php if ($just_accepted): ?>
+        <div class="nda-success-banner">
+            <div class="success-icon">✓</div>
+            <h2><?php \esc_html_e('Agreement Successfully Accepted!', 'jblund-dealers'); ?></h2>
+            <p><?php \esc_html_e('Thank you for accepting the Non-Disclosure Agreement. You now have full access to the dealer portal.', 'jblund-dealers'); ?></p>
+        </div>
+    <?php endif; ?>
+
     <div class="nda-header">
         <h1><?php \esc_html_e('Non-Disclosure Agreement', 'jblund-dealers'); ?></h1>
         <?php if ($nda_accepted): ?>
@@ -224,10 +236,39 @@ $allowed_html = [
         </form>
         <?php else: ?>
         <div class="nda-already-accepted">
-            <div class="acceptance-confirmation">
-                <span class="acceptance-icon">✓</span>
-                <h3><?php \esc_html_e('Agreement Already Accepted', 'jblund-dealers'); ?></h3>
-                <p><?php \esc_html_e('You have already accepted this Non-Disclosure Agreement. You can review the terms above at any time.', 'jblund-dealers'); ?></p>
+            <div class="signed-nda-display">
+                <h3><?php \esc_html_e('Your Signed Agreement', 'jblund-dealers'); ?></h3>
+                
+                <?php if ($acceptance_data): ?>
+                <div class="signed-details">
+                    <div class="detail-row">
+                        <strong><?php \esc_html_e('Signed By:', 'jblund-dealers'); ?></strong>
+                        <span><?php echo \esc_html($acceptance_data['representative_name']); ?></span>
+                    </div>
+                    <div class="detail-row">
+                        <strong><?php \esc_html_e('Company:', 'jblund-dealers'); ?></strong>
+                        <span><?php echo \esc_html($acceptance_data['dealer_company']); ?></span>
+                    </div>
+                    <div class="detail-row">
+                        <strong><?php \esc_html_e('Date Accepted:', 'jblund-dealers'); ?></strong>
+                        <span><?php echo \esc_html(\date_i18n(\get_option('date_format') . ' ' . \get_option('time_format'), \strtotime($acceptance_data['acceptance_date']))); ?></span>
+                    </div>
+                    <div class="detail-row">
+                        <strong><?php \esc_html_e('IP Address:', 'jblund-dealers'); ?></strong>
+                        <span><?php echo \esc_html($acceptance_data['ip_address']); ?></span>
+                    </div>
+                </div>
+
+                <?php if (!empty($acceptance_data['signature_data'])): ?>
+                <div class="signed-signature">
+                    <strong><?php \esc_html_e('Digital Signature:', 'jblund-dealers'); ?></strong>
+                    <div class="signature-display">
+                        <img src="<?php echo \esc_url($acceptance_data['signature_data']); ?>" alt="<?php \esc_attr_e('Digital Signature', 'jblund-dealers'); ?>" />
+                    </div>
+                </div>
+                <?php endif; ?>
+                <?php endif; ?>
+
                 <div class="acceptance-actions">
                     <a href="<?php echo \esc_url(\jblund_get_portal_page_url('dashboard') ?: \home_url('/dealer-dashboard/')); ?>" class="button-primary">
                         <?php \esc_html_e('Return to Dashboard', 'jblund-dealers'); ?>

@@ -195,6 +195,49 @@
 	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
+.nda-success-banner {
+	background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+	color: white;
+	padding: $spacing-xl;
+	border-radius: $radius-md;
+	margin-bottom: $spacing-xl;
+	text-align: center;
+	box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+
+	.success-icon {
+		font-size: 64px;
+		font-weight: bold;
+		margin-bottom: $spacing-md;
+		animation: successPop 0.5s ease-out;
+	}
+
+	h2 {
+		margin: 0 0 $spacing-sm 0;
+		font-size: 28px;
+		font-weight: 700;
+	}
+
+	p {
+		margin: 0;
+		font-size: 16px;
+		opacity: 0.95;
+	}
+}
+
+@keyframes successPop {
+	0% {
+		transform: scale(0);
+		opacity: 0;
+	}
+	50% {
+		transform: scale(1.2);
+	}
+	100% {
+		transform: scale(1);
+		opacity: 1;
+	}
+}
+
 .nda-header {
 	text-align: center;
 	margin-bottom: $spacing-xl;
@@ -304,8 +347,104 @@
 	padding: $spacing-xl;
 	border-radius: $radius-md;
 	margin-top: $spacing-lg;
-	text-align: center;
 
+	.signed-nda-display {
+		background: white;
+		border: 2px solid #28a745;
+		border-radius: $radius-md;
+		padding: $spacing-xl;
+		max-width: 700px;
+		margin: 0 auto;
+
+		h3 {
+			color: var(--jblund-header-color, #003366);
+			font-size: 24px;
+			margin: 0 0 $spacing-lg 0;
+			text-align: center;
+			padding-bottom: $spacing-md;
+			border-bottom: 2px solid #28a745;
+		}
+
+		.signed-details {
+			margin-bottom: $spacing-xl;
+
+			.detail-row {
+				display: flex;
+				justify-content: space-between;
+				padding: $spacing-md 0;
+				border-bottom: 1px solid #eee;
+
+				&:last-child {
+					border-bottom: none;
+				}
+
+				strong {
+					color: var(--jblund-primary-text-color, #333);
+					font-weight: 600;
+					min-width: 150px;
+				}
+
+				span {
+					color: var(--jblund-secondary-text-color, #666);
+					text-align: right;
+					flex: 1;
+				}
+			}
+		}
+
+		.signed-signature {
+			margin: $spacing-xl 0;
+			padding: $spacing-lg;
+			background: #f8f9fa;
+			border-radius: $radius-sm;
+
+			strong {
+				display: block;
+				color: var(--jblund-primary-text-color, #333);
+				font-weight: 600;
+				margin-bottom: $spacing-md;
+			}
+
+			.signature-display {
+				background: white;
+				border: 2px solid #ddd;
+				border-radius: $radius-sm;
+				padding: $spacing-md;
+				text-align: center;
+
+				img {
+					max-width: 100%;
+					height: auto;
+					display: block;
+					margin: 0 auto;
+				}
+			}
+		}
+
+		.acceptance-actions {
+			margin-top: $spacing-xl;
+			text-align: center;
+
+			a {
+				display: inline-block;
+				background: var(--jblund-button-color, #003366);
+				color: var(--jblund-button-text-color, #ffffff);
+				padding: $spacing-md $spacing-xl;
+				text-decoration: none;
+				border-radius: $radius-sm;
+				font-weight: 600;
+				transition: $transition-fast;
+
+				&:hover {
+					background: var(--jblund-button-hover-color, #002244);
+					transform: translateY(-2px);
+					box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+				}
+			}
+		}
+	}
+
+	// Keep old confirmation style for backward compatibility (if needed)
 	.acceptance-confirmation {
 		background: #d4edda;
 		border: 2px solid #28a745;
