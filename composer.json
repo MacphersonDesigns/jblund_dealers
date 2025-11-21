@@ -1,18 +1,18 @@
 {
-    "name": "jblund/dealers-plugin",
-    "description": "JBLund Dealers WordPress Plugin with dealer management and NDA system",
-    "type": "wordpress-plugin",
-    "require": {
-        "php": ">=7.4",
-        "tecnickcom/tcpdf": "^6.7"
-    },
-    "autoload": {
-        "psr-4": {
-            "JBLund\\": "includes/"
-        }
-    },
-    "config": {
-        "vendor-dir": "vendor",
-        "optimize-autoloader": true
-    }
+	"name": "jblund/dealers-plugin",
+	"description": "JBLund Dealers WordPress Plugin with dealer management and NDA system",
+	"type": "wordpress-plugin",
+	"require": {
+		"php": ">=7.4",
+		"tecnickcom/tcpdf": "^6.7"
+	},
+	"autoload": {
+		"psr-4": {
+			"JBLund\\": "includes/"
+		}
+	},
+	"config": {
+		"vendor-dir": "vendor",
+		"optimize-autoloader": true
+	}
 }

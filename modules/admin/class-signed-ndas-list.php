@@ -144,13 +144,13 @@ class Signed_NDAs_List {
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($users as $user): 
+                        <?php foreach ($users as $user):
                             $acceptance_data = json_decode(get_user_meta($user->ID, '_dealer_nda_acceptance', true), true);
                             $pdf_url = get_user_meta($user->ID, '_dealer_nda_pdf_url', true);
                             $signed_date = get_user_meta($user->ID, '_dealer_nda_signed_date', true);
                             $ip_address = get_user_meta($user->ID, '_dealer_nda_ip', true);
                             $dealer_post = $this->get_linked_dealer_post($user->ID);
-                            
+
                             $rep_name = $acceptance_data['representative_name'] ?? $user->display_name;
                             $company = $acceptance_data['dealer_company'] ?? get_user_meta($user->ID, '_dealer_company_name', true);
                             ?>
@@ -173,7 +173,7 @@ class Signed_NDAs_List {
                                     </a>
                                 </td>
                                 <td>
-                                    <?php 
+                                    <?php
                                     if ($signed_date) {
                                         echo esc_html(date_i18n(get_option('date_format') . ' ' . get_option('time_format'), strtotime($signed_date)));
                                     } else {
@@ -203,13 +203,13 @@ class Signed_NDAs_List {
                                             <?php esc_html_e('View PDF', 'jblund-dealers'); ?>
                                         </a>
                                     <?php endif; ?>
-                                    
+
                                     <?php if (!empty($acceptance_data['signature_data'])): ?>
                                         <button type="button" class="button button-small view-signature-btn" data-signature="<?php echo esc_attr($acceptance_data['signature_data']); ?>" data-name="<?php echo esc_attr($rep_name); ?>">
                                             <?php esc_html_e('View Signature', 'jblund-dealers'); ?>
                                         </button>
                                     <?php endif; ?>
-                                    
+
                                     <a href="<?php echo esc_url(admin_url('user-edit.php?user_id=' . $user->ID)); ?>" class="button button-small">
                                         <?php esc_html_e('Edit User', 'jblund-dealers'); ?>
                                     </a>
@@ -246,7 +246,7 @@ class Signed_NDAs_List {
             $('.view-signature-btn').on('click', function() {
                 var signatureData = $(this).data('signature');
                 var repName = $(this).data('name');
-                
+
                 $('#signature-modal-title').text('<?php esc_js_e('Digital Signature for', 'jblund-dealers'); ?> ' + repName);
                 $('#signature-modal-image').attr('src', signatureData);
                 $('#signature-viewer-modal').fadeIn();

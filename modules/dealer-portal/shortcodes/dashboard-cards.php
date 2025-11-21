@@ -16,7 +16,7 @@ if (!defined('ABSPATH')) {
 
 /**
  * Quick Links Card
- * 
+ *
  * Usage: [dealer_quick_links]
  */
 function jblund_dealer_quick_links_shortcode($atts) {
@@ -56,7 +56,7 @@ add_shortcode('dealer_quick_links', 'jblund_dealer_quick_links_shortcode');
 
 /**
  * Account Status Card
- * 
+ *
  * Usage: [dealer_account_status]
  */
 function jblund_dealer_account_status_shortcode($atts) {
@@ -66,7 +66,7 @@ function jblund_dealer_account_status_shortcode($atts) {
 
     $current_user = wp_get_current_user();
     $company_name = get_user_meta($current_user->ID, '_dealer_company_name', true);
-    
+
     $nda_data = get_user_meta($current_user->ID, '_dealer_nda_acceptance', true);
     $nda_accepted = !empty($nda_data['accepted']);
 
@@ -100,7 +100,7 @@ add_shortcode('dealer_account_status', 'jblund_dealer_account_status_shortcode')
 
 /**
  * Signed Documents Card
- * 
+ *
  * Usage: [dealer_signed_documents]
  */
 function jblund_dealer_signed_documents_shortcode($atts) {
@@ -157,7 +157,7 @@ add_shortcode('dealer_signed_documents', 'jblund_dealer_signed_documents_shortco
 
 /**
  * Documents to Complete Card
- * 
+ *
  * Usage: [dealer_documents_to_complete]
  */
 function jblund_dealer_documents_to_complete_shortcode($atts) {
@@ -209,7 +209,7 @@ add_shortcode('dealer_documents_to_complete', 'jblund_dealer_documents_to_comple
 
 /**
  * Resources Card
- * 
+ *
  * Usage: [dealer_resources]
  * Attributes: resources="Product Catalog|/catalog/,Marketing Materials|/marketing/"
  */
@@ -269,7 +269,7 @@ add_shortcode('dealer_resources', 'jblund_dealer_resources_shortcode');
 
 /**
  * Recent Updates Card
- * 
+ *
  * Usage: [dealer_recent_updates]
  */
 function jblund_dealer_recent_updates_shortcode($atts) {
@@ -279,15 +279,15 @@ function jblund_dealer_recent_updates_shortcode($atts) {
 
     $settings = get_option('jblund_dealers_settings', array());
     $messages = get_option('jblund_registration_messages', array());
-    
+
     $active_message = null;
     $today = current_time('Y-m-d');
-    
+
     foreach ($messages as $message) {
         if (empty($message['start_date']) || empty($message['end_date'])) {
             continue;
         }
-        
+
         if ($today >= $message['start_date'] && $today <= $message['end_date']) {
             $active_message = $message;
             break;
@@ -316,7 +316,7 @@ add_shortcode('dealer_recent_updates', 'jblund_dealer_recent_updates_shortcode')
 
 /**
  * Dealer Representative Card
- * 
+ *
  * Usage: [dealer_representative]
  */
 function jblund_dealer_representative_shortcode($atts) {
@@ -371,7 +371,7 @@ add_shortcode('dealer_representative', 'jblund_dealer_representative_shortcode')
 
 /**
  * Welcome Header
- * 
+ *
  * Usage: [dealer_welcome_header]
  */
 function jblund_dealer_welcome_header_shortcode($atts) {

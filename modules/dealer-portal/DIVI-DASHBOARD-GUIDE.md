@@ -7,9 +7,11 @@ The dealer dashboard has been modularized into individual shortcode components t
 ## Available Shortcodes
 
 ### 1. Welcome Header
+
 ```
 [dealer_welcome_header]
 ```
+
 **Displays:** Personalized welcome message with dealer name/company name
 
 **Use Case:** Top of dashboard page
@@ -17,9 +19,11 @@ The dealer dashboard has been modularized into individual shortcode components t
 ---
 
 ### 2. Quick Links
+
 ```
 [dealer_quick_links]
 ```
+
 **Displays:** Navigation links (My Profile, View NDA, Logout)
 
 **Use Case:** Sidebar or top navigation area
@@ -27,10 +31,13 @@ The dealer dashboard has been modularized into individual shortcode components t
 ---
 
 ### 3. Account Status
+
 ```
 [dealer_account_status]
 ```
-**Displays:** 
+
+**Displays:**
+
 - Account type (Authorized Dealer)
 - NDA acceptance status
 - Company name
@@ -40,10 +47,13 @@ The dealer dashboard has been modularized into individual shortcode components t
 ---
 
 ### 4. Signed Documents
+
 ```
 [dealer_signed_documents]
 ```
-**Displays:** 
+
+**Displays:**
+
 - List of signed documents (currently NDA)
 - View and Download PDF buttons
 - Signing date
@@ -54,9 +64,11 @@ The dealer dashboard has been modularized into individual shortcode components t
 ---
 
 ### 5. Documents to Complete
+
 ```
 [dealer_documents_to_complete]
 ```
+
 **Displays:** Required documents from admin settings that need completion
 
 **Use Case:** Task list area
@@ -65,12 +77,15 @@ The dealer dashboard has been modularized into individual shortcode components t
 ---
 
 ### 6. Resources
+
 ```
 [dealer_resources resources="Product Catalog|/catalog/,Marketing Materials|/marketing/,Contact Support|/contact/"]
 ```
+
 **Displays:** List of resource links
 
 **Attributes:**
+
 - `resources` - Comma-separated list of Title|URL pairs
 
 **Use Case:** Resource links section
@@ -79,9 +94,11 @@ The dealer dashboard has been modularized into individual shortcode components t
 ---
 
 ### 7. Recent Updates
+
 ```
 [dealer_recent_updates]
 ```
+
 **Displays:** Scheduled announcements and news
 
 **Use Case:** Announcements/news area
@@ -91,10 +108,13 @@ The dealer dashboard has been modularized into individual shortcode components t
 ---
 
 ### 8. Dealer Representative
+
 ```
 [dealer_representative]
 ```
-**Displays:** 
+
+**Displays:**
+
 - Representative name
 - Phone number (clickable)
 - Email address (clickable)
@@ -107,6 +127,7 @@ The dealer dashboard has been modularized into individual shortcode components t
 ## Divi Implementation Guide
 
 ### Step 1: Create New Page
+
 1. Go to **Pages > Add New**
 2. Title it "Dealer Dashboard" (or use existing page)
 3. Click **Use Divi Builder**
@@ -114,6 +135,7 @@ The dealer dashboard has been modularized into individual shortcode components t
 ### Step 2: Choose Layout Style
 
 #### Option A: Grid Layout (Recommended)
+
 Use Divi's **Row** with **3 Columns** for a card-style dashboard:
 
 ```
@@ -135,6 +157,7 @@ Row 4 (1 Column)
 ```
 
 #### Option B: Sidebar Layout
+
 ```
 Row 1 (2 Columns - 25% / 75%)
 ├─ Sidebar (25%):
@@ -149,6 +172,7 @@ Row 1 (2 Columns - 25% / 75%)
 ```
 
 ### Step 3: Add Shortcodes
+
 1. Click **Add New Module**
 2. Search for **Shortcode** module
 3. Paste the shortcode
@@ -159,6 +183,7 @@ Row 1 (2 Columns - 25% / 75%)
 Each shortcode outputs semantic HTML with classes you can target:
 
 **Module Classes:**
+
 - `.dashboard-card` - Main card wrapper
 - `.dashboard-header` - Welcome header
 - `.link-list` - Quick links list
@@ -167,6 +192,7 @@ Each shortcode outputs semantic HTML with classes you can target:
 - `.resources-list` - Resources list
 
 **Styling Tips:**
+
 - Add **Box Shadow** to cards for depth
 - Use **Spacing** settings for padding/margins
 - Apply **Background** colors to match your brand
@@ -174,6 +200,7 @@ Each shortcode outputs semantic HTML with classes you can target:
 - Use **Animation** for engaging effects
 
 ### Step 5: Assign to Dashboard
+
 1. Go to **Dealers > Settings > Portal Pages tab**
 2. Select your new Divi page for **Dashboard Page**
 3. Save settings
@@ -187,11 +214,13 @@ Each shortcode outputs semantic HTML with classes you can target:
 You can create multiple dashboard pages with different resources:
 
 **Dealer Pricing Page:**
+
 ```
 [dealer_resources resources="Price List 2025|/pricing/,Volume Discounts|/volume/,Terms|/terms/"]
 ```
 
 **Dealer Marketing Page:**
+
 ```
 [dealer_resources resources="Brand Guidelines|/brand/,Product Photos|/photos/,Marketing Videos|/videos/"]
 ```
@@ -199,6 +228,7 @@ You can create multiple dashboard pages with different resources:
 ### Conditional Display
 
 Use Divi's **Visibility** settings to show/hide sections based on:
+
 - User login status
 - User role
 - Custom conditions
@@ -210,25 +240,25 @@ Target specific shortcode elements:
 ```css
 /* Style signed documents card */
 .dashboard-card.signed-documents {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	color: white;
 }
 
 /* Style quick links */
 .quick-links .dashboard-link {
-    transition: transform 0.3s;
+	transition: transform 0.3s;
 }
 
 .quick-links .dashboard-link:hover {
-    transform: translateX(10px);
+	transform: translateX(10px);
 }
 
 /* Style document status badges */
 .document-status.signed {
-    background: #10b981;
-    padding: 4px 12px;
-    border-radius: 12px;
-    color: white;
+	background: #10b981;
+	padding: 4px 12px;
+	border-radius: 12px;
+	color: white;
 }
 ```
 
@@ -249,6 +279,7 @@ No page edits needed when admin makes changes!
 ### Future Expansion Ideas
 
 With this modular approach, you can easily add:
+
 - `[dealer_order_history]` - Order tracking
 - `[dealer_pricing]` - Custom pricing tables
 - `[dealer_territory]` - Territory information
@@ -276,18 +307,22 @@ The plugin template remains as a fallback if no Divi page is assigned.
 ## Troubleshooting
 
 **Shortcode shows as text:**
+
 - Make sure you're using the **Shortcode module** in Divi, not Text module
 - Check that the shortcode is exactly as documented (no typos)
 
 **Nothing displays:**
+
 - Ensure you're logged in as a dealer user
 - Some shortcodes (like representative) only show when data exists
 
 **Styling doesn't match:**
+
 - Dashboard.css is still loaded for styling
 - Add custom CSS in Divi's Custom CSS area or theme stylesheet
 
 **PDF download not showing:**
+
 - PDF generation happens when dealer signs NDA
 - Check **Dealers > Signed NDAs** to see if PDF exists
 
@@ -298,17 +333,20 @@ The plugin template remains as a fallback if no Divi page is assigned.
 Here's a complete example layout you can copy:
 
 ### Section 1: Hero
+
 - Background: Gradient (#FF0000 to #CC0000)
 - Text Color: White
 - Module: `[dealer_welcome_header]`
 
 ### Section 2: Cards Grid
+
 - Row with 3 columns (33% each)
 - Column 1: `[dealer_quick_links]`
-- Column 2: `[dealer_account_status]`  
+- Column 2: `[dealer_account_status]`
 - Column 3: `[dealer_signed_documents]`
 
 ### Section 3: Content Area
+
 - Row with 2 columns (66% / 33%)
 - Main Column:
   - `[dealer_documents_to_complete]`

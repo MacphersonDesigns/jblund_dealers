@@ -160,9 +160,9 @@ $required_documents = isset( $settings['required_documents'] ) ? $settings['requ
 				<h2><?php esc_html_e( 'Signed Documents', 'jblund-dealers' ); ?></h2>
 				<p class="card-description"><?php esc_html_e( 'View and download your signed documents.', 'jblund-dealers' ); ?></p>
 				<ul class="documents-list">
-					<?php 
+					<?php
 					$has_documents = false;
-					
+
 					// Check for signed NDA with PDF
 					if ( $nda_accepted ) :
 						$nda_pdf_url = get_user_meta( $current_user->ID, '_dealer_nda_pdf_url', true );
@@ -191,7 +191,7 @@ $required_documents = isset( $settings['required_documents'] ) ? $settings['requ
 						</div>
 					</li>
 					<?php endif; ?>
-					
+
 					<?php if ( ! $has_documents ) : ?>
 					<li class="no-documents">
 						<p><?php esc_html_e( 'No signed documents yet.', 'jblund-dealers' ); ?></p>

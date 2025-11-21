@@ -69,7 +69,7 @@ class NDA_Form_Processor {
 		// User must be a dealer OR admin (for testing)
 		$is_dealer = \in_array( 'dealer', (array) $user->roles, true );
 		$is_admin = \in_array( 'administrator', (array) $user->roles, true );
-		
+
 		if ( ! $is_dealer && ! $is_admin ) {
 			return;
 		}
@@ -109,7 +109,7 @@ class NDA_Form_Processor {
 		if ( ! $nda_url ) {
 			$nda_url = \home_url( '/dealer-nda-acceptance/' );
 		}
-		
+
 		\wp_safe_redirect( \add_query_arg( 'nda_accepted', '1', $nda_url ) );
 		exit;
 	}

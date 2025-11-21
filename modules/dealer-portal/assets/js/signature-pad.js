@@ -1,139 +1,140 @@
 /**
  * Signature Pad Integration for NDA Acceptance
- * 
+ *
  * Uses Signature Pad library for digital signature capture
  * @link https://github.com/szimek/signature_pad
  */
 
-(function($) {
-    'use strict';
+(function ($) {
+	"use strict";
 
-    // Initialize signature pad when DOM is ready
-    $(document).ready(function() {
-        initSignaturePad();
-    });
+	// Initialize signature pad when DOM is ready
+	$(document).ready(function () {
+		initSignaturePad();
+	});
 
-    function initSignaturePad() {
-        const canvas = document.getElementById('signature-canvas');
-        
-        if (!canvas) {
-            return; // Not on NDA page
-        }
+	function initSignaturePad() {
+		const canvas = document.getElementById("signature-canvas");
 
-        // Check if SignaturePad is loaded
-        if (typeof SignaturePad === 'undefined') {
-            console.error('SignaturePad library not loaded');
-            return;
-        }
+		if (!canvas) {
+			return; // Not on NDA page
+		}
 
-        // Initialize signature pad
-        const signaturePad = new SignaturePad(canvas, {
-            backgroundColor: 'rgb(255, 255, 255)',
-            penColor: 'rgb(0, 0, 0)',
-            minWidth: 1,
-            maxWidth: 2.5,
-            throttle: 16,
-            minDistance: 5
-        });
+		// Check if SignaturePad is loaded
+		if (typeof SignaturePad === "undefined") {
+			console.error("SignaturePad library not loaded");
+			return;
+		}
 
-        // Responsive canvas sizing
-        function resizeCanvas() {
-            const ratio = Math.max(window.devicePixelRatio || 1, 1);
-            const wrapper = canvas.parentElement;
-            
-            canvas.width = wrapper.offsetWidth * ratio;
-            canvas.height = 200 * ratio;
-            canvas.style.width = wrapper.offsetWidth + 'px';
-            canvas.style.height = '200px';
-            
-            canvas.getContext('2d').scale(ratio, ratio);
-            signaturePad.clear(); // Clear on resize to prevent distortion
-        }
+		// Initialize signature pad
+		const signaturePad = new SignaturePad(canvas, {
+			backgroundColor: "rgb(255, 255, 255)",
+			penColor: "rgb(0, 0, 0)",
+			minWidth: 1,
+			maxWidth: 2.5,
+			throttle: 16,
+			minDistance: 5,
+		});
 
-        // Initial size
-        resizeCanvas();
+		// Responsive canvas sizing
+		function resizeCanvas() {
+			const ratio = Math.max(window.devicePixelRatio || 1, 1);
+			const wrapper = canvas.parentElement;
 
-        // Resize on window resize (debounced)
-        let resizeTimer;
-        window.addEventListener('resize', function() {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(resizeCanvas, 250);
-        });
+			canvas.width = wrapper.offsetWidth * ratio;
+			canvas.height = 200 * ratio;
+			canvas.style.width = wrapper.offsetWidth + "px";
+			canvas.style.height = "200px";
 
-        // Clear button
-        const clearButton = document.getElementById('clear-signature');
-        if (clearButton) {
-            clearButton.disabled = false;
-            clearButton.addEventListener('click', function(e) {
-                e.preventDefault();
-                signaturePad.clear();
-                updateSubmitButton();
-            });
-        }
+			canvas.getContext("2d").scale(ratio, ratio);
+			signaturePad.clear(); // Clear on resize to prevent distortion
+		}
 
-        // Track signature drawing for submit button state
-        signaturePad.addEventListener('beginStroke', function() {
-            updateSubmitButton();
-        });
+		// Initial size
+		resizeCanvas();
 
-        signaturePad.addEventListener('endStroke', function() {
-            updateSubmitButton();
-        });
+		// Resize on window resize (debounced)
+		let resizeTimer;
+		window.addEventListener("resize", function () {
+			clearTimeout(resizeTimer);
+			resizeTimer = setTimeout(resizeCanvas, 250);
+		});
 
-        // Form submission
-        const form = document.getElementById('nda-acceptance-form');
-        if (form) {
-            form.addEventListener('submit', function(e) {
-                const signatureData = document.getElementById('signature_data');
-                const checkbox = document.getElementById('jblund_accept_nda');
+		// Clear button
+		const clearButton = document.getElementById("clear-signature");
+		if (clearButton) {
+			clearButton.disabled = false;
+			clearButton.addEventListener("click", function (e) {
+				e.preventDefault();
+				signaturePad.clear();
+				updateSubmitButton();
+			});
+		}
 
-                // Validate checkbox
-                if (!checkbox.checked) {
-                    e.preventDefault();
-                    alert('Please check the box to confirm you have read and agree to the terms.');
-                    checkbox.focus();
-                    return false;
-                }
+		// Track signature drawing for submit button state
+		signaturePad.addEventListener("beginStroke", function () {
+			updateSubmitButton();
+		});
 
-                // Validate signature
-                if (signaturePad.isEmpty()) {
-                    e.preventDefault();
-                    alert('Please provide your signature before submitting.');
-                    return false;
-                }
+		signaturePad.addEventListener("endStroke", function () {
+			updateSubmitButton();
+		});
 
-                // Save signature data as base64 PNG
-                signatureData.value = signaturePad.toDataURL('image/png');
-            });
-        }
+		// Form submission
+		const form = document.getElementById("nda-acceptance-form");
+		if (form) {
+			form.addEventListener("submit", function (e) {
+				const signatureData = document.getElementById("signature_data");
+				const checkbox = document.getElementById("jblund_accept_nda");
 
-        // Update submit button state
-        function updateSubmitButton() {
-            const submitButton = document.getElementById('submit-nda');
-            const checkbox = document.getElementById('jblund_accept_nda');
-            
-            if (submitButton && checkbox) {
-                const hasSignature = !signaturePad.isEmpty();
-                const isChecked = checkbox.checked;
-                
-                if (hasSignature && isChecked) {
-                    submitButton.disabled = false;
-                    submitButton.classList.remove('disabled');
-                } else {
-                    submitButton.disabled = true;
-                    submitButton.classList.add('disabled');
-                }
-            }
-        }
+				// Validate checkbox
+				if (!checkbox.checked) {
+					e.preventDefault();
+					alert(
+						"Please check the box to confirm you have read and agree to the terms."
+					);
+					checkbox.focus();
+					return false;
+				}
 
-        // Listen to checkbox changes
-        const checkbox = document.getElementById('jblund_accept_nda');
-        if (checkbox) {
-            checkbox.addEventListener('change', updateSubmitButton);
-        }
+				// Validate signature
+				if (signaturePad.isEmpty()) {
+					e.preventDefault();
+					alert("Please provide your signature before submitting.");
+					return false;
+				}
 
-        // Initial button state
-        updateSubmitButton();
-    }
+				// Save signature data as base64 PNG
+				signatureData.value = signaturePad.toDataURL("image/png");
+			});
+		}
 
+		// Update submit button state
+		function updateSubmitButton() {
+			const submitButton = document.getElementById("submit-nda");
+			const checkbox = document.getElementById("jblund_accept_nda");
+
+			if (submitButton && checkbox) {
+				const hasSignature = !signaturePad.isEmpty();
+				const isChecked = checkbox.checked;
+
+				if (hasSignature && isChecked) {
+					submitButton.disabled = false;
+					submitButton.classList.remove("disabled");
+				} else {
+					submitButton.disabled = true;
+					submitButton.classList.add("disabled");
+				}
+			}
+		}
+
+		// Listen to checkbox changes
+		const checkbox = document.getElementById("jblund_accept_nda");
+		if (checkbox) {
+			checkbox.addEventListener("change", updateSubmitButton);
+		}
+
+		// Initial button state
+		updateSubmitButton();
+	}
 })(jQuery);

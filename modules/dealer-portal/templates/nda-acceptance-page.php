@@ -238,7 +238,7 @@ $allowed_html = [
         <div class="nda-already-accepted">
             <div class="signed-nda-display">
                 <h3><?php \esc_html_e('Your Signed Agreement', 'jblund-dealers'); ?></h3>
-                
+
                 <?php if ($acceptance_data): ?>
                 <div class="signed-details">
                     <div class="detail-row">
@@ -270,9 +270,9 @@ $allowed_html = [
                 <?php endif; ?>
 
                 <div class="acceptance-actions">
-                    <?php 
+                    <?php
                     $pdf_url = \get_user_meta(\get_current_user_id(), '_dealer_nda_pdf_url', true);
-                    if ($pdf_url): 
+                    if ($pdf_url):
                     ?>
                         <a href="<?php echo \esc_url($pdf_url); ?>" class="button-secondary" download>
                             <?php \esc_html_e('Download PDF', 'jblund-dealers'); ?>

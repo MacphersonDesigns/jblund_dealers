@@ -107,7 +107,7 @@ class Styles {
     public function enqueue_dashboard_styles() {
         // Check if we're on a dealer portal page by checking for portal shortcodes
         global $post;
-        
+
         if (!$post) {
             return;
         }
