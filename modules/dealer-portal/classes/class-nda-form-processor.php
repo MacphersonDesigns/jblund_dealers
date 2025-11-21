@@ -66,8 +66,11 @@ class NDA_Form_Processor {
 		$user_id = \get_current_user_id();
 		$user    = \wp_get_current_user();
 
-		// User must be a dealer
-		if ( ! \in_array( 'dealer', (array) $user->roles, true ) ) {
+		// User must be a dealer OR admin (for testing)
+		$is_dealer = \in_array( 'dealer', (array) $user->roles, true );
+		$is_admin = \in_array( 'administrator', (array) $user->roles, true );
+		
+		if ( ! $is_dealer && ! $is_admin ) {
 			return;
 		}
 
