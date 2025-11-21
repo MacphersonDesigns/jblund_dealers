@@ -17,10 +17,22 @@ if (!\defined('ABSPATH')) {
 
 // Get current user
 $current_user = \wp_get_current_user();
-$dealer_name = \get_user_meta($current_user->ID, 'dealer_company_name', true);
-if (empty($dealer_name)) {
-    $dealer_name = $current_user->display_name . "'s Company";
+$company_name = \get_user_meta($current_user->ID, '_dealer_company_name', true);
+
+// Get person's name for personalization
+$first_name = \get_user_meta($current_user->ID, 'first_name', true);
+$last_name = \get_user_meta($current_user->ID, 'last_name', true);
+
+if ($first_name && $last_name) {
+    $greeting_name = $first_name . ' ' . $last_name;
+} elseif ($first_name) {
+    $greeting_name = $first_name;
+} else {
+    $greeting_name = $current_user->display_name;
 }
+
+// Dealer name for NDA content
+$dealer_name = $company_name ?: ($greeting_name . "'s Company");
 
 // Check if NDA already accepted
 $nda_accepted = false;
@@ -107,15 +119,23 @@ $allowed_html = [
     <?php endif; ?>
 
     <div class="nda-header">
-        <h1><?php \esc_html_e('Non-Disclosure Agreement', 'jblund-dealers'); ?></h1>
-        <?php if ($nda_accepted): ?>
-            <p class="nda-subtitle nda-accepted-notice">
-                <?php \esc_html_e('✓ You accepted this agreement on', 'jblund-dealers'); ?>
-                <?php echo \esc_html(\date_i18n(\get_option('date_format'), \strtotime($acceptance_date))); ?>
-            </p>
-        <?php else: ?>
-            <p class="nda-subtitle"><?php \esc_html_e('Please review and sign the agreement below to access the dealer portal.', 'jblund-dealers'); ?></p>
-        <?php endif; ?>
+        <h1><?php \esc_html_e('Dealer Non-Disclosure Agreement', 'jblund-dealers'); ?></h1>
+        <div class="nda-subtitle">
+            <p class="greeting-name"><?php printf(\esc_html__('Hello, %s', 'jblund-dealers'), '<strong>' . \esc_html($greeting_name) . '</strong>'); ?></p>
+            <?php if ($company_name) : ?>
+                <p class="company-name"><?php echo \esc_html($company_name); ?></p>
+            <?php endif; ?>
+            <?php if ($nda_accepted): ?>
+                <p class="nda-accepted-notice">
+                    <?php \esc_html_e('✓ You accepted this agreement on', 'jblund-dealers'); ?>
+                    <?php echo \esc_html(\date_i18n(\get_option('date_format'), \strtotime($acceptance_date))); ?>
+                </p>
+            <?php else: ?>
+                <p class="instruction-text">
+                    <?php \esc_html_e('Please read and sign the agreement below to access the dealer portal.', 'jblund-dealers'); ?>
+                </p>
+            <?php endif; ?>
+        </div>
     </div>
 
     <div class="nda-content">

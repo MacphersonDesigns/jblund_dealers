@@ -32,12 +32,29 @@
 		color: var(--jblund-button-text-color, #ffffff);
 	}
 
-	p,
 	.welcome-message {
-		margin: 0;
-		font-size: 1.1em;
-		opacity: 0.95;
-		color: var(--jblund-button-text-color, #ffffff);
+		margin: $spacing-md 0 0 0;
+
+		.greeting-name {
+			margin: 0;
+			font-size: 1.3em;
+			line-height: 1.3;
+			color: var(--jblund-button-text-color, #ffffff);
+
+			strong {
+				font-weight: 700;
+				font-size: 1.1em;
+			}
+		}
+
+		.company-name {
+			margin: $spacing-xs 0 0 0;
+			font-size: 0.95em;
+			opacity: 0.85;
+			color: var(--jblund-button-text-color, #ffffff);
+			font-weight: 400;
+			font-style: italic;
+		}
 	}
 }
 

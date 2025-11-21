@@ -44,6 +44,19 @@ if ( ! $is_dealer && ! $can_bypass ) {
 $company_name = get_user_meta( $current_user->ID, '_dealer_company_name', true );
 $display_name = $current_user->display_name;
 
+// Get dealer representative info (first name, last name)
+$first_name = get_user_meta( $current_user->ID, 'first_name', true );
+$last_name = get_user_meta( $current_user->ID, 'last_name', true );
+
+// Build personalized greeting name
+if ( $first_name && $last_name ) {
+	$greeting_name = $first_name . ' ' . $last_name;
+} elseif ( $first_name ) {
+	$greeting_name = $first_name;
+} else {
+	$greeting_name = $display_name;
+}
+
 // Get dealer representative info
 $dealer_rep = jblund_get_dealer_representative( $current_user->ID );
 
@@ -63,12 +76,17 @@ $required_documents = isset( $settings['required_documents'] ) ? $settings['requ
 <div class="jblund-dealer-dashboard">
 	<div class="dashboard-header">
 		<h1><?php esc_html_e( 'Dealer Dashboard', 'jblund-dealers' ); ?></h1>
-		<p class="welcome-message">
-			<?php
-			/* translators: %s: Dealer name or company name */
-			printf( esc_html__( 'Welcome back, %s!', 'jblund-dealers' ), esc_html( $company_name ? $company_name : $display_name ) );
-			?>
-		</p>
+		<div class="welcome-message">
+			<p class="greeting-name">
+				<?php
+				/* translators: %s: Dealer's personal name */
+				printf( esc_html__( 'Welcome back, %s!', 'jblund-dealers' ), '<strong>' . esc_html( $greeting_name ) . '</strong>' );
+				?>
+			</p>
+			<?php if ( $company_name ) : ?>
+				<p class="company-name"><?php echo esc_html( $company_name ); ?></p>
+			<?php endif; ?>
+		</div>
 	</div>
 
 	<div class="dashboard-content">
