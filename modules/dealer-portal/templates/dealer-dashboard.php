@@ -160,7 +160,14 @@ $required_documents = isset( $settings['required_documents'] ) ? $settings['requ
 				<h2><?php esc_html_e( 'Signed Documents', 'jblund-dealers' ); ?></h2>
 				<p class="card-description"><?php esc_html_e( 'View and download your signed documents.', 'jblund-dealers' ); ?></p>
 				<ul class="documents-list">
-					<?php if ( $nda_accepted ) : ?>
+					<?php 
+					$has_documents = false;
+					
+					// Check for signed NDA with PDF
+					if ( $nda_accepted ) :
+						$nda_pdf_url = get_user_meta( $current_user->ID, '_dealer_nda_pdf_url', true );
+						$has_documents = true;
+					?>
 					<li class="document-item">
 						<span class="document-icon">📄</span>
 						<div class="document-info">
@@ -171,12 +178,21 @@ $required_documents = isset( $settings['required_documents'] ) ? $settings['requ
 								<span class="document-date"><?php echo esc_html( date_i18n( get_option( 'date_format' ), strtotime( $nda_date ) ) ); ?></span>
 								<?php endif; ?>
 							</div>
-							<a href="<?php echo esc_url( jblund_get_portal_page_url( 'nda' ) ?: home_url( '/dealer-nda-acceptance/' ) ); ?>" class="document-link">
-								<?php esc_html_e( 'View Document', 'jblund-dealers' ); ?> →
-							</a>
+							<div class="document-actions">
+								<a href="<?php echo esc_url( jblund_get_portal_page_url( 'nda' ) ?: home_url( '/dealer-nda-acceptance/' ) ); ?>" class="document-link">
+									<?php esc_html_e( 'View Document', 'jblund-dealers' ); ?> →
+								</a>
+								<?php if ( $nda_pdf_url ) : ?>
+								<a href="<?php echo esc_url( $nda_pdf_url ); ?>" class="document-link download-link" download>
+									<?php esc_html_e( 'Download PDF', 'jblund-dealers' ); ?> ⬇
+								</a>
+								<?php endif; ?>
+							</div>
 						</div>
 					</li>
-					<?php else : ?>
+					<?php endif; ?>
+					
+					<?php if ( ! $has_documents ) : ?>
 					<li class="no-documents">
 						<p><?php esc_html_e( 'No signed documents yet.', 'jblund-dealers' ); ?></p>
 					</li>

@@ -270,6 +270,14 @@ $allowed_html = [
                 <?php endif; ?>
 
                 <div class="acceptance-actions">
+                    <?php 
+                    $pdf_url = \get_user_meta(\get_current_user_id(), '_dealer_nda_pdf_url', true);
+                    if ($pdf_url): 
+                    ?>
+                        <a href="<?php echo \esc_url($pdf_url); ?>" class="button-secondary" download>
+                            <?php \esc_html_e('Download PDF', 'jblund-dealers'); ?>
+                        </a>
+                    <?php endif; ?>
                     <a href="<?php echo \esc_url(\jblund_get_portal_page_url('dashboard') ?: \home_url('/dealer-dashboard/')); ?>" class="button-primary">
                         <?php \esc_html_e('Return to Dashboard', 'jblund-dealers'); ?>
                     </a>
