@@ -159,7 +159,7 @@ class NDA_Access_Restrictor {
 			}
 
 			// Allow logout
-			if ( isset( $_GET['action'] ) && $_GET['action'] === 'logout' ) {
+			if ( isset( $_GET['action'] ) && sanitize_text_field( $_GET['action'] ) === 'logout' ) {
 				return;
 			}
 
