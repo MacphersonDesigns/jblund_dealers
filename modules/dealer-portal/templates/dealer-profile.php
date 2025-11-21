@@ -60,7 +60,7 @@ $error_message = '';
 
 if ( isset( $_POST['update_dealer_profile'] ) && check_admin_referer( 'update_dealer_profile', 'profile_nonce' ) ) {
 	$result = $profile_manager->update_dealer_profile( $dealer_post_id, $_POST );
-	
+
 	if ( $result['success'] ) {
 		$success_message = $result['message'];
 	} else {
@@ -174,7 +174,7 @@ if ( is_array( $document_ids ) ) {
 			<!-- Services Offered -->
 			<div class="form-section">
 				<h2><?php esc_html_e( 'Services Offered', 'jblund-dealers' ); ?></h2>
-				
+
 				<div class="form-field-group">
 					<label class="checkbox-label">
 						<input
@@ -211,13 +211,13 @@ if ( is_array( $document_ids ) ) {
 			<!-- Sub-Locations -->
 			<div class="form-section">
 				<h2><?php esc_html_e( 'Additional Locations', 'jblund-dealers' ); ?></h2>
-				
+
 				<div id="sublocations-container">
 					<?php if ( ! empty( $sublocations ) ) : ?>
 						<?php foreach ( $sublocations as $index => $sublocation ) : ?>
 							<div class="sublocation-row" data-index="<?php echo esc_attr( $index ); ?>">
 								<h3><?php printf( esc_html__( 'Location %d', 'jblund-dealers' ), $index + 1 ); ?></h3>
-								
+
 								<div class="form-field">
 									<label><?php esc_html_e( 'Location Name', 'jblund-dealers' ); ?></label>
 									<input type="text" name="sublocations[<?php echo $index; ?>][name]" value="<?php echo esc_attr( $sublocation['name'] ?? '' ); ?>" />
@@ -316,7 +316,7 @@ if ( is_array( $document_ids ) ) {
 <script type="text/template" id="sublocation-template">
 	<div class="sublocation-row" data-index="{{INDEX}}">
 		<h3><?php esc_html_e( 'Location', 'jblund-dealers' ); ?> {{NUMBER}}</h3>
-		
+
 		<div class="form-field">
 			<label><?php esc_html_e( 'Location Name', 'jblund-dealers' ); ?></label>
 			<input type="text" name="sublocations[{{INDEX}}][name]" value="" />

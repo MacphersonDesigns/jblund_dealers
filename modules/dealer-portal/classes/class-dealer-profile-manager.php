@@ -205,7 +205,7 @@ class Dealer_Profile_Manager {
         // Update sub-locations
         if (isset($data['sublocations']) && is_array($data['sublocations'])) {
             $sublocations = array();
-            
+
             foreach ($data['sublocations'] as $sublocation) {
                 // Skip empty sub-locations
                 if (empty($sublocation['name']) && empty($sublocation['address'])) {

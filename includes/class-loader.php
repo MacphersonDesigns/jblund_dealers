@@ -82,6 +82,7 @@ class Loader {
         require_once $this->plugin_dir . 'modules/admin/class-csv-handler.php';
         require_once $this->plugin_dir . 'modules/admin/class-portal-fields.php';
         require_once $this->plugin_dir . 'modules/admin/class-field-renderer.php';
+        require_once $this->plugin_dir . 'modules/admin/class-signed-ndas-list.php';
     }
 
     /**
@@ -107,6 +108,7 @@ class Loader {
             'modules/dealer-portal/classes/class-password-change-handler.php',
             'modules/dealer-portal/classes/class-nda-editor.php',
             'modules/dealer-portal/classes/class-page-manager.php',
+            'modules/dealer-portal/classes/class-dealer-profile-manager.php',
             'modules/dealer-portal/class-shortcodes.php',
         );
 

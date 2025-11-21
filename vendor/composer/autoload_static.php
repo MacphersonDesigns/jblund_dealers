@@ -17,6 +17,7 @@ class ComposerStaticInitd35c1e23c2750137ca1773d1bd62f01a
         'JBLund\\' => 
         array (
             0 => __DIR__ . '/../..' . '/includes',
+            1 => __DIR__ . '/../..' . '/modules',
         ),
     );
 

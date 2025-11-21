@@ -6,5 +6,5 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'JBLund\\' => array($baseDir . '/includes'),
+    'JBLund\\' => array($baseDir . '/includes', $baseDir . '/modules'),
 );
