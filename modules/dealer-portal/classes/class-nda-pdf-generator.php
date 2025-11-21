@@ -26,7 +26,8 @@ class NDA_PDF_Generator {
      * Constructor
      */
     public function __construct() {
-        add_action('jblund_dealer_nda_accepted', array($this, 'generate_nda_pdf'), 10, 2);
+        // Disabled: TCPDF library not included
+        // add_action('jblund_dealer_nda_accepted', array($this, 'generate_nda_pdf'), 10, 2);
         add_action('init', array($this, 'ensure_upload_directory'));
     }
 
