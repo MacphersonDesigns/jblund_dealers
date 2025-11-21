@@ -44,11 +44,11 @@ class Password_Change_Handler {
             return;
         }
 
-        // Check if this is a new account that needs password change
-        $password_changed = get_user_meta($user->ID, '_dealer_password_changed', true);
+        // Check if password change is forced (set during approval)
+        $force_change = get_user_meta($user->ID, '_force_password_change', true);
 
-        if (!$password_changed) {
-            // Set flag that password change is required
+        if ($force_change) {
+            // Set the active flag used for redirects
             update_user_meta($user->ID, '_dealer_force_password_change', '1');
         }
     }
@@ -396,7 +396,8 @@ add_action('init', function() {
     // Change password
     wp_set_password($new_password, $current_user->ID);
 
-    // Mark password as changed
+    // Mark password as changed - clear both flags
+    delete_user_meta($current_user->ID, '_force_password_change');
     delete_user_meta($current_user->ID, '_dealer_force_password_change');
     update_user_meta($current_user->ID, '_dealer_password_changed', '1');
 

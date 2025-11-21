@@ -616,11 +616,14 @@ class Registration_Admin {
         }
 
         // Get registration data
+        // Get all registration data
         $rep_first_name = get_post_meta($registration_id, '_registration_rep_first_name', true);
         $rep_last_name = get_post_meta($registration_id, '_registration_rep_last_name', true);
         $rep_name = get_post_meta($registration_id, '_registration_rep_name', true);
         $email = get_post_meta($registration_id, '_registration_email', true);
+        $rep_phone = get_post_meta($registration_id, '_registration_phone', true);
         $company = get_post_meta($registration_id, '_registration_company', true);
+        $company_website = get_post_meta($registration_id, '_registration_company_website', true);
 
         if (!$email || !$rep_first_name || !$rep_last_name) {
             wp_redirect(add_query_arg(['error' => 'Invalid registration data'], wp_get_referer()));
@@ -647,7 +650,20 @@ class Registration_Admin {
             exit;
         }
 
-        $user_id = wp_create_user($username, $password, $email);
+        // Create user with complete profile data from registration
+        $user_data = [
+            'user_login'    => $username,
+            'user_pass'     => $password,
+            'user_email'    => $email,
+            'first_name'    => $rep_first_name,
+            'last_name'     => $rep_last_name,
+            'nickname'      => $company,              // Company name as nickname
+            'display_name'  => $rep_name,             // Full name as display name
+            'user_url'      => $company_website,      // Company website
+            'role'          => '',                     // Don't assign default role yet
+        ];
+
+        $user_id = wp_insert_user($user_data);
 
         if (is_wp_error($user_id)) {
             wp_redirect(add_query_arg(['error' => $user_id->get_error_message()], wp_get_referer()));
@@ -659,9 +675,10 @@ class Registration_Admin {
             \JBLund\DealerPortal\Dealer_Role::assign_to_user($user_id);
         }
 
-        // Update user meta
-        update_user_meta($user_id, 'first_name', $rep_name);
+        // Update additional user meta
         update_user_meta($user_id, '_dealer_company_name', $company);
+        update_user_meta($user_id, '_dealer_rep_phone', $rep_phone);
+        update_user_meta($user_id, '_force_password_change', true);  // Require password change on first login
 
         // Create dealer post automatically
         $dealer_id = $this->create_dealer_post_from_registration($registration_id, $user_id);
