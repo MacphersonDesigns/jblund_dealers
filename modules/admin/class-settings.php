@@ -35,12 +35,97 @@ class Settings {
     public function register_settings() {
         register_setting('jblund_dealers_settings', 'jblund_dealers_settings', array($this, 'sanitize_settings'));
         register_setting('jblund_dealers_portal_pages', 'jblund_dealers_portal_pages');
+        register_setting('jblund_dealers_registration_settings', 'jblund_dealers_registration_settings');
+        register_setting('jblund_dealers_email_settings', 'jblund_dealers_email_settings');
 
         $this->register_appearance_settings();
         $this->register_shortcode_settings();
         $this->register_portal_settings();
         $this->register_representative_settings();
         $this->register_documents_settings();
+        $this->register_registration_settings();
+        $this->register_email_settings();
+    }
+
+    /**
+     * Register registration message settings
+     */
+    private function register_registration_settings() {
+        add_settings_section(
+            'jblund_registration_section',
+            __('Dealer Registration Messages', 'jblund-dealers'),
+            array($this, 'registration_section_callback'),
+            'jblund_dealers_registration_settings'
+        );
+
+        add_settings_field(
+            'success_title',
+            __('Success Message Title', 'jblund-dealers'),
+            array($this, 'registration_success_title_callback'),
+            'jblund_dealers_registration_settings',
+            'jblund_registration_section'
+        );
+
+        add_settings_field(
+            'success_message',
+            __('Success Message Body', 'jblund-dealers'),
+            array($this, 'registration_success_message_callback'),
+            'jblund_dealers_registration_settings',
+            'jblund_registration_section'
+        );
+
+        add_settings_field(
+            'success_note',
+            __('Success Message Timeline Note', 'jblund-dealers'),
+            array($this, 'registration_success_note_callback'),
+            'jblund_dealers_registration_settings',
+            'jblund_registration_section'
+        );
+    }
+
+    /**
+     * Registration section callback
+     */
+    public function registration_section_callback() {
+        echo '<p>' . __('Customize the messages shown to dealers after they submit a registration application.', 'jblund-dealers') . '</p>';
+    }
+
+    /**
+     * Success title callback
+     */
+    public function registration_success_title_callback() {
+        $settings = get_option('jblund_dealers_registration_settings', array());
+        $value = isset($settings['success_title']) ? $settings['success_title'] : 'Application Submitted Successfully!';
+        echo '<input type="text" name="jblund_dealers_registration_settings[success_title]" value="' . esc_attr($value) . '" class="regular-text" />';
+    }
+
+    /**
+     * Success message callback
+     */
+    public function registration_success_message_callback() {
+        $settings = get_option('jblund_dealers_registration_settings', array());
+        $value = isset($settings['success_message']) ? $settings['success_message'] : 'Thank you for your interest in becoming a JBLund dealer. Your application has been received and is currently under review. One of our account representatives will contact you shortly to discuss your application and next steps.';
+        wp_editor(
+            $value,
+            'registration_success_message',
+            array(
+                'textarea_name' => 'jblund_dealers_registration_settings[success_message]',
+                'textarea_rows' => 8,
+                'media_buttons' => false,
+                'teeny' => true,
+                'quicktags' => false
+            )
+        );
+    }
+
+    /**
+     * Success note callback
+     */
+    public function registration_success_note_callback() {
+        $settings = get_option('jblund_dealers_registration_settings', array());
+        $value = isset($settings['success_note']) ? $settings['success_note'] : 'Please allow 2-3 business days for our team to review your submission.';
+        echo '<input type="text" name="jblund_dealers_registration_settings[success_note]" value="' . esc_attr($value) . '" class="large-text" />';
+        echo '<p class="description">' . __('Optional timeline or additional note shown at the bottom of the success message.', 'jblund-dealers') . '</p>';
     }
 
     /**
@@ -250,11 +335,11 @@ class Settings {
             array(
                 'field' => 'default_layout',
                 'options' => array(
-                    'grid' => __('Grid Layout', 'jblund-dealers'),
                     'list' => __('List Layout', 'jblund-dealers'),
+                    'grid' => __('Grid Layout', 'jblund-dealers'),
                     'compact' => __('Compact Grid', 'jblund-dealers')
                 ),
-                'default' => 'grid'
+                'default' => 'list'
             )
         );
 
@@ -824,5 +909,42 @@ class Settings {
         }
         </style>
         <?php
+    }
+
+    /**
+     * Register email template settings
+     */
+    private function register_email_settings() {
+        add_settings_section(
+            'jblund_email_branding_section',
+            __('Email Branding', 'jblund-dealers'),
+            array($this, 'email_branding_section_callback'),
+            'jblund_dealers_email_settings'
+        );
+
+        add_settings_field(
+            'email_primary_color',
+            __('Primary Brand Color', 'jblund-dealers'),
+            array($this, 'email_primary_color_callback'),
+            'jblund_dealers_email_settings',
+            'jblund_email_branding_section'
+        );
+    }
+
+    /**
+     * Email branding section callback
+     */
+    public function email_branding_section_callback() {
+        echo '<p>' . __('Customize the colors used in email templates. Changes will apply to both approval and rejection emails.', 'jblund-dealers') . '</p>';
+    }
+
+    /**
+     * Email primary color callback
+     */
+    public function email_primary_color_callback() {
+        $settings = get_option('jblund_dealers_email_settings', array());
+        $value = isset($settings['email_primary_color']) ? $settings['email_primary_color'] : '#FF0000';
+        echo '<input type="text" name="jblund_dealers_email_settings[email_primary_color]" value="' . esc_attr($value) . '" class="color-field" data-default-color="#FF0000" />';
+        echo '<p class="description">' . __('Used for headers, buttons, and accent colors in emails. Default: JBLund Red (#FF0000)', 'jblund-dealers') . '</p>';
     }
 }

@@ -1,0 +1,47 @@
+/**
+ * CSS Custom Properties (Variables)
+ * These can be overridden by settings in WordPress
+ */
+
+:root {
+	// Brand Colors (overridden by WP settings)
+	--jblund-header-color: #0073aa;
+	--jblund-card-background: #ffffff;
+	--jblund-button-color: #0073aa;
+	--jblund-button-hover-color: #005a87;
+	--jblund-primary-text-color: #333333;
+	--jblund-secondary-text-color: #666666;
+	--jblund-border-color: #e0e0e0;
+	--jblund-button-text-color: #ffffff;
+	--jblund-icon-color: #0073aa;
+	--jblund-link-color: #0073aa;
+	--jblund-hover-background: #f9f9f9;
+
+	// Service Icon Colors (can add settings for these later)
+	--jblund-docks-color: #1e40af;
+	--jblund-lifts-color: #dc2626;
+	--jblund-trailers-color: #059669;
+}
+
+// Spacing
+$spacing-xs: 5px;
+$spacing-sm: 10px;
+$spacing-md: 15px;
+$spacing-lg: 20px;
+$spacing-xl: 40px;
+
+/* ==========================================================================
+   BORDER RADIUS
+   Used for: card corners, buttons, input fields
+   ========================================================================== */
+$radius-sm: 3px;
+$radius-md: 4px;
+$radius-lg: 8px;
+
+// Transitions
+$transition-fast: all 0.2s ease;
+$transition-medium: all 0.3s ease;
+
+// Breakpoints
+$breakpoint-mobile: 768px;
+$breakpoint-tablet: 1024px;

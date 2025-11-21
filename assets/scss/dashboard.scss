@@ -1,0 +1,21 @@
+/**
+ * JBLund Dealers - Dashboard Styles Compilation
+ * Entry point for dealer portal dashboard styles
+ *
+ * MODULAR STRUCTURE:
+ * - portal-dashboard: Main dashboard layout, grid, cards
+ * - portal-cards: Dashboard card components (quick links, status, updates)
+ * - portal-documents: Signed and pending documents cards
+ * - portal-forms: Shared form elements and messages
+ * - portal-pages: Login, Profile, NDA page layouts
+ */
+
+// Import shared variables for consistency
+@use "variables";
+
+// Import modular portal components
+@use "portal-dashboard";
+@use "portal-cards";
+@use "portal-documents";
+@use "portal-forms";
+@use "portal-pages";

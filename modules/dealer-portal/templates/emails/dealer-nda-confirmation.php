@@ -51,7 +51,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 		<!-- CTA Button -->
 		<div style="text-align: center; margin: 30px 0;">
-			<a href="<?php echo \esc_url( \home_url( '/dealer-dashboard/' ) ); ?>" style="display: inline-block; background-color: #003366; color: #ffffff; padding: 12px 30px; text-decoration: none; border-radius: 5px; font-weight: bold;"><?php echo \esc_html__( 'Access Dealer Portal', 'jblund-dealers' ); ?></a>
+			<?php $dashboard_url = \jblund_get_portal_page_url('dashboard') ?: \home_url('/dealer-dashboard/'); ?>
+			<a href="<?php echo \esc_url($dashboard_url); ?>" style="display: inline-block; background-color: #003366; color: #ffffff; padding: 12px 30px; text-decoration: none; border-radius: 5px; font-weight: bold;"><?php echo \esc_html__( 'Access Dealer Portal', 'jblund-dealers' ); ?></a>
 		</div>
 
 		<p style="margin: 20px 0 0 0; font-size: 14px; color: #666;"><?php echo \esc_html__( 'If you have any questions or need assistance, please contact our support team.', 'jblund-dealers' ); ?></p>

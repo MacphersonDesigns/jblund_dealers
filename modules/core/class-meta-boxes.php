@@ -63,6 +63,24 @@ class Meta_Boxes {
             'normal',
             'default'
         );
+
+        add_meta_box(
+            'dealer_representative',
+            __('Company Representative', 'jblund-dealers'),
+            array($this, 'render_representative_meta_box'),
+            'dealer',
+            'side',
+            'default'
+        );
+
+        add_meta_box(
+            'dealer_documents',
+            __('Signed Documents & Files', 'jblund-dealers'),
+            array($this, 'render_documents_meta_box'),
+            'dealer',
+            'normal',
+            'default'
+        );
     }
 
     /**
@@ -309,6 +327,163 @@ class Meta_Boxes {
     }
 
     /**
+     * Render the representative meta box
+     */
+    public function render_representative_meta_box($post) {
+        $rep_name = get_post_meta($post->ID, '_dealer_rep_name', true);
+        $rep_email = get_post_meta($post->ID, '_dealer_rep_email', true);
+        $rep_phone = get_post_meta($post->ID, '_dealer_rep_phone', true);
+        ?>
+        <p><em><?php _e('Primary contact person for this dealer.', 'jblund-dealers'); ?></em></p>
+
+        <p>
+            <label for="dealer_rep_name"><strong><?php _e('Name:', 'jblund-dealers'); ?></strong></label><br/>
+            <input type="text" id="dealer_rep_name" name="dealer_rep_name" value="<?php echo esc_attr($rep_name); ?>" class="widefat" placeholder="John Doe" />
+        </p>
+
+        <p>
+            <label for="dealer_rep_email"><strong><?php _e('Email:', 'jblund-dealers'); ?></strong></label><br/>
+            <input type="email" id="dealer_rep_email" name="dealer_rep_email" value="<?php echo esc_attr($rep_email); ?>" class="widefat" placeholder="john@example.com" />
+        </p>
+
+        <p>
+            <label for="dealer_rep_phone"><strong><?php _e('Phone:', 'jblund-dealers'); ?></strong></label><br/>
+            <input type="tel" id="dealer_rep_phone" name="dealer_rep_phone" value="<?php echo esc_attr($rep_phone); ?>" class="widefat" placeholder="(555) 123-4567" />
+        </p>
+        <?php
+    }
+
+    /**
+     * Render the documents meta box
+     */
+    public function render_documents_meta_box($post) {
+        $documents = get_post_meta($post->ID, '_dealer_documents', true);
+        if (!is_array($documents)) {
+            $documents = array();
+        }
+
+        $nda_pdf = get_post_meta($post->ID, '_dealer_nda_pdf', true);
+        $nda_signed_date = get_post_meta($post->ID, '_dealer_nda_signed_date', true);
+        $nda_ip = get_post_meta($post->ID, '_dealer_nda_ip', true);
+        ?>
+        <div class="dealer-documents-wrapper">
+
+            <!-- NDA Section -->
+            <div style="padding: 15px; background: #f9f9f9; border: 1px solid #ddd; margin-bottom: 20px;">
+                <h4 style="margin-top: 0;"><?php _e('📄 NDA Agreement', 'jblund-dealers'); ?></h4>
+
+                <?php if ($nda_pdf) : ?>
+                    <div style="padding: 10px; background: #d4edda; border-left: 3px solid #28a745; margin-bottom: 10px;">
+                        <p style="margin: 0;"><strong><?php _e('✓ NDA Signed', 'jblund-dealers'); ?></strong></p>
+                        <p style="margin: 5px 0 0 0; font-size: 12px;">
+                            <?php
+                            if ($nda_signed_date) {
+                                echo sprintf(__('Signed: %s', 'jblund-dealers'), date_i18n(get_option('date_format') . ' ' . get_option('time_format'), strtotime($nda_signed_date)));
+                            }
+                            if ($nda_ip) {
+                                echo '<br/>' . sprintf(__('IP: %s', 'jblund-dealers'), esc_html($nda_ip));
+                            }
+                            ?>
+                        </p>
+                    </div>
+                    <p>
+                        <a href="<?php echo esc_url($nda_pdf); ?>" class="button" target="_blank">
+                            <?php _e('📥 Download Signed NDA', 'jblund-dealers'); ?>
+                        </a>
+                    </p>
+                <?php else : ?>
+                    <p style="color: #856404; background: #fff3cd; padding: 10px; border-left: 3px solid #ffc107;">
+                        <?php _e('NDA not yet signed by this dealer.', 'jblund-dealers'); ?>
+                    </p>
+                <?php endif; ?>
+            </div>
+
+            <!-- Other Documents Section -->
+            <div style="padding: 15px; background: #f9f9f9; border: 1px solid #ddd;">
+                <h4 style="margin-top: 0;"><?php _e('📋 Other Documents', 'jblund-dealers'); ?></h4>
+
+                <?php if (!empty($documents)) : ?>
+                    <table class="wp-list-table widefat fixed striped" style="margin-bottom: 15px;">
+                        <thead>
+                            <tr>
+                                <th><?php _e('Document Name', 'jblund-dealers'); ?></th>
+                                <th><?php _e('Uploaded', 'jblund-dealers'); ?></th>
+                                <th><?php _e('Actions', 'jblund-dealers'); ?></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($documents as $index => $doc) : ?>
+                                <tr>
+                                    <td><strong><?php echo esc_html($doc['name']); ?></strong></td>
+                                    <td><?php echo esc_html(date_i18n(get_option('date_format'), strtotime($doc['date']))); ?></td>
+                                    <td>
+                                        <a href="<?php echo esc_url($doc['url']); ?>" class="button button-small" target="_blank"><?php _e('View', 'jblund-dealers'); ?></a>
+                                        <button type="button" class="button button-small remove-document" data-index="<?php echo $index; ?>"><?php _e('Remove', 'jblund-dealers'); ?></button>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                <?php else : ?>
+                    <p style="font-style: italic; color: #666;"><?php _e('No documents uploaded yet.', 'jblund-dealers'); ?></p>
+                <?php endif; ?>
+
+                <p>
+                    <button type="button" id="upload-dealer-document" class="button button-secondary">
+                        <?php _e('📤 Upload Document', 'jblund-dealers'); ?>
+                    </button>
+                </p>
+
+                <input type="hidden" id="dealer_documents_data" name="dealer_documents_data" value="<?php echo esc_attr(json_encode($documents)); ?>" />
+            </div>
+        </div>
+
+        <script type="text/javascript">
+        jQuery(document).ready(function($) {
+            var dealerDocs = <?php echo json_encode($documents); ?>;
+
+            // Upload document button
+            $('#upload-dealer-document').on('click', function(e) {
+                e.preventDefault();
+
+                var mediaUploader = wp.media({
+                    title: '<?php _e('Upload Dealer Document', 'jblund-dealers'); ?>',
+                    button: { text: '<?php _e('Use this file', 'jblund-dealers'); ?>' },
+                    multiple: false
+                });
+
+                mediaUploader.on('select', function() {
+                    var attachment = mediaUploader.state().get('selection').first().toJSON();
+                    dealerDocs.push({
+                        name: attachment.filename,
+                        url: attachment.url,
+                        date: new Date().toISOString()
+                    });
+                    $('#dealer_documents_data').val(JSON.stringify(dealerDocs));
+                    location.reload(); // Reload to show new document
+                });
+
+                mediaUploader.open();
+            });
+
+            // Remove document button
+            $('.remove-document').on('click', function() {
+                if (!confirm('<?php _e('Are you sure you want to remove this document?', 'jblund-dealers'); ?>')) {
+                    return;
+                }
+                var index = $(this).data('index');
+                dealerDocs.splice(index, 1);
+                $('#dealer_documents_data').val(JSON.stringify(dealerDocs));
+                $(this).closest('tr').fadeOut(function() {
+                    $(this).remove();
+                });
+            });
+        });
+        </script>
+        <?php
+    }
+
+    /**
      * Save dealer meta data
      */
     public function save_dealer_meta($post_id, $post) {
@@ -397,6 +572,25 @@ class Meta_Boxes {
             update_post_meta($post_id, '_dealer_sublocations', $sublocations);
         } else {
             delete_post_meta($post_id, '_dealer_sublocations');
+        }
+
+        // Save representative information
+        if (isset($_POST['dealer_rep_name'])) {
+            update_post_meta($post_id, '_dealer_rep_name', sanitize_text_field($_POST['dealer_rep_name']));
+        }
+        if (isset($_POST['dealer_rep_email'])) {
+            update_post_meta($post_id, '_dealer_rep_email', sanitize_email($_POST['dealer_rep_email']));
+        }
+        if (isset($_POST['dealer_rep_phone'])) {
+            update_post_meta($post_id, '_dealer_rep_phone', sanitize_text_field($_POST['dealer_rep_phone']));
+        }
+
+        // Save documents data
+        if (isset($_POST['dealer_documents_data'])) {
+            $documents = json_decode(stripslashes($_POST['dealer_documents_data']), true);
+            if (is_array($documents)) {
+                update_post_meta($post_id, '_dealer_documents', $documents);
+            }
         }
     }
 }

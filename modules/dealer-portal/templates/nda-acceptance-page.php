@@ -17,9 +17,36 @@ if (!\defined('ABSPATH')) {
 
 // Get current user
 $current_user = \wp_get_current_user();
-$dealer_name = \get_user_meta($current_user->ID, 'dealer_company_name', true);
-if (empty($dealer_name)) {
-    $dealer_name = $current_user->display_name . "'s Company";
+$company_name = \get_user_meta($current_user->ID, '_dealer_company_name', true);
+
+// Get person's name for personalization
+$first_name = \get_user_meta($current_user->ID, 'first_name', true);
+$last_name = \get_user_meta($current_user->ID, 'last_name', true);
+
+if ($first_name && $last_name) {
+    $greeting_name = $first_name . ' ' . $last_name;
+} elseif ($first_name) {
+    $greeting_name = $first_name;
+} else {
+    $greeting_name = $current_user->display_name;
+}
+
+// Dealer name for NDA content
+$dealer_name = $company_name ?: ($greeting_name . "'s Company");
+
+// Check if NDA already accepted
+$nda_accepted = false;
+$acceptance_date = '';
+$acceptance_data = null;
+$just_accepted = isset($_GET['nda_accepted']) && sanitize_text_field($_GET['nda_accepted']) === '1';
+
+if (class_exists('JBLund\DealerPortal\NDA_Acceptance_Manager')) {
+    $acceptance_manager = new \JBLund\DealerPortal\NDA_Acceptance_Manager();
+    $nda_accepted = $acceptance_manager->is_accepted($current_user->ID);
+    if ($nda_accepted) {
+        $acceptance_data = $acceptance_manager->get_acceptance_data($current_user->ID);
+        $acceptance_date = isset($acceptance_data['acceptance_date']) ? $acceptance_data['acceptance_date'] : '';
+    }
 }
 
 // Get NDA content - check if using PDF version or text version
@@ -83,9 +110,32 @@ $allowed_html = [
 ?>
 
 <div class="dealer-nda-acceptance">
+    <?php if ($just_accepted): ?>
+        <div class="nda-success-banner">
+            <div class="success-icon">✓</div>
+            <h2><?php \esc_html_e('Agreement Successfully Accepted!', 'jblund-dealers'); ?></h2>
+            <p><?php \esc_html_e('Thank you for accepting the Non-Disclosure Agreement. You now have full access to the dealer portal.', 'jblund-dealers'); ?></p>
+        </div>
+    <?php endif; ?>
+
     <div class="nda-header">
-        <h1><?php \esc_html_e('Non-Disclosure Agreement', 'jblund-dealers'); ?></h1>
-        <p class="nda-subtitle"><?php \esc_html_e('Please review and sign the agreement below to access the dealer portal.', 'jblund-dealers'); ?></p>
+        <h1><?php \esc_html_e('Dealer Non-Disclosure Agreement', 'jblund-dealers'); ?></h1>
+        <div class="nda-subtitle">
+            <p class="greeting-name"><?php printf(\esc_html__('Hello, %s', 'jblund-dealers'), '<strong>' . \esc_html($greeting_name) . '</strong>'); ?></p>
+            <?php if ($company_name) : ?>
+                <p class="company-name"><?php echo \esc_html($company_name); ?></p>
+            <?php endif; ?>
+            <?php if ($nda_accepted): ?>
+                <p class="nda-accepted-notice">
+                    <?php \esc_html_e('✓ You accepted this agreement on', 'jblund-dealers'); ?>
+                    <?php echo \esc_html(\date_i18n(\get_option('date_format'), \strtotime($acceptance_date))); ?>
+                </p>
+            <?php else: ?>
+                <p class="instruction-text">
+                    <?php \esc_html_e('Please read and sign the agreement below to access the dealer portal.', 'jblund-dealers'); ?>
+                </p>
+            <?php endif; ?>
+        </div>
     </div>
 
     <div class="nda-content">
@@ -131,6 +181,7 @@ $allowed_html = [
             <?php endif; ?>
         </div>
 
+        <?php if (!$nda_accepted): ?>
         <form method="post" action="" class="nda-acceptance-form" id="nda-acceptance-form">
             <?php \wp_nonce_field('accept_nda_action', 'accept_nda_nonce'); ?>
             <input type="hidden" name="jblund_nda_action" value="submit" />
@@ -175,24 +226,16 @@ $allowed_html = [
                 </p>
 
                 <div class="signature-pad-wrapper">
-                    <div class="signature-pad-notice">
-                        <p><strong><?php \esc_html_e('Note:', 'jblund-dealers'); ?></strong> <?php \esc_html_e('Signature functionality requires JavaScript integration (Signature Pad). This will be implemented in Phase 2.', 'jblund-dealers'); ?></p>
-                        <p><?php \esc_html_e('For now, you can test the form submission without a signature.', 'jblund-dealers'); ?></p>
-                    </div>
-
-                    <!-- Signature canvas will be added here in Phase 2 -->
-                    <div class="signature-placeholder">
-                        <canvas id="signature-canvas" width="600" height="200" style="border: 2px dashed #ccc; background: #f9f9f9;"></canvas>
-                    </div>
-
-                    <div class="signature-actions">
-                        <button type="button" id="clear-signature" class="button-secondary" disabled>
-                            <?php \esc_html_e('Clear Signature', 'jblund-dealers'); ?>
-                        </button>
-                    </div>
-
-                    <input type="hidden" id="signature_data" name="signature_data" value="" />
+                    <canvas id="signature-canvas" width="600" height="200"></canvas>
                 </div>
+
+                <div class="signature-actions">
+                    <button type="button" id="clear-signature" class="button-secondary">
+                        <?php \esc_html_e('Clear Signature', 'jblund-dealers'); ?>
+                    </button>
+                </div>
+
+                <input type="hidden" id="signature_data" name="signature_data" value="" />
             </div>
 
             <div class="nda-form-section acceptance-section">
@@ -211,287 +254,57 @@ $allowed_html = [
                 </button>
             </div>
         </form>
+        <?php else: ?>
+        <div class="nda-already-accepted">
+            <div class="signed-nda-display">
+                <h3><?php \esc_html_e('Your Signed Agreement', 'jblund-dealers'); ?></h3>
+
+                <?php if ($acceptance_data): ?>
+                <div class="signed-details">
+                    <div class="detail-row">
+                        <strong><?php \esc_html_e('Signed By:', 'jblund-dealers'); ?></strong>
+                        <span><?php echo \esc_html($acceptance_data['representative_name']); ?></span>
+                    </div>
+                    <div class="detail-row">
+                        <strong><?php \esc_html_e('Company:', 'jblund-dealers'); ?></strong>
+                        <span><?php echo \esc_html($acceptance_data['dealer_company']); ?></span>
+                    </div>
+                    <div class="detail-row">
+                        <strong><?php \esc_html_e('Date Accepted:', 'jblund-dealers'); ?></strong>
+                        <span><?php echo \esc_html(\date_i18n(\get_option('date_format') . ' ' . \get_option('time_format'), \strtotime($acceptance_data['acceptance_date']))); ?></span>
+                    </div>
+                    <div class="detail-row">
+                        <strong><?php \esc_html_e('IP Address:', 'jblund-dealers'); ?></strong>
+                        <span><?php echo \esc_html($acceptance_data['ip_address']); ?></span>
+                    </div>
+                </div>
+
+                <?php if (!empty($acceptance_data['signature_data'])): ?>
+                <div class="signed-signature">
+                    <strong><?php \esc_html_e('Digital Signature:', 'jblund-dealers'); ?></strong>
+                    <div class="signature-display">
+                        <img src="<?php echo \esc_attr($acceptance_data['signature_data']); ?>" alt="<?php \esc_attr_e('Digital Signature', 'jblund-dealers'); ?>" />
+                    </div>
+                </div>
+                <?php endif; ?>
+                <?php endif; ?>
+
+                <div class="acceptance-actions">
+                    <?php
+                    $pdf_url = \get_user_meta(\get_current_user_id(), '_dealer_nda_pdf_url', true);
+                    if ($pdf_url):
+                    ?>
+                        <a href="<?php echo \esc_url($pdf_url); ?>" class="button-secondary" download>
+                            <?php \esc_html_e('Download PDF', 'jblund-dealers'); ?>
+                        </a>
+                    <?php endif; ?>
+                    <a href="<?php echo \esc_url(\jblund_get_portal_page_url('dashboard') ?: \home_url('/dealer-dashboard/')); ?>" class="button-primary">
+                        <?php \esc_html_e('Return to Dashboard', 'jblund-dealers'); ?>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <?php endif; ?>
     </div>
 </div>
 
-<style>
-/* Inline styles for NDA acceptance page */
-.dealer-nda-acceptance {
-    max-width: 900px;
-    margin: 40px auto;
-    padding: 40px;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
-.nda-header {
-    text-align: center;
-    margin-bottom: 40px;
-    padding-bottom: 20px;
-    border-bottom: 2px solid #003366;
-}
-
-.nda-header h1 {
-    color: #003366;
-    font-size: 32px;
-    margin: 0 0 10px 0;
-}
-
-.nda-subtitle {
-    color: #666;
-    font-size: 16px;
-    margin: 0;
-}
-
-.nda-agreement-text {
-    background: #f9f9f9;
-    padding: 30px;
-    border-radius: 5px;
-    margin-bottom: 30px;
-    max-height: 500px;
-    overflow-y: auto;
-    border: 1px solid #ddd;
-}
-
-.nda-agreement-text h2 {
-    color: #003366;
-    font-size: 24px;
-    margin-top: 0;
-}
-
-.nda-agreement-text h3 {
-    color: #333;
-    font-size: 18px;
-    margin-top: 20px;
-}
-
-/* PDF Display Styles */
-.nda-pdf-container {
-    padding: 20px 0;
-}
-
-.nda-pdf-container h2 {
-    margin-bottom: 15px;
-}
-
-.pdf-notice {
-    color: #666;
-    font-style: italic;
-    margin-bottom: 15px;
-}
-
-.pdf-actions {
-    margin-bottom: 20px;
-}
-
-.pdf-actions a {
-    display: inline-block;
-    margin-right: 10px;
-}
-
-.pdf-embed-wrapper {
-    margin-top: 20px;
-    background: #fff;
-    padding: 10px;
-    border-radius: 4px;
-}
-
-.pdf-embed-wrapper iframe {
-    display: block;
-}
-
-/* Text Version Styles */
-.nda-text-version {
-    line-height: 1.6;
-}
-
-.nda-text-version h2,
-.nda-text-version h3,
-.nda-text-version h4 {
-    color: #003366;
-    margin-top: 20px;
-    margin-bottom: 10px;
-}
-
-.nda-text-version ul,
-.nda-text-version ol {
-    margin: 15px 0;
-    padding-left: 25px;
-}
-
-.nda-text-version li {
-    margin: 8px 0;
-}
-
-.nda-parties-section {
-    margin-top: 30px;
-    padding-top: 20px;
-    border-top: 1px solid #ddd;
-}
-
-.nda-text-section p {
-    line-height: 1.6;
-    margin: 15px 0;
-}
-
-.nda-parties,
-.nda-text-section ul {
-    margin: 15px 0;
-    padding-left: 25px;
-}
-
-.nda-parties li,
-.nda-text-section ul li {
-    margin: 8px 0;
-    line-height: 1.6;
-}
-
-.nda-form-section {
-    margin-bottom: 30px;
-    padding: 20px;
-    background: #f9f9f9;
-    border-radius: 5px;
-}
-
-.nda-form-section h3 {
-    color: #003366;
-    font-size: 20px;
-    margin-top: 0;
-}
-
-.form-row {
-    margin-bottom: 20px;
-}
-
-.form-row label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 5px;
-    color: #333;
-}
-
-.form-row input[type="text"] {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 16px;
-}
-
-.form-row input[readonly] {
-    background: #e9ecef;
-}
-
-.signature-instructions {
-    color: #666;
-    margin-bottom: 20px;
-}
-
-.signature-pad-wrapper {
-    margin-top: 20px;
-}
-
-.signature-pad-notice {
-    background: #fff3cd;
-    border: 1px solid #ffc107;
-    padding: 15px;
-    border-radius: 4px;
-    margin-bottom: 15px;
-}
-
-.signature-pad-notice p {
-    margin: 5px 0;
-}
-
-.signature-placeholder {
-    margin: 20px 0;
-    text-align: center;
-}
-
-.signature-actions {
-    margin-top: 10px;
-}
-
-.acceptance-checkbox {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    cursor: pointer;
-}
-
-.acceptance-checkbox input[type="checkbox"] {
-    margin-top: 3px;
-    width: 18px;
-    height: 18px;
-    cursor: pointer;
-}
-
-.acceptance-checkbox span {
-    flex: 1;
-    font-size: 16px;
-    line-height: 1.5;
-}
-
-.required {
-    color: #dc3545;
-    font-weight: bold;
-}
-
-.nda-form-actions {
-    text-align: center;
-    margin-top: 30px;
-    padding-top: 20px;
-    border-top: 2px solid #ddd;
-}
-
-.button-primary,
-.button-secondary {
-    padding: 12px 30px;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    border: none;
-    transition: all 0.3s ease;
-}
-
-.button-primary {
-    background: #003366;
-    color: #fff;
-}
-
-.button-primary:hover {
-    background: #002244;
-}
-
-.button-secondary {
-    background: #6c757d;
-    color: #fff;
-    margin-right: 10px;
-}
-
-.button-secondary:hover {
-    background: #5a6268;
-}
-
-.button-secondary:disabled {
-    background: #ccc;
-    cursor: not-allowed;
-}
-
-@media (max-width: 768px) {
-    .dealer-nda-acceptance {
-        margin: 20px;
-        padding: 20px;
-    }
-
-    .nda-header h1 {
-        font-size: 24px;
-    }
-
-    .signature-placeholder canvas {
-        max-width: 100%;
-        height: auto;
-    }
-}
-</style>

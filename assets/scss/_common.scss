@@ -1,0 +1,371 @@
+/**
+ * Shared/Common Dealer Card Styles
+ * Styles used across all layout types
+ */
+
+@use "variables" as *;
+
+/* Base Dealer Card */
+.dealer-card {
+	position: relative;
+}
+
+/* Dealer Card Header */
+.dealer-card-header {
+	background: var(--jblund-header-color, #0073aa);
+	color: var(--jblund-button-text-color, #ffffff);
+	padding: $spacing-md $spacing-lg;
+	border-radius: $radius-md $radius-md 0 0;
+	margin: -1px -1px 0 -1px;
+	font-weight: bold;
+	border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+
+	h3,
+	.dealer-name {
+		margin: 0;
+		font-size: 1.3em;
+		font-weight: 800;
+		text-transform: uppercase;
+		color: inherit;
+	}
+}
+
+/* Dealer Card Body (Grid/Compact layouts) */
+.dealer-card-body {
+	padding: $spacing-lg;
+
+	p {
+		margin: $spacing-sm 0;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+
+	> * {
+		margin-bottom: $spacing-md;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+}
+
+/* Dealer Contact Info Section */
+.dealer-contact-info {
+	margin-bottom: $spacing-md;
+}
+
+/* Contact Information */
+.dealer-address,
+.dealer-phone {
+	margin: $spacing-sm 0;
+	color: var(--jblund-secondary-text-color, #666);
+	display: flex;
+	align-items: flex-start;
+	gap: 8px;
+	font-size: 0.95em;
+
+	strong {
+		margin-right: 5px;
+	}
+
+	svg {
+		width: 16px;
+		height: 16px;
+		flex-shrink: 0;
+		margin-top: 3px;
+		opacity: 0.7;
+	}
+
+	a {
+		color: var(--jblund-link-color, #0073aa);
+		text-decoration: none;
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+}
+
+.dealer-address-link {
+	color: var(--jblund-link-color, #0073aa);
+	text-decoration: none;
+
+	&:hover {
+		text-decoration: underline;
+	}
+}
+
+/* Website Section & Button */
+.dealer-website {
+	margin: $spacing-md 0;
+}
+
+.dealer-website-button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 10px 20px;
+	background: var(--jblund-button-color, #0073aa);
+	color: var(--jblund-button-text-color, #ffffff) !important;
+	text-decoration: none;
+	border-radius: $radius-md;
+	transition: $transition-fast;
+	font-weight: 600;
+	text-align: center;
+
+	&:hover {
+		background: var(--jblund-button-hover-color, #005a87);
+		transform: translateY(-2px);
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+	}
+}
+
+/* ==========================================================================
+   SERVICES SECTION
+   Displays docks, lifts, trailers as icons or list
+   Can be toggled between icon mode and text list mode in settings
+   ========================================================================== */
+// Services Section
+.dealer-services {
+	display: flex;
+	flex-direction: column;
+	justify-items: flex-end;
+	margin-top: $spacing-lg;
+	padding-top: $spacing-md;
+	border-top: 1px solid var(--jblund-border-color, #e0e0e0);
+
+	h4,
+	strong {
+		font-size: 1em;
+		margin-bottom: $spacing-sm;
+		color: var(--jblund-primary-text-color, #333);
+		font-weight: 600;
+		display: block;
+	}
+
+	ul {
+		list-style: none;
+		padding: 0;
+		margin: $spacing-sm 0 0 0;
+
+		li {
+			padding: $spacing-xs 0;
+			color: var(--jblund-secondary-text-color, #666);
+
+			&:before {
+				content: "✓";
+				color: var(--jblund-icon-color, #0073aa);
+				font-weight: bold;
+				margin-right: 8px;
+			}
+		}
+	}
+
+	p {
+		margin: $spacing-xs 0;
+		color: var(--jblund-secondary-text-color, #666);
+
+		em {
+			font-style: italic;
+			opacity: 0.7;
+		}
+	}
+}
+
+/* ==========================================================================
+   SERVICE ICONS
+   Icon-based display of services (alternative to list)
+   ========================================================================== */
+// Service Icons Container
+.dealer-services-icons,
+.service-icons {
+	display: flex;
+	gap: $spacing-sm;
+	flex-wrap: wrap;
+	margin-top: $spacing-sm;
+}
+
+/* Service Icon */
+.service-icon {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: $spacing-sm;
+	border: 0px solid transparent;
+	border-radius: $radius-md;
+	background: #f5f5f5;
+	min-width: 50px;
+	flex-grow: 1;
+	transition: $transition-fast;
+	opacity: 0.4;
+
+	&.active {
+		opacity: 1;
+		background: white;
+
+		&:hover {
+			transform: translateY(-3px);
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+		}
+	}
+
+	.icon {
+		font-size: 1.5em;
+		margin-bottom: 4px;
+		display: block;
+		transition: $transition-medium;
+	}
+
+	.label {
+		font-size: 0.75em;
+		font-weight: 600;
+		color: #333;
+		text-transform: uppercase;
+		letter-spacing: 0.5px;
+		transition: $transition-medium;
+	}
+}
+
+.service-docks.active {
+	border-color: var(--jblund-icon-color, var(--jblund-docks-color));
+	.icon {
+		color: var(--jblund-icon-color, var(--jblund-docks-color));
+	}
+}
+
+.service-lifts.active {
+	border-color: var(--jblund-icon-color, var(--jblund-lifts-color));
+	.icon {
+		color: var(--jblund-icon-color, var(--jblund-lifts-color));
+	}
+}
+
+.service-trailers.active {
+	border-color: var(--jblund-icon-color, var(--jblund-trailers-color));
+	.icon {
+		color: var(--jblund-icon-color, var(--jblund-trailers-color));
+	}
+}
+
+/* Sub-locations Divider */
+.sublocation-divider {
+	margin: $spacing-lg 0;
+	border: none;
+	border-top: 2px solid var(--jblund-border-color, #e0e0e0);
+	opacity: 0.5;
+}
+
+/* Sub-locations Container */
+.dealer-sublocations {
+	margin-top: $spacing-sm;
+	padding-top: 0;
+
+	h4 {
+		font-size: 0.95em;
+		margin-bottom: $spacing-md;
+		color: var(--jblund-primary-text-color, #333);
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.5px;
+	}
+}
+
+/* Individual Sublocation Box */
+.dealer-sublocation {
+	background: var(--jblund-hover-background, #f9f9f9);
+	border-radius: $radius-sm;
+	padding: $spacing-md;
+	margin-bottom: $spacing-sm;
+	transition: $transition-fast;
+
+	&:last-child {
+		margin-bottom: 0;
+	}
+
+	&:hover {
+		background: #f0f0f0;
+	}
+
+	.sublocation-name {
+		font-size: 1em;
+		margin: 0 0 $spacing-sm 0;
+		color: var(--jblund-header-color, #0073aa);
+		font-weight: 700;
+	}
+}
+
+/* Sublocation Contact Info Section */
+.sublocation-contact-info {
+	margin-bottom: $spacing-sm;
+
+	p {
+		margin: $spacing-xs 0;
+		font-size: 0.95em;
+		color: var(--jblund-secondary-text-color, #666);
+		line-height: 1.5;
+
+		strong {
+			margin-right: 5px;
+		}
+	}
+}
+
+/* Sublocation Address & Phone */
+.sublocation-address,
+.sublocation-phone {
+	a {
+		color: var(--jblund-link-color, #0073aa);
+		text-decoration: none;
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+}
+
+/* Sublocation Website Section */
+.sublocation-website {
+	margin: $spacing-md 0;
+}
+
+/* Sublocation Services Section */
+.sublocation-services {
+	display: flex;
+	flex-direction: column;
+	margin-top: $spacing-md;
+	padding-top: $spacing-sm;
+	border-top: 1px solid var(--jblund-border-color, #e0e0e0);
+
+	strong {
+		font-size: 0.9em;
+		margin-bottom: $spacing-xs;
+		color: var(--jblund-primary-text-color, #333);
+		font-weight: 600;
+		display: block;
+	}
+
+	.dealer-services-icons {
+		gap: $spacing-xs;
+	}
+
+	.service-list {
+		list-style: none;
+		padding: 0;
+		margin: $spacing-xs 0 0 0;
+
+		li {
+			padding: $spacing-xs 0;
+			color: var(--jblund-secondary-text-color, #666);
+
+			&:before {
+				content: "✓";
+				color: var(--jblund-icon-color, #0073aa);
+				font-weight: bold;
+				margin-right: 8px;
+			}
+		}
+	}
+}

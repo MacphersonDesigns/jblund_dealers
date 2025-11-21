@@ -4,6 +4,198 @@ All notable changes to the JBLund Dealers plugin will be documented in this file
 
 ## [Unreleased]
 
+### Added - NDA-Triggered Dealer Profile Publishing
+
+**Smart Two-Stage Approval Workflow**:
+
+- ✅ **Application Approved** → Dealer post created as **DRAFT** + user account created
+- ✅ **NDA Signed** → Dealer post automatically **PUBLISHED** (goes live on website)
+- ✅ **Complete automation** - no manual publishing required
+- ✅ **Activity tracking** logs both stages: approval (draft created) and NDA acceptance (published)
+- ✅ **Modal indicators** show draft status with yellow badge until NDA is signed
+- ✅ **Bidirectional linking** maintained between registration, user, and dealer post throughout entire workflow
+
+**Why This Workflow?**
+
+- Dealers shouldn't appear publicly until they've agreed to terms (NDA)
+- Separates approval decision from legal agreement requirement
+- Admin can prepare dealer profile without exposing it prematurely
+- Automatic publishing eliminates manual step once NDA is signed
+- Full audit trail of approval → NDA → publication
+
+**Technical Implementation**:
+
+- Dealer post created with `post_status = 'draft'` on application approval
+- `NDA_Handler::publish_dealer_post()` finds and publishes draft when NDA accepted
+- Activity log tracks both "approved" and "dealer_published" actions
+- Modal shows yellow "Draft" badge before NDA, green "Published" after
+- `_dealer_user_id` meta link enables finding draft post by user
+
+**User Experience**:
+
+- **Admin**: Approves application → sees yellow "Draft" status in modal
+- **Dealer**: Receives account credentials → logs in → must sign NDA
+- **System**: Publishes dealer profile automatically when NDA signed
+- **Admin**: Sees "PUBLISHED" activity log entry and green status
+- **Public**: Dealer appears on website only after NDA acceptance
+
+### Added - Automatic Dealer Profile Creation on Approval
+
+**Streamlined Approval Workflow**:
+
+- ✅ **Automatic dealer post creation** when application is approved
+- ✅ **Bidirectional linking** between registration and dealer post
+- ✅ **Complete data transfer** from registration to dealer profile:
+  - Company name, address, phone, website
+  - Territory/location information
+  - Products & services (docks, lifts, trailers)
+  - Business description and notes
+- ✅ **Activity tracking** includes dealer_id for full audit trail
+- ✅ **Modal enhancement** shows "Dealer Profile Created" section with direct link to edit dealer post
+- ✅ **Maintains backward compatibility** with existing manual dealer creation workflow
+
+**Technical Implementation**:
+
+- New `create_dealer_post_from_registration()` method automatically creates dealer post during approval
+- Stores `_registration_dealer_id` on registration post
+- Stores `_dealer_registration_id` on dealer post (bidirectional link)
+- All registration data intelligently mapped to dealer meta fields
+- Dealer post published immediately and associated with approved user account
+
+**Admin Benefits**:
+
+- One-click approval creates both user account AND dealer profile
+- No manual data entry required - everything transfers automatically
+- Direct access to dealer profile from application modal
+- Complete traceability between application and dealer
+- Saves significant time on multi-step approval process
+
+### Added - Application Detail Modal & Activity Tracking
+
+**Application Detail Modal** for comprehensive review:
+
+- AJAX-powered modal displaying complete application details
+- "View Details" button on all applications (pending, approved, rejected)
+- Organized sections: Representative Info, Company Info, Business Description, Submission Details, Activity Log
+- Real-time data loading with loading spinner
+- Proper field alignment with actual registration form:
+  - Territory/Location field (replaces incorrect address/website fields)
+  - Business Description section (displays applicant's business notes)
+  - Removed non-existent services fields (docks/lifts/trailers)
+- Responsive modal with clean styling
+- Security: Nonce verification and capability checks
+
+### Added - Application Detail Modal & Activity Tracking
+
+**Application Detail Modal** for comprehensive review:
+
+- AJAX-powered modal displaying complete application details
+- "View Details" button on all applications (pending, approved, rejected)
+- Organized sections: Representative Info, Company Info, Business Description, Submission Details, Activity Log
+- Real-time data loading with loading spinner
+- Proper field alignment with actual registration form:
+  - Territory/Location field (replaces incorrect address/website fields)
+  - Business Description section (displays applicant's business notes)
+  - Removed non-existent services fields (docks/lifts/trailers)
+- Responsive modal with clean styling
+- Security: Nonce verification and capability checks
+
+**Activity Tracking System** for accountability:
+
+- Complete audit trail of all actions on applications
+- Tracks who views, approves, and declines applications
+- Timestamps for every action
+- Detailed notes for each activity entry
+- Color-coded activity badges (viewed=blue, approved=green, declined=red)
+- Activity log displayed in detail modal as sortable table
+- Shows: Date/Time, Action, User, Details columns
+- Automatic logging on:
+  - Application view (when modal opens)
+  - Application approval (with user info)
+  - Application decline (with rejection reason)
+- Stored as serialized array in `_registration_activity` meta field
+- `log_activity()` helper method for consistent logging
+
+**Data Integrity Improvements**:
+
+- Fixed field mismatch between registration form and modal display
+- Modal now shows exactly what applicant submitted
+- Business description properly displayed for review decisions
+- All meta fields properly aligned with form structure
+- Prepared for dealer post linking (dealer_id field added)
+
+### Added - Advanced Message Scheduling System
+
+**Message Scheduler** for dynamic registration success messages:
+
+- Save unlimited message templates with custom titles, bodies, and timeline notes
+- Set one message as "active" for normal use
+- Schedule specific messages for time periods (start date/time to end date/time)
+- Automatic message switching based on schedule (perfect for holidays, team outings, etc.)
+- Scheduled messages automatically revert to default after time period ends
+- Visual status indicators (Active Now, Upcoming, Past)
+- Full AJAX-powered interface for smooth user experience
+- Complete CRUD operations: Create, Read, Update, Delete messages
+- Protected default message (cannot be deleted)
+- Schedule management: View all scheduled messages, delete schedules
+- Example use case: "2-3 day response time" normally, but "5-7 days during holiday break" scheduled for specific dates
+
+**Technical Features:**
+
+- New `Message_Scheduler` class handles all message and schedule logic
+- Stores multiple message templates in `jblund_dealers_registration_messages` option
+- Stores schedules in `jblund_dealers_registration_schedule` option
+- Active message determined by: Current schedule > Manual active selection > Default
+- Real-time evaluation of schedules on every page load
+- WordPress nonce verification and capability checks for all AJAX operations
+- Sanitized inputs and escaped outputs throughout
+
+**User Experience:**
+
+- Clean interface showing currently active message at top
+- Table view of all saved messages with status indicators
+- One-click actions: Edit, Set Active, Schedule, Delete
+- Modal editors for creating/editing messages and schedules
+- Schedule table shows all upcoming, active, and past schedules
+- Color-coded status badges for easy scanning
+- Integrated seamlessly into existing Registration settings tab
+
+### Added - Admin Experience Enhancements
+
+**Dashboard Widget** for dealer application visibility:
+
+- Real-time pending and total application counts
+- 5 most recent applications displayed with metadata
+- NEW badges for applications within 24 hours
+- Color-coded status badges (pending/approved/rejected)
+- Human-readable time differences
+- One-click "View All Applications" button
+- Only visible to users with `manage_options` capability
+
+**Menu Enhancements** for improved navigation:
+
+- Renamed "Registrations" to "Applications" for clarity
+- Pending count bubble on menu item (WordPress standard styling)
+- Updates dynamically as applications are processed
+- Only displays bubble when count > 0
+
+**Customizable Registration Messages**:
+
+- New Registration settings tab in plugin settings
+- Three customizable fields: Title, Message (rich text), Timeline Note
+- Rich text editor (wp_editor) for message body
+- Graceful fallback to default messages if not configured
+- Helpful tips section for writing effective messages
+- Registration workflow overview for admins
+
+**Settings Page Improvements**:
+
+- Comprehensive shortcode documentation in Help & Guide tab
+- All 6 shortcodes documented with parameters and examples
+- Usage tips for Divi, Elementor, and standard WordPress
+- Color-coded sections for better organization
+- Professional formatting with tables and inline examples
+
 ### Added - Visual Customizer Module
 
 **Live Visual Editor** with real-time preview and dual editing modes:

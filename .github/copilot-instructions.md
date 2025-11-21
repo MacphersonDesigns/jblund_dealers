@@ -2,14 +2,30 @@
 
 ## Architecture Overview
 
-This is a single-file WordPress plugin (`jblund-dealers.php`) implementing a complete dealer management system. The plugin follows WordPress best practices with a single class `JBLund_Dealers_Plugin` containing all functionality.
+This WordPress plugin implements a complete dealer management system with a **modular architecture**. The plugin has evolved from a single-file structure to a **module-based system** for better maintainability and scalability.
+
+### Modular Structure
+
+```
+jblund-dealers/
+├── jblund-dealers.php (Main bootstrap file)
+├── uninstall.php (Clean uninstall)
+├── assets/ (CSS/JS)
+├── modules/
+│   ├── core/ (Post types, meta boxes)
+│   ├── admin/ (Settings, dashboard, CSV)
+│   ├── frontend/ (Shortcodes, public display)
+│   └── dealer-portal/ (Private portal, registration, NDA)
+└── .github/copilot-instructions.md (This file)
+```
 
 **Core Components:**
 
-- **Custom Post Type**: `dealer` with custom meta boxes for structured data
-- **Meta Data**: Main dealer info + dynamic sub-locations array
+- **Custom Post Types**: `dealer` (public listings) and `dealer_registration` (applications)
+- **Meta Data**: Main dealer info + dynamic sub-locations array + registration metadata
 - **Frontend Display**: Shortcode-based responsive grid layout
-- **Admin Interface**: Native WordPress admin with JavaScript-enhanced sub-location management
+- **Admin Interface**: Advanced settings with tabs, message scheduling, email templates
+- **Dealer Portal**: Private dashboard, NDA management, profile editing
 
 ## Key Patterns & Conventions
 
@@ -45,10 +61,32 @@ Sub-locations use JavaScript to add/remove form fields dynamically. The pattern:
 
 ## Critical Files & Locations
 
-- **`jblund-dealers.php`**: Single-file architecture - all PHP logic here
-- **`assets/css/dealers.css`**: Complete frontend styling (grid, cards, responsive)
+### Bootstrap & Core
+
+- **`jblund-dealers.php`**: Main plugin file - autoloads modules via namespaces
 - **`uninstall.php`**: Complete data cleanup on plugin deletion
-- **Documentation**: README.md, QUICK_REFERENCE.md, USAGE_GUIDE.md
+
+### Module Structure
+
+- **`modules/core/`**: Post type registration, meta boxes
+- **`modules/admin/`**: Settings page, CSV import/export, dashboard widget, column management
+- **`modules/frontend/`**: Public shortcodes and styling
+- **`modules/dealer-portal/`**: Registration forms, dealer dashboard, NDA handling, email templates
+
+### Assets
+
+- **`assets/css/dealers.css`**: Frontend public dealer directory styling
+- **`assets/css/dashboard.css`**: Dealer portal dashboard styling
+- **`assets/js/email-editor.js`**: Email template editor functionality
+
+### Templates
+
+- **`modules/dealer-portal/templates/`**: Email templates (approval, rejection, admin notification)
+- **`modules/dealer-portal/templates/dealer-dashboard.php`**: Portal dashboard template
+
+### Documentation
+
+- **Root level**: README.md, CHANGELOG.md, USAGE_GUIDE.md, DEALER-REGISTRATION-WORKFLOW.md
 
 ## WordPress Integration Points
 
@@ -80,6 +118,23 @@ add_shortcode('jblund_dealers', 'dealers_shortcode')
 
 ## Development Workflows
 
+### Modular Development Best Practices
+
+**CRITICAL: Always follow these patterns when making changes:**
+
+1. **Namespace Everything**: Use `namespace JBLund\[Module]` (e.g., `JBLund\Admin`, `JBLund\DealerPortal`)
+2. **Singleton Pattern**: Use `get_instance()` for classes that need single instance
+3. **Security First**: Always sanitize inputs, escape outputs, verify nonces
+4. **WordPress Standards**: Follow WordPress Coding Standards and use built-in functions
+5. **No Direct Access**: Always check `if (!defined('ABSPATH')) exit;`
+
+### Module Organization
+
+- **Core Module**: Post types, taxonomies, core data structures
+- **Admin Module**: Backend-only functionality (settings, import/export, columns)
+- **Frontend Module**: Public-facing features (shortcodes, public styling)
+- **Dealer Portal Module**: Private dealer-only features (dashboard, registration, NDA)
+
 ### Adding New Fields
 
 1. Add to `render_dealer_info_meta_box()` for form field
@@ -102,11 +157,25 @@ Company name automatically syncs with post title on save. No separate company na
 
 ### Settings System
 
-Plugin includes admin settings page under Dealers > Settings with:
+Plugin includes comprehensive admin settings under **Dealers > Settings** with multiple tabs:
 
-- **Appearance**: Card colors, button colors (color pickers)
-- **Shortcode**: Default layout, service icon toggle
-- Settings stored in `jblund_dealers_settings` option
+- **General**: Shortcode defaults (layout, icons)
+- **Portal Pages**: Page assignments for login, dashboard, profile, NDA
+- **Appearance**: Color customization for public dealer cards
+- **Portal Updates**: Scheduled announcements for dealer dashboard
+- **Documents**: Required document management with file uploads
+- **NDA Editor**: Full WYSIWYG NDA content editor
+- **Registration**: Success message scheduler with date ranges
+- **Email Templates**: Approval, rejection, and admin notification email customization
+- **Import/Export**: CSV bulk operations
+- **Help & Guide**: Documentation and shortcode reference
+
+Settings stored in multiple options:
+
+- `jblund_dealers_settings` (main settings)
+- `jblund_dealers_portal_pages` (page assignments)
+- `jblund_email_template_*` (email templates)
+- `jblund_registration_messages` (scheduled messages)
 
 ### Layout Options
 
@@ -140,6 +209,108 @@ Uses `WP_Query` with dynamic layout classes and settings integration.
 Text domain: `jblund-dealers`
 All user-facing strings use `__()` or `_e()` functions.
 Ready for translation file generation.
+
+## Email Template System
+
+### Architecture
+
+**Three Email Types:**
+
+1. **Approval Email**: HTML template with credentials, next steps, login button
+2. **Rejection Email**: HTML template with reason box, closing paragraphs
+3. **Admin Notification**: HTML template with complete registration details
+
+**Template Editing:**
+
+- **Basic Editor**: Text-only fields that preserve HTML/CSS structure
+- **Advanced Editor**: Raw HTML editing with marker system
+- **Preview**: Live preview with sample data
+- **Brand Color**: Customizable primary color (default #FF0000)
+
+**HTML Markers**: Templates use HTML comments for section marking:
+
+```html
+<!-- [EDITABLE:SECTION_NAME] -->
+Content here
+<!-- [/EDITABLE:SECTION_NAME] -->
+```
+
+**Shortcodes Available:**
+
+- Approval: `{{rep_name}}`, `{{username}}`, `{{password}}`, `{{login_url}}`
+- Rejection: `{{rep_name}}`, `{{reason}}`
+- Admin: `{{rep_name}}`, `{{rep_email}}`, `{{rep_phone}}`, `{{company}}`, `{{company_phone}}`, `{{territory}}`, `{{company_address}}`, `{{company_website}}`, `{{docks}}`, `{{lifts}}`, `{{trailers}}`, `{{notes}}`, `{{admin_url}}`
+
+### Template Files
+
+- `modules/dealer-portal/templates/emails/approval-template.html`
+- `modules/dealer-portal/templates/emails/rejection-template.html`
+- `modules/dealer-portal/templates/emails/admin-notification-template.html`
+
+## Registration Workflow
+
+### Process Flow
+
+1. **Application Submission**: User fills `[jblund_dealer_registration]` form
+2. **Registration Post Created**: Status `pending`, not visible to public
+3. **Admin Notification**: HTML email sent to admin with all details
+4. **Admin Review**: Admin can approve/decline from dashboard
+5. **Approval Actions**:
+   - Creates dealer user account
+   - Sends approval email with credentials
+   - User must accept NDA before accessing portal
+6. **NDA Acceptance**: Triggers dealer profile publication (becomes public dealer)
+7. **Portal Access**: Dealer can login, view dashboard, edit profile
+
+### Key Classes
+
+- `JBLund\DealerPortal\Registration_Form`: Form display and submission
+- `JBLund\DealerPortal\Registration_Admin`: Approval/rejection handling
+- `JBLund\DealerPortal\Email_Handler`: Email template processing
+- `JBLund\Admin\Message_Scheduler`: Success message scheduling
+
+## Testing & Debugging
+
+### WordPress Debug Mode
+
+- Enable `WP_DEBUG` for WordPress-specific issues
+- Check `debug.log` for PHP errors and warnings
+- Use WordPress query debugging for shortcode issues
+
+### Common Issues
+
+**JavaScript Errors:**
+
+- Check browser console for errors
+- Verify `wp_enqueue_media()` called for media uploader
+- Ensure jQuery is loaded before custom scripts
+
+**Email Issues:**
+
+- Test with SMTP plugin (WP Mail SMTP recommended)
+- Check spam folders for test emails
+- Verify shortcode replacement in email output
+- Use plain text fallback for email clients
+
+**Portal Access:**
+
+- Verify dealer role has correct capabilities
+- Check NDA acceptance status
+- Confirm page assignments in settings
+
+**Security Checks:**
+
+- Always verify nonce values
+- Check `current_user_can()` for capabilities
+- Sanitize ALL inputs, escape ALL outputs
+- Use `wp_kses()` for HTML content
+
+### Developer Tools
+
+- **Query Monitor Plugin**: Debug queries, hooks, HTTP requests
+- **Debug Bar**: WordPress debug information in admin bar
+- **WP Mail SMTP**: Test and debug email delivery
+- **Browser DevTools**: Network tab for AJAX debugging
 
 ## Testing & Debugging
 

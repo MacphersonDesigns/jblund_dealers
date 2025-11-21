@@ -47,6 +47,97 @@ class Page_Manager {
 	}
 
 	/**
+	 * Get comprehensive test page content with all shortcodes
+	 *
+	 * @return string HTML content with all portal shortcodes for testing
+	 */
+	private function get_test_page_content() {
+		return '<!-- wp:heading {"level":1} -->
+<h1>Dealer Portal - All Components Test Page</h1>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p><strong>This page displays ALL dealer portal components for styling consistency testing.</strong> Use this to ensure all elements look cohesive across the entire portal experience.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading -->
+<h2>1. Dealer Login</h2>
+<!-- /wp:heading -->
+
+[jblund_dealer_login]
+
+<!-- wp:separator -->
+<hr class="wp-block-separator"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading -->
+<h2>2. Dealer Registration Form</h2>
+<!-- /wp:heading -->
+
+[jblund_dealer_registration]
+
+<!-- wp:separator -->
+<hr class="wp-block-separator"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading -->
+<h2>3. NDA Acceptance</h2>
+<!-- /wp:heading -->
+
+[jblund_nda_acceptance]
+
+<!-- wp:separator -->
+<hr class="wp-block-separator"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading -->
+<h2>4. Dealer Dashboard</h2>
+<!-- /wp:heading -->
+
+[jblund_dealer_dashboard]
+
+<!-- wp:separator -->
+<hr class="wp-block-separator"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading -->
+<h2>5. Dealer Profile</h2>
+<!-- /wp:heading -->
+
+[jblund_dealer_profile]
+
+<!-- wp:separator -->
+<hr class="wp-block-separator"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading -->
+<h2>6. Public Dealer Directory</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Grid Layout (Default):</p>
+<!-- /wp:paragraph -->
+
+[jblund_dealers layout="grid" posts_per_page="3"]
+
+<!-- wp:paragraph -->
+<p>List Layout:</p>
+<!-- /wp:paragraph -->
+
+[jblund_dealers layout="list" posts_per_page="3"]
+
+<!-- wp:paragraph -->
+<p>Compact Layout:</p>
+<!-- /wp:paragraph -->
+
+[jblund_dealers layout="compact" posts_per_page="6"]';
+	}
+
+	/**
 	 * Define all dealer portal pages
 	 *
 	 * @return void
@@ -71,11 +162,29 @@ class Page_Manager {
 				'shortcode' => '[jblund_dealer_login]',
 				'template'  => 'dealer-login',
 			),
+			'registration' => array(
+				'title'     => \__( 'Dealer Registration', 'jblund-dealers' ),
+				'slug'      => 'dealer-registration',
+				'shortcode' => '[jblund_dealer_registration]',
+				'template'  => 'registration-form',
+			),
+			'password_change' => array(
+				'title'     => \__( 'Change Password', 'jblund-dealers' ),
+				'slug'      => 'dealer-password-change',
+				'shortcode' => '[jblund_force_password_change]',
+				'template'  => 'password-change',
+			),
 			'nda'       => array(
 				'title'     => \__( 'Dealer NDA Acceptance', 'jblund-dealers' ),
 				'slug'      => 'dealer-nda-acceptance',
 				'shortcode' => '[jblund_nda_acceptance]',
 				'template'  => 'nda-acceptance-page',
+			),
+			'test_all' => array(
+				'title'     => \__( 'Dealer Portal - All Components Test Page', 'jblund-dealers' ),
+				'slug'      => 'dealer-portal-test-all',
+				'shortcode' => $this->get_test_page_content(),
+				'template'  => 'test-all',
 			),
 		);
 	}
@@ -105,6 +214,9 @@ class Page_Manager {
 	/**
 	 * Create a single page if it doesn't exist
 	 *
+	 * Simple page creation - just title, slug, and shortcode.
+	 * Perfect for later editing with Divi or any page builder.
+	 *
 	 * @param array $page_data Page configuration array.
 	 * @return int|false Page ID on success, false on failure.
 	 */
@@ -112,28 +224,12 @@ class Page_Manager {
 		// Check if page already exists
 		$existing_page = $this->get_page_by_slug( $page_data['slug'] );
 		if ( $existing_page ) {
-			// Update Divi settings if Divi is active and page exists
-			if ( $this->is_divi_active() ) {
-				$this->set_divi_meta( $existing_page->ID, $page_data['shortcode'] );
-			}
 			return $existing_page->ID;
 		}
 
-		// Prepare meta input
-		$meta_input = array(
-			'_jblund_dealer_portal_page' => true,
-		);
-
-		// Add Divi-specific meta if Divi is active
-		if ( $this->is_divi_active() ) {
-			$meta_input['_et_pb_use_builder']        = 'on';
-			$meta_input['_et_pb_page_layout']        = 'et_full_width_page';
-			$meta_input['_et_pb_side_nav']           = 'off';
-			$meta_input['_et_pb_post_hide_nav']      = 'default';
-			$meta_input['_et_pb_old_content']        = $page_data['shortcode'];
-		}
-
-		// Create new page
+		// Create new page - SUPER SIMPLE!
+		// Just a basic WordPress page with the shortcode in the content
+		// You can edit it with Divi later!
 		$page_id = \wp_insert_post(
 			array(
 				'post_title'   => $page_data['title'],
@@ -141,8 +237,10 @@ class Page_Manager {
 				'post_content' => $page_data['shortcode'],
 				'post_status'  => 'publish',
 				'post_type'    => 'page',
-				'post_author'  => 1, // Admin user
-				'meta_input'   => $meta_input,
+				'post_author'  => \get_current_user_id() ?: 1,
+				'meta_input'   => array(
+					'_jblund_dealer_portal_page' => true, // Just a marker so we know we created it
+				),
 			)
 		);
 
@@ -151,31 +249,6 @@ class Page_Manager {
 		}
 
 		return $page_id;
-	}
-
-	/**
-	 * Check if Divi theme is active
-	 *
-	 * @return bool True if Divi or Divi child theme is active.
-	 */
-	private function is_divi_active() {
-		$theme = \wp_get_theme();
-		return 'Divi' === $theme->name || 'Divi' === $theme->parent_theme;
-	}
-
-	/**
-	 * Set Divi-specific meta fields for a page
-	 *
-	 * @param int    $page_id Page ID.
-	 * @param string $shortcode Shortcode content.
-	 * @return void
-	 */
-	private function set_divi_meta( $page_id, $shortcode ) {
-		\update_post_meta( $page_id, '_et_pb_use_builder', 'on' );
-		\update_post_meta( $page_id, '_et_pb_page_layout', 'et_full_width_page' );
-		\update_post_meta( $page_id, '_et_pb_side_nav', 'off' );
-		\update_post_meta( $page_id, '_et_pb_post_hide_nav', 'default' );
-		\update_post_meta( $page_id, '_et_pb_old_content', $shortcode );
 	}
 
 	/**

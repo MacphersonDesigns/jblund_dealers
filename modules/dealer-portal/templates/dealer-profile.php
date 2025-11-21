@@ -3,11 +3,12 @@
  * Dealer Profile Template
  *
  * This template is loaded via the [jblund_dealer_profile] shortcode.
- * Displays and allows editing of dealer profile information.
+ * Displays and allows editing of dealer profile information including
+ * company details, services, sub-locations, and document uploads.
  *
  * @package JBLund_Dealers
  * @subpackage Dealer_Portal
- * @since 1.0.0
+ * @since 2.0.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -16,10 +17,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Security check - must be logged in
 if ( ! is_user_logged_in() ) {
-	echo '<div class="dealer-access-denied" style="max-width: 600px; margin: 40px auto; padding: 30px; background: #fff3cd; border: 2px solid #ffc107; border-radius: 8px; text-align: center;">';
-	echo '<h2 style="color: #856404; margin-top: 0;">Access Denied</h2>';
-	echo '<p style="color: #856404; margin-bottom: 20px;">You must be logged in to access the dealer profile.</p>';
-	echo '<a href="' . esc_url( home_url( '/dealer-login/' ) ) . '" style="display: inline-block; background: #003366; color: #fff; padding: 12px 30px; text-decoration: none; border-radius: 4px; font-weight: 600;">Login</a>';
+	$login_url = jblund_get_portal_page_url('login') ?: home_url( '/dealer-login/' );
+	echo '<div class="dealer-access-denied warning">';
+	echo '<h2>Access Denied</h2>';
+	echo '<p>You must be logged in to access the dealer profile.</p>';
+	echo '<a href="' . esc_url( $login_url ) . '">Login</a>';
 	echo '</div>';
 	return;
 }
@@ -30,45 +32,69 @@ $can_bypass   = JBLund\DealerPortal\Dealer_Role::can_bypass_dealer_restrictions(
 
 // Security check - must be a dealer or elevated user (admin/staff)
 if ( ! $is_dealer && ! $can_bypass ) {
-	echo '<div class="dealer-access-denied" style="max-width: 600px; margin: 40px auto; padding: 30px; background: #f8d7da; border: 2px solid #dc3545; border-radius: 8px; text-align: center;">';
-	echo '<h2 style="color: #721c24; margin-top: 0;">Access Denied</h2>';
-	echo '<p style="color: #721c24; margin-bottom: 20px;">This page is only accessible to authorized dealers.</p>';
-	echo '<a href="' . esc_url( home_url() ) . '" style="display: inline-block; background: #003366; color: #fff; padding: 12px 30px; text-decoration: none; border-radius: 4px; font-weight: 600;">Return Home</a>';
+	echo '<div class="dealer-access-denied error">';
+	echo '<h2>Access Denied</h2>';
+	echo '<p>This page is only accessible to authorized dealers.</p>';
+	echo '<a href="' . esc_url( home_url() ) . '">Return Home</a>';
 	echo '</div>';
 	return;
 }
 
-// Get dealer information
-$company_name = get_user_meta( $current_user->ID, '_dealer_company_name', true );
-$company_phone = get_user_meta( $current_user->ID, '_dealer_company_phone', true );
-$territory = get_user_meta( $current_user->ID, '_dealer_territory', true );
+// Get dealer post ID
+$dealer_post_id = get_user_meta( $current_user->ID, '_dealer_post_id', true );
+
+if ( ! $dealer_post_id ) {
+	echo '<div class="dealer-access-denied error">';
+	echo '<h2>No Dealer Profile Found</h2>';
+	echo '<p>Your dealer profile has not been set up yet. Please contact support.</p>';
+	echo '</div>';
+	return;
+}
+
+// Get profile manager instance
+$profile_manager = JBLund\DealerPortal\Dealer_Profile_Manager::get_instance();
 
 // Handle profile update
 $success_message = '';
 $error_message = '';
 
 if ( isset( $_POST['update_dealer_profile'] ) && check_admin_referer( 'update_dealer_profile', 'profile_nonce' ) ) {
-	// Update user fields
-	$user_data = array(
-		'ID' => $current_user->ID,
-		'user_email' => sanitize_email( $_POST['user_email'] ?? $current_user->user_email ),
-		'display_name' => sanitize_text_field( $_POST['display_name'] ?? $current_user->display_name ),
-	);
+	$result = $profile_manager->update_dealer_profile( $dealer_post_id, $_POST );
 
-	$result = wp_update_user( $user_data );
-
-	if ( ! is_wp_error( $result ) ) {
-		// Update meta fields
-		update_user_meta( $current_user->ID, '_dealer_company_name', sanitize_text_field( $_POST['company_name'] ?? '' ) );
-		update_user_meta( $current_user->ID, '_dealer_company_phone', sanitize_text_field( $_POST['company_phone'] ?? '' ) );
-
-		$success_message = __( 'Profile updated successfully!', 'jblund-dealers' );
-
-		// Refresh data
-		$company_name = get_user_meta( $current_user->ID, '_dealer_company_name', true );
-		$company_phone = get_user_meta( $current_user->ID, '_dealer_company_phone', true );
+	if ( $result['success'] ) {
+		$success_message = $result['message'];
 	} else {
-		$error_message = __( 'Error updating profile. Please try again.', 'jblund-dealers' );
+		$error_message = $result['message'];
+	}
+}
+
+// Get current dealer data
+$dealer_post = get_post( $dealer_post_id );
+$company_name = $dealer_post->post_title;
+$company_address = get_post_meta( $dealer_post_id, '_dealer_company_address', true );
+$company_phone = get_post_meta( $dealer_post_id, '_dealer_company_phone', true );
+$website = get_post_meta( $dealer_post_id, '_dealer_website', true );
+$docks = get_post_meta( $dealer_post_id, '_dealer_docks', true );
+$lifts = get_post_meta( $dealer_post_id, '_dealer_lifts', true );
+$trailers = get_post_meta( $dealer_post_id, '_dealer_trailers', true );
+$sublocations = get_post_meta( $dealer_post_id, '_dealer_sublocations', true ) ?: array();
+
+// Get dealer documents
+$document_ids = get_post_meta( $dealer_post_id, '_dealer_documents', true ) ?: array();
+$documents = array();
+if ( is_array( $document_ids ) ) {
+	foreach ( $document_ids as $doc_id ) {
+		$file = get_attached_file( $doc_id );
+		if ( $file && file_exists( $file ) ) {
+			$documents[] = array(
+				'id' => $doc_id,
+				'title' => get_the_title( $doc_id ),
+				'url' => wp_get_attachment_url( $doc_id ),
+				'filename' => basename( $file ),
+				'size' => size_format( filesize( $file ) ),
+				'date' => get_the_date( 'Y-m-d', $doc_id ),
+			);
+		}
 	}
 }
 ?>
@@ -77,7 +103,7 @@ if ( isset( $_POST['update_dealer_profile'] ) && check_admin_referer( 'update_de
 	<div class="profile-header">
 		<h1><?php esc_html_e( 'My Profile', 'jblund-dealers' ); ?></h1>
 		<p class="back-link">
-			<a href="<?php echo esc_url( home_url( '/dealer-dashboard/' ) ); ?>">
+			<a href="<?php echo esc_url( jblund_get_portal_page_url('dashboard') ?: home_url( '/dealer-dashboard/' ) ); ?>">
 				← <?php esc_html_e( 'Back to Dashboard', 'jblund-dealers' ); ?>
 			</a>
 		</p>
@@ -96,58 +122,31 @@ if ( isset( $_POST['update_dealer_profile'] ) && check_admin_referer( 'update_de
 	<?php endif; ?>
 
 	<div class="profile-content">
-		<form method="post" action="" class="dealer-profile-form">
+		<form method="post" action="" class="dealer-profile-form" enctype="multipart/form-data">
 			<?php wp_nonce_field( 'update_dealer_profile', 'profile_nonce' ); ?>
 
-			<div class="form-section">
-				<h2><?php esc_html_e( 'Account Information', 'jblund-dealers' ); ?></h2>
-
-				<div class="form-field">
-					<label for="user_login"><?php esc_html_e( 'Username', 'jblund-dealers' ); ?></label>
-					<input
-						type="text"
-						id="user_login"
-						name="user_login"
-						value="<?php echo esc_attr( $current_user->user_login ); ?>"
-						disabled
-						class="readonly-field"
-					/>
-					<p class="field-description"><?php esc_html_e( 'Username cannot be changed.', 'jblund-dealers' ); ?></p>
-				</div>
-
-				<div class="form-field">
-					<label for="user_email"><?php esc_html_e( 'Email Address', 'jblund-dealers' ); ?> <span class="required">*</span></label>
-					<input
-						type="email"
-						id="user_email"
-						name="user_email"
-						value="<?php echo esc_attr( $current_user->user_email ); ?>"
-						required
-					/>
-				</div>
-
-				<div class="form-field">
-					<label for="display_name"><?php esc_html_e( 'Display Name', 'jblund-dealers' ); ?></label>
-					<input
-						type="text"
-						id="display_name"
-						name="display_name"
-						value="<?php echo esc_attr( $current_user->display_name ); ?>"
-					/>
-				</div>
-			</div>
-
+			<!-- Company Information -->
 			<div class="form-section">
 				<h2><?php esc_html_e( 'Company Information', 'jblund-dealers' ); ?></h2>
 
 				<div class="form-field">
-					<label for="company_name"><?php esc_html_e( 'Company Name', 'jblund-dealers' ); ?></label>
+					<label for="company_name"><?php esc_html_e( 'Company Name', 'jblund-dealers' ); ?> <span class="required">*</span></label>
 					<input
 						type="text"
 						id="company_name"
 						name="company_name"
 						value="<?php echo esc_attr( $company_name ); ?>"
+						required
 					/>
+				</div>
+
+				<div class="form-field">
+					<label for="company_address"><?php esc_html_e( 'Company Address', 'jblund-dealers' ); ?></label>
+					<textarea
+						id="company_address"
+						name="company_address"
+						rows="3"
+					><?php echo esc_textarea( $company_address ); ?></textarea>
 				</div>
 
 				<div class="form-field">
@@ -160,20 +159,149 @@ if ( isset( $_POST['update_dealer_profile'] ) && check_admin_referer( 'update_de
 					/>
 				</div>
 
-				<?php if ( $territory ) : ?>
 				<div class="form-field">
-					<label for="territory"><?php esc_html_e( 'Territory', 'jblund-dealers' ); ?></label>
+					<label for="website"><?php esc_html_e( 'Website', 'jblund-dealers' ); ?></label>
 					<input
-						type="text"
-						id="territory"
-						name="territory"
-						value="<?php echo esc_attr( $territory ); ?>"
-						disabled
-						class="readonly-field"
+						type="url"
+						id="website"
+						name="website"
+						value="<?php echo esc_attr( $website ); ?>"
+						placeholder="https://"
 					/>
-					<p class="field-description"><?php esc_html_e( 'Contact support to change your territory.', 'jblund-dealers' ); ?></p>
 				</div>
-				<?php endif; ?>
+			</div>
+
+			<!-- Services Offered -->
+			<div class="form-section">
+				<h2><?php esc_html_e( 'Services Offered', 'jblund-dealers' ); ?></h2>
+
+				<div class="form-field-group">
+					<label class="checkbox-label">
+						<input
+							type="checkbox"
+							name="docks"
+							value="1"
+							<?php checked( $docks, '1' ); ?>
+						/>
+						<?php esc_html_e( 'Docks', 'jblund-dealers' ); ?>
+					</label>
+
+					<label class="checkbox-label">
+						<input
+							type="checkbox"
+							name="lifts"
+							value="1"
+							<?php checked( $lifts, '1' ); ?>
+						/>
+						<?php esc_html_e( 'Lifts', 'jblund-dealers' ); ?>
+					</label>
+
+					<label class="checkbox-label">
+						<input
+							type="checkbox"
+							name="trailers"
+							value="1"
+							<?php checked( $trailers, '1' ); ?>
+						/>
+						<?php esc_html_e( 'Trailers', 'jblund-dealers' ); ?>
+					</label>
+				</div>
+			</div>
+
+			<!-- Sub-Locations -->
+			<div class="form-section">
+				<h2><?php esc_html_e( 'Additional Locations', 'jblund-dealers' ); ?></h2>
+
+				<div id="sublocations-container">
+					<?php if ( ! empty( $sublocations ) ) : ?>
+						<?php foreach ( $sublocations as $index => $sublocation ) : ?>
+							<div class="sublocation-row" data-index="<?php echo esc_attr( $index ); ?>">
+								<h3><?php printf( esc_html__( 'Location %d', 'jblund-dealers' ), $index + 1 ); ?></h3>
+
+								<div class="form-field">
+									<label><?php esc_html_e( 'Location Name', 'jblund-dealers' ); ?></label>
+									<input type="text" name="sublocations[<?php echo $index; ?>][name]" value="<?php echo esc_attr( $sublocation['name'] ?? '' ); ?>" />
+								</div>
+
+								<div class="form-field">
+									<label><?php esc_html_e( 'Address', 'jblund-dealers' ); ?></label>
+									<textarea name="sublocations[<?php echo $index; ?>][address]" rows="2"><?php echo esc_textarea( $sublocation['address'] ?? '' ); ?></textarea>
+								</div>
+
+								<div class="form-field">
+									<label><?php esc_html_e( 'Phone', 'jblund-dealers' ); ?></label>
+									<input type="tel" name="sublocations[<?php echo $index; ?>][phone]" value="<?php echo esc_attr( $sublocation['phone'] ?? '' ); ?>" />
+								</div>
+
+								<div class="form-field">
+									<label><?php esc_html_e( 'Website', 'jblund-dealers' ); ?></label>
+									<input type="url" name="sublocations[<?php echo $index; ?>][website]" value="<?php echo esc_attr( $sublocation['website'] ?? '' ); ?>" />
+								</div>
+
+								<div class="form-field-group">
+									<label class="checkbox-label">
+										<input type="checkbox" name="sublocations[<?php echo $index; ?>][docks]" value="1" <?php checked( $sublocation['docks'] ?? '', '1' ); ?> />
+										<?php esc_html_e( 'Docks', 'jblund-dealers' ); ?>
+									</label>
+									<label class="checkbox-label">
+										<input type="checkbox" name="sublocations[<?php echo $index; ?>][lifts]" value="1" <?php checked( $sublocation['lifts'] ?? '', '1' ); ?> />
+										<?php esc_html_e( 'Lifts', 'jblund-dealers' ); ?>
+									</label>
+									<label class="checkbox-label">
+										<input type="checkbox" name="sublocations[<?php echo $index; ?>][trailers]" value="1" <?php checked( $sublocation['trailers'] ?? '', '1' ); ?> />
+										<?php esc_html_e( 'Trailers', 'jblund-dealers' ); ?>
+									</label>
+								</div>
+
+								<button type="button" class="remove-sublocation-btn"><?php esc_html_e( 'Remove Location', 'jblund-dealers' ); ?></button>
+							</div>
+						<?php endforeach; ?>
+					<?php endif; ?>
+				</div>
+
+				<button type="button" id="add-sublocation-btn" class="secondary-button">
+					+ <?php esc_html_e( 'Add Location', 'jblund-dealers' ); ?>
+				</button>
+			</div>
+
+			<!-- Document Upload -->
+			<div class="form-section">
+				<h2><?php esc_html_e( 'Business Documents', 'jblund-dealers' ); ?></h2>
+				<p class="field-description">
+					<?php esc_html_e( 'Upload important business documents (W9, insurance certificates, licenses, etc.)', 'jblund-dealers' ); ?>
+				</p>
+
+				<div id="document-upload-area">
+					<div class="upload-dropzone">
+						<input type="file" id="document-upload-input" multiple accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" style="display:none;" />
+						<label for="document-upload-input" class="upload-label">
+							<span class="upload-icon">📎</span>
+							<span class="upload-text"><?php esc_html_e( 'Click to upload or drag files here', 'jblund-dealers' ); ?></span>
+							<span class="upload-subtext"><?php esc_html_e( 'PDF, DOC, DOCX, JPG, PNG (Max 10MB per file)', 'jblund-dealers' ); ?></span>
+						</label>
+					</div>
+
+					<?php if ( ! empty( $documents ) ) : ?>
+						<div class="document-list">
+							<h3><?php esc_html_e( 'Uploaded Documents', 'jblund-dealers' ); ?></h3>
+							<?php foreach ( $documents as $doc ) : ?>
+								<div class="document-item" data-doc-id="<?php echo esc_attr( $doc['id'] ); ?>">
+									<div class="document-info">
+										<span class="document-icon">📄</span>
+										<div class="document-details">
+											<strong><?php echo esc_html( $doc['title'] ); ?></strong>
+											<span class="document-meta"><?php echo esc_html( $doc['size'] ); ?> • <?php echo esc_html( $doc['date'] ); ?></span>
+										</div>
+									</div>
+									<div class="document-actions">
+										<a href="<?php echo esc_url( $doc['url'] ); ?>" target="_blank" class="document-view-btn"><?php esc_html_e( 'View', 'jblund-dealers' ); ?></a>
+										<button type="button" class="document-delete-btn" data-doc-id="<?php echo esc_attr( $doc['id'] ); ?>"><?php esc_html_e( 'Delete', 'jblund-dealers' ); ?></button>
+									</div>
+								</div>
+							<?php endforeach; ?>
+						</div>
+					<?php endif; ?>
+				</div>
 			</div>
 
 			<div class="form-actions">
@@ -185,153 +313,45 @@ if ( isset( $_POST['update_dealer_profile'] ) && check_admin_referer( 'update_de
 	</div>
 </div>
 
-<style>
-.jblund-dealer-profile {
-	max-width: 800px;
-	margin: 0 auto;
-	padding: 20px;
-}
+<script type="text/template" id="sublocation-template">
+	<div class="sublocation-row" data-index="{{INDEX}}">
+		<h3><?php esc_html_e( 'Location', 'jblund-dealers' ); ?> {{NUMBER}}</h3>
 
-.profile-header {
-	margin-bottom: 30px;
-	padding-bottom: 20px;
-	border-bottom: 2px solid #003366;
-}
+		<div class="form-field">
+			<label><?php esc_html_e( 'Location Name', 'jblund-dealers' ); ?></label>
+			<input type="text" name="sublocations[{{INDEX}}][name]" value="" />
+		</div>
 
-.profile-header h1 {
-	margin: 0 0 10px 0;
-	color: #003366;
-	font-size: 32px;
-}
+		<div class="form-field">
+			<label><?php esc_html_e( 'Address', 'jblund-dealers' ); ?></label>
+			<textarea name="sublocations[{{INDEX}}][address]" rows="2"></textarea>
+		</div>
 
-.back-link a {
-	color: #003366;
-	text-decoration: none;
-	font-size: 14px;
-}
+		<div class="form-field">
+			<label><?php esc_html_e( 'Phone', 'jblund-dealers' ); ?></label>
+			<input type="tel" name="sublocations[{{INDEX}}][phone]" value="" />
+		</div>
 
-.back-link a:hover {
-	text-decoration: underline;
-}
+		<div class="form-field">
+			<label><?php esc_html_e( 'Website', 'jblund-dealers' ); ?></label>
+			<input type="url" name="sublocations[{{INDEX}}][website]" value="" />
+		</div>
 
-.profile-message {
-	padding: 15px;
-	margin-bottom: 20px;
-	border-radius: 4px;
-	font-weight: 500;
-}
+		<div class="form-field-group">
+			<label class="checkbox-label">
+				<input type="checkbox" name="sublocations[{{INDEX}}][docks]" value="1" />
+				<?php esc_html_e( 'Docks', 'jblund-dealers' ); ?>
+			</label>
+			<label class="checkbox-label">
+				<input type="checkbox" name="sublocations[{{INDEX}}][lifts]" value="1" />
+				<?php esc_html_e( 'Lifts', 'jblund-dealers' ); ?>
+			</label>
+			<label class="checkbox-label">
+				<input type="checkbox" name="sublocations[{{INDEX}}][trailers]" value="1" />
+				<?php esc_html_e( 'Trailers', 'jblund-dealers' ); ?>
+			</label>
+		</div>
 
-.profile-message.success {
-	background: #d4edda;
-	color: #155724;
-	border: 1px solid #c3e6cb;
-}
-
-.profile-message.error {
-	background: #f8d7da;
-	color: #721c24;
-	border: 1px solid #f5c6cb;
-}
-
-.dealer-profile-form {
-	background: #fff;
-	border: 1px solid #ddd;
-	border-radius: 8px;
-	padding: 30px;
-	box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.form-section {
-	margin-bottom: 30px;
-}
-
-.form-section:last-of-type {
-	margin-bottom: 0;
-}
-
-.form-section h2 {
-	margin: 0 0 20px 0;
-	color: #003366;
-	font-size: 20px;
-	padding-bottom: 10px;
-	border-bottom: 1px solid #eee;
-}
-
-.form-field {
-	margin-bottom: 20px;
-}
-
-.form-field label {
-	display: block;
-	margin-bottom: 8px;
-	color: #333;
-	font-weight: 600;
-	font-size: 14px;
-}
-
-.form-field .required {
-	color: #c00;
-}
-
-.form-field input[type="text"],
-.form-field input[type="email"],
-.form-field input[type="tel"] {
-	width: 100%;
-	padding: 10px 12px;
-	border: 1px solid #ddd;
-	border-radius: 4px;
-	font-size: 14px;
-	transition: border-color 0.3s ease;
-}
-
-.form-field input:focus {
-	outline: none;
-	border-color: #003366;
-}
-
-.form-field input.readonly-field {
-	background: #f5f5f5;
-	color: #666;
-	cursor: not-allowed;
-}
-
-.field-description {
-	margin: 5px 0 0 0;
-	font-size: 12px;
-	color: #666;
-	font-style: italic;
-}
-
-.form-actions {
-	margin-top: 30px;
-	padding-top: 20px;
-	border-top: 1px solid #eee;
-}
-
-.submit-button {
-	background: #003366;
-	color: #fff;
-	padding: 12px 30px;
-	border: none;
-	border-radius: 4px;
-	font-size: 16px;
-	font-weight: 600;
-	cursor: pointer;
-	transition: background 0.3s ease;
-}
-
-.submit-button:hover {
-	background: #002244;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-	.profile-header h1 {
-		font-size: 24px;
-	}
-
-	.dealer-profile-form {
-		padding: 20px;
-	}
-}
-</style>
+		<button type="button" class="remove-sublocation-btn"><?php esc_html_e( 'Remove Location', 'jblund-dealers' ); ?></button>
+	</div>
+</script>

@@ -1,0 +1,139 @@
+/**
+ * Compact Layout Styles
+ * Smaller, denser grid layout
+ */
+
+@use "variables" as *;
+
+.jblund-dealers-compact {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+	gap: $spacing-md;
+	margin: $spacing-lg 0;
+
+	.dealer-card {
+		background: var(--jblund-card-background, #ffffff);
+		border: 1px solid var(--jblund-border-color, #e0e0e0);
+		border-radius: $radius-md;
+		transition: $transition-fast;
+		overflow: hidden;
+		display: flex;
+		flex-direction: column;
+
+		&:hover {
+			box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+			transform: translateY(-2px);
+		}
+	}
+
+	// Smaller header
+	.dealer-card-header {
+		padding: $spacing-sm $spacing-md;
+
+		h3 {
+			font-size: 1.1em;
+		}
+	}
+
+	// Tighter content
+	.dealer-content {
+		padding: $spacing-md;
+	}
+
+	.dealer-address,
+	.dealer-phone {
+		font-size: 0.85em;
+		margin: $spacing-xs 0;
+
+		svg {
+			width: 14px;
+			height: 14px;
+		}
+	}
+
+	// Smaller button
+	.dealer-website-button {
+		padding: 8px $spacing-md;
+		font-size: 0.9em;
+	}
+
+	// Compact services
+	.dealer-services {
+		margin-top: $spacing-md;
+		padding-top: $spacing-sm;
+
+		h4 {
+			font-size: 0.9em;
+			margin-bottom: $spacing-xs;
+		}
+	}
+
+	.service-icons {
+		gap: 6px;
+
+		.service-icon {
+			min-width: 55px;
+			padding: 6px;
+
+			.icon {
+				font-size: 1.2em;
+				margin-bottom: 2px;
+			}
+
+			.label {
+				font-size: 0.65em;
+			}
+		}
+	}
+
+	.service-list {
+		li {
+			padding: 3px 0;
+			font-size: 0.85em;
+		}
+	}
+
+	// Even more compact sub-locations
+	.dealer-sublocations {
+		margin-top: $spacing-sm;
+		padding-top: $spacing-sm;
+
+		h4 {
+			font-size: 0.85em;
+			margin-bottom: 6px;
+		}
+	}
+
+	.dealer-sublocation {
+		padding: 8px $spacing-sm;
+		margin-bottom: 6px;
+
+		h5 {
+			font-size: 0.85em;
+			margin-bottom: 4px;
+		}
+
+		p {
+			font-size: 0.8em;
+		}
+	}
+}
+
+/* ==========================================================================
+   RESPONSIVE BREAKPOINTS
+   Tablet: Even smaller minimum (220px)
+   Mobile: Single column stack
+   ========================================================================== */
+// Responsive Adjustments
+@media (max-width: $breakpoint-tablet) {
+	.jblund-dealers-compact {
+		grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+		gap: $spacing-sm;
+	}
+}
+
+@media (max-width: $breakpoint-mobile) {
+	.jblund-dealers-compact {
+		grid-template-columns: 1fr;
+	}
+}
