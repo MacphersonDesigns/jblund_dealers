@@ -38,7 +38,7 @@ $dealer_name = $company_name ?: ($greeting_name . "'s Company");
 $nda_accepted = false;
 $acceptance_date = '';
 $acceptance_data = null;
-$just_accepted = isset($_GET['nda_accepted']) && $_GET['nda_accepted'] === '1';
+$just_accepted = isset($_GET['nda_accepted']) && sanitize_text_field($_GET['nda_accepted']) === '1';
 
 if (class_exists('JBLund\DealerPortal\NDA_Acceptance_Manager')) {
     $acceptance_manager = new \JBLund\DealerPortal\NDA_Acceptance_Manager();
