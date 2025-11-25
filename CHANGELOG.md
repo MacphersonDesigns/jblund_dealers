@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.0.1] - 2025-11-25
+
+### Added
+- Version bump to 2.0.1
+
+### Changed
+- [Add your changes here]
+
+### Fixed
+- [Add bug fixes here]
+
+
 All notable changes to the JBLund Dealers plugin will be documented in this file.
 
 ## [Unreleased]
