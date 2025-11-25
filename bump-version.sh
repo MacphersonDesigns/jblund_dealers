@@ -12,6 +12,30 @@ echo -e "${BLUE}╔════════════════════�
 echo -e "${BLUE}║  JBLund Dealers - Version Bumper  ║${NC}"
 echo -e "${BLUE}╚════════════════════════════════════╝${NC}\n"
 
+# Check current branch
+CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+echo -e "${BLUE}Current branch:${NC} $CURRENT_BRANCH"
+
+if [[ "$CURRENT_BRANCH" != "main" ]]; then
+    echo -e "${YELLOW}⚠️  Warning: You're not on the main branch${NC}"
+    echo -e "${YELLOW}   Releases should be created from 'main' branch${NC}"
+    echo ""
+    read -p "Do you want to continue anyway? [y/N]: " CONTINUE_CHOICE
+    
+    if [[ ! $CONTINUE_CHOICE =~ ^[Yy]$ ]]; then
+        echo -e "${BLUE}Recommended workflow:${NC}"
+        echo -e "  1. Merge your changes to main:"
+        echo -e "     ${BLUE}git checkout main${NC}"
+        echo -e "     ${BLUE}git merge $CURRENT_BRANCH${NC}"
+        echo -e "     ${BLUE}git push origin main${NC}"
+        echo -e "  2. Run this script again from main"
+        echo ""
+        echo -e "${RED}Cancelled${NC}"
+        exit 0
+    fi
+    echo ""
+fi
+
 # Get current version from plugin file
 CURRENT_VERSION=$(grep "Version:" jblund-dealers.php | awk '{print $3}')
 echo -e "${BLUE}Current version:${NC} $CURRENT_VERSION\n"
