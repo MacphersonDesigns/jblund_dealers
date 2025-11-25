@@ -1,0 +1,88 @@
+name: Build and Release Plugin
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'  # Triggers on version tags like v2.0.0, v2.0.1, etc.
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Get version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+        
+      - name: Build plugin
+        run: |
+          # Create build directory
+          mkdir -p build/jblund_dealers
+          
+          # Copy plugin files (excluding dev files)
+          rsync -av --progress ./ build/jblund_dealers/ \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='.gitignore' \
+            --exclude='.DS_Store' \
+            --exclude='.claude' \
+            --exclude='node_modules' \
+            --exclude='package.json' \
+            --exclude='package-lock.json' \
+            --exclude='composer.lock' \
+            --exclude='build.sh' \
+            --exclude='build' \
+            --exclude='assets/scss' \
+            --exclude='assets/css/old-reference.css' \
+            --exclude='assets/css/*.map' \
+            --exclude='SCSS-GUIDE.md' \
+            --exclude='DEALER-REGISTRATION-WORKFLOW.md' \
+            --exclude='**/MODULAR-REFACTOR.md' \
+            --exclude='**/DEALER-PROFILE-ENHANCEMENT.md' \
+            --exclude='**/DIVI-DASHBOARD-GUIDE.md' \
+            --exclude='**/DIVI-INTEGRATION.md' \
+            --exclude='modules/dealer-portal/README.md' \
+            --exclude='modules/dealer-portal/assets/scss' \
+            --exclude='*.log'
+          
+          # Create ZIP
+          cd build
+          zip -r jblund_dealers-v${{ steps.version.outputs.VERSION }}.zip jblund_dealers
+          
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ steps.version.outputs.VERSION }}
+          body: |
+            ## JBLund Dealers v${{ steps.version.outputs.VERSION }}
+            
+            ### What's Changed
+            See [CHANGELOG.md](https://github.com/MacphersonDesigns/jblund_dealers/blob/main/CHANGELOG.md) for details.
+            
+            ### Installation
+            1. Download the `jblund_dealers-v${{ steps.version.outputs.VERSION }}.zip` file below
+            2. Go to WordPress Admin → Plugins → Add New → Upload Plugin
+            3. Upload the ZIP file and activate
+            
+            ### Upgrade Instructions
+            - **From v1.x**: Automatic database migration will run on activation
+            - **From v2.x**: Direct upgrade, no migration needed
+          draft: false
+          prerelease: false
+          
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./build/jblund_dealers-v${{ steps.version.outputs.VERSION }}.zip
+          asset_name: jblund_dealers-v${{ steps.version.outputs.VERSION }}.zip
+          asset_content_type: application/zip
