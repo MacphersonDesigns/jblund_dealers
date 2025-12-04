@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.0.3] - 2025-12-04
+
+### Added
+- Version bump to 2.0.3
+
+### Changed
+- [Add your changes here]
+
+### Fixed
+- [Add bug fixes here]
+
+
 ## [2.0.2] - 2025-12-04
 
 ### Added
