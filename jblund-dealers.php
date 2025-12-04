@@ -3,7 +3,7 @@
  * Plugin Name: JBLund Dealers
  * Plugin URI: https://github.com/MacphersonDesigns/jblund_dealers
  * Description: A custom WordPress plugin to store and display dealer information for JBLund Dock's B2B Website
- * Version: 2.0.1
+ * Version: 2.0.2
  * Author: Macpherson Designs
  * Author URI: https://github.com/MacphersonDesigns
  * License: GPL v2 or later
@@ -20,7 +20,7 @@ if (!defined('ABSPATH')) {
 ob_start();
 
 // Define plugin constants
-define('JBLUND_DEALERS_VERSION', '2.0.1');
+define('JBLUND_DEALERS_VERSION', '2.0.2');
 define('JBLUND_DEALERS_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('JBLUND_DEALERS_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('JBLUND_DEALERS_GITHUB_REPO', 'MacphersonDesigns/jblund_dealers');
@@ -47,7 +47,7 @@ function jblund_dealers_init() {
 
     // Initialize plugin
     new \JBLund\Includes\Plugin();
-    
+
     // Initialize auto-updates from GitHub
     jblund_dealers_check_for_updates();
 }
@@ -60,16 +60,16 @@ function jblund_dealers_check_for_updates() {
     if (!class_exists('YahnisElsts\PluginUpdateChecker\v5\PucFactory')) {
         return;
     }
-    
+
     $updateChecker = \YahnisElsts\PluginUpdateChecker\v5\PucFactory::buildUpdateChecker(
         'https://github.com/' . JBLUND_DEALERS_GITHUB_REPO . '/',
         __FILE__,
         'jblund-dealers'
     );
-    
+
     // Optional: If your repository is private, uncomment and set your token
     // $updateChecker->setAuthentication('your-github-token-here');
-    
+
     // Use release assets
     $updateChecker->getVcsApi()->enableReleaseAssets();
 }
