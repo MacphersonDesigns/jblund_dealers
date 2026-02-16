@@ -101,14 +101,20 @@ class Uninstaller {
      * Delete dealer-related user meta
      */
     private static function delete_user_meta() {
-        global $wpdb;
-
-        $wpdb->query("DELETE FROM {$wpdb->usermeta} WHERE meta_key IN (
+        $meta_keys = array(
             '_dealer_nda_acceptance',
             '_dealer_nda_accepted',
             '_dealer_nda_pdf_path',
-            '_dealer_nda_accepted_date'
-        )");
+            '_dealer_nda_accepted_date',
+            '_linked_dealer_id',
+            '_force_password_change',
+            '_dealer_company_name',
+            '_dealer_rep_phone',
+        );
+
+        foreach ( $meta_keys as $meta_key ) {
+            delete_user_meta_by_key( $meta_key );
+        }
     }
 
     /**
@@ -155,10 +161,20 @@ class Uninstaller {
     private static function cleanup_orphaned_data() {
         global $wpdb;
 
-        // Clean up any orphaned post meta with dealer prefixes
-        $wpdb->query("DELETE FROM {$wpdb->postmeta} WHERE meta_key LIKE '_dealer_%'");
+        // Clean up orphaned post meta with dealer prefixes using prepared statement
+        $wpdb->query(
+            $wpdb->prepare(
+                "DELETE FROM {$wpdb->postmeta} WHERE meta_key LIKE %s",
+                '_dealer_%'
+            )
+        );
 
-        // Clean up any orphaned options with plugin prefix
-        $wpdb->query("DELETE FROM {$wpdb->options} WHERE option_name LIKE 'jblund_%'");
+        // Clean up orphaned options with plugin prefix using prepared statement
+        $wpdb->query(
+            $wpdb->prepare(
+                "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s",
+                'jblund_%'
+            )
+        );
     }
 }

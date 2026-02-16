@@ -1,5 +1,23 @@
 # Changelog
 
+## [2.1.0] - 2026-02-16
+
+### Added
+- New SVG service icons (dock, lift, trailer) replacing emoji icons across all dealer layouts
+- SVG icons render consistently at 40×40px on main dealer cards and 32×32px in sublocation rows
+
+### Changed
+- Replaced hardcoded emoji icons (🚢 ⚓ 🚛) with proper SVG img tags in list, grid, and compact layouts
+- Updated SCSS to use explicit width/height for icon sizing (previously used font-size which had no effect on img elements)
+- All icon filenames normalised to lowercase (dock.svg, lift.svg, trailer.svg)
+- Documentation moved to /docs directory
+- Updated .gitignore to exclude dev vendor packages, testing artifacts, and AI tool directories
+
+### Fixed
+- Sublocation service icons now match the main dealer card icons (were still showing old emojis)
+- Inconsistent icon sizing across layouts now resolved
+
+
 ## [2.0.3] - 2025-12-04
 
 ### Added

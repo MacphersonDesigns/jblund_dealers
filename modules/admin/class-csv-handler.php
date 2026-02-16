@@ -152,7 +152,18 @@ class CSV_Handler {
         }
 
         $column_mapping = array_map('sanitize_text_field', $_POST['column_mapping']);
-        $csv_data = json_decode(stripslashes($_POST['csv_data']), true);
+        
+        // Safely decode and validate JSON
+        $csv_json = sanitize_text_field( wp_unslash( $_POST['csv_data'] ) );
+        $csv_data = json_decode( $csv_json, true );
+        
+        // Validate JSON decode
+        if ( json_last_error() !== JSON_ERROR_NONE ) {
+            wp_die( sprintf(
+                __( 'Invalid data format: %s', 'jblund-dealers' ),
+                esc_html( json_last_error_msg() )
+            ) );
+        }
 
         if (empty($csv_data)) {
             wp_die(__('No data to import. Please try again.', 'jblund-dealers'));

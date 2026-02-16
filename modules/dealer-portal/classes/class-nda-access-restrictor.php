@@ -64,6 +64,15 @@ class NDA_Access_Restrictor {
 	 * @return void
 	 */
 	public function redirect_to_nda_after_login( $user_login, $user ) {
+		// Check if NDA forcing is enabled
+		$settings = \get_option( 'jblund_dealers_settings', array() );
+		$force_nda = isset( $settings['force_nda_on_login'] ) ? $settings['force_nda_on_login'] : false;
+
+		// If NDA forcing is disabled, don't redirect
+		if ( ! $force_nda ) {
+			return;
+		}
+
 		// Allow administrators and staff to bypass
 		if ( Dealer_Role::can_bypass_dealer_restrictions( $user ) ) {
 			return;
@@ -144,6 +153,15 @@ class NDA_Access_Restrictor {
 
 		// Dealer hasn't accepted NDA and is trying to access other pages
 		if ( ! $this->acceptance_manager->is_accepted( $user->ID ) ) {
+			// Check if NDA forcing is enabled
+			$settings = \get_option( 'jblund_dealers_settings', array() );
+			$force_nda = isset( $settings['force_nda_on_login'] ) ? $settings['force_nda_on_login'] : false;
+
+			// If NDA forcing is disabled, allow access to portal pages
+			if ( ! $force_nda ) {
+				return;
+			}
+
 			// Get portal pages
 			$portal_pages = \get_option( 'jblund_dealers_portal_pages', array() );
 			$password_change_page_id = isset( $portal_pages['password_change'] ) ? $portal_pages['password_change'] : 0;

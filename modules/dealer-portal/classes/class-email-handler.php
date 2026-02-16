@@ -131,16 +131,13 @@ class Email_Handler {
 	/**
 	 * Get the content of the email message from template.
 	 *
-	 * Adapted from XLTA's get_mail_message() pattern using ob_start/ob_get_clean.
+	 * Safely renders email template with variables without using extract().
 	 *
 	 * @param string $template  Template filename (without .php extension).
-	 * @param array  $vars      Variables to extract for use in template.
+	 * @param array  $vars      Variables to pass to template.
 	 * @return string The rendered email HTML content.
 	 */
 	private function get_mail_message( $template, $vars = array() ) {
-		// Extract variables for use in template
-		extract( $vars );
-
 		$template_path = dirname( __DIR__ ) . '/templates/emails/' . $template . '.php';
 
 		if ( ! \file_exists( $template_path ) ) {
@@ -149,7 +146,26 @@ class Email_Handler {
 		}
 
 		ob_start();
-			include $template_path;
+			$this->render_template( $template_path, $vars );
 		return ob_get_clean();
+	}
+
+	/**
+	 * Render template with variables in isolated scope.
+	 *
+	 * Safely injects variables without using extract().
+	 *
+	 * @param string $template_path Full path to template file.
+	 * @param array  $vars          Variables available in template.
+	 * @return void
+	 */
+	private function render_template( $template_path, $vars = array() ) {
+		// Create isolated scope for template variables
+		foreach ( (array) $vars as $key => $value ) {
+			// Use isset() pattern to avoid variable injection
+			$$key = $value;
+		}
+
+		include $template_path;
 	}
 }

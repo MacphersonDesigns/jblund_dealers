@@ -344,12 +344,17 @@ class Settings {
         );
 
         add_settings_field(
-            'use_icons',
-            __('Use Icons for Services', 'jblund-dealers'),
+            'force_nda_on_login',
+            __('Force NDA on Login', 'jblund-dealers'),
             array($this, 'checkbox_field_callback'),
             'jblund_dealers_settings',
             'jblund_dealers_shortcode',
-            array('field' => 'use_icons', 'default' => '1')
+            array(
+                'field' => 'force_nda_on_login',
+                'label' => __('Require dealers to accept NDA immediately upon first login', 'jblund-dealers'),
+                'description' => __('When enabled, dealers must sign the NDA before accessing any portal pages. Disable this to launch the site before the final NDA is ready.', 'jblund-dealers'),
+                'default' => false
+            )
         );
     }
 
@@ -438,7 +443,7 @@ class Settings {
     public function sanitize_settings($input) {
         $existing = get_option('jblund_dealers_settings', array());
 
-        $checkbox_fields = array('inherit_theme_styles', 'use_icons');
+        $checkbox_fields = array('inherit_theme_styles', 'force_nda_on_login');
 
         foreach ($checkbox_fields as $field) {
             if (array_key_exists($field, $existing) && !array_key_exists($field, $input)) {
@@ -448,7 +453,7 @@ class Settings {
                     array_key_exists('custom_css', $input)
                 )) {
                     $input[$field] = '0';
-                } elseif ($field === 'use_icons' && array_key_exists('default_layout', $input)) {
+                } elseif ($field === 'force_nda_on_login' && array_key_exists('default_layout', $input)) {
                     $input[$field] = '0';
                 }
             }
@@ -511,8 +516,17 @@ class Settings {
 
     public function checkbox_field_callback($args) {
         $options = get_option('jblund_dealers_settings');
-        $value = isset($options[$args['field']]) ? $options[$args['field']] : $args['default'];
-        echo '<input type="checkbox" name="jblund_dealers_settings[' . $args['field'] . ']" value="1" ' . checked($value, '1', false) . ' />';
+        $value = isset($options[$args['field']]) ? $options[$args['field']] : (isset($args['default']) ? $args['default'] : false);
+        ?>
+        <label>
+            <input type="checkbox" name="jblund_dealers_settings[<?php echo esc_attr($args['field']); ?>]" value="1" <?php checked($value, '1'); ?> />
+            <?php if (isset($args['label'])) : ?>
+                <?php echo esc_html($args['label']); ?>
+            <?php endif; ?>
+        </label>
+        <?php if (isset($args['description'])) : ?>
+            <p class="description"><?php echo esc_html($args['description']); ?></p>
+        <?php endif;
     }
 
     public function range_field_callback($args) {

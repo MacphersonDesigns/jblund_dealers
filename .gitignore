@@ -62,3 +62,24 @@ yarn-error.log*
 # assets/css/dealers.css
 # assets/css/dealers.css.map
 # modules/dealer-portal/assets/css/dashboard.css.map
+
+# Build artifacts
+*.zip
+
+# PHPUnit / testing
+.phpunit.result.cache
+phpunit-local.xml
+
+# AI tool directories (local only)
+.zencoder/
+.zenflow/
+
+# Composer dev-only vendor packages (phpunit and its dependencies)
+vendor/bin/
+vendor/doctrine/
+vendor/myclabs/
+vendor/nikic/
+vendor/phar-io/
+vendor/phpunit/
+vendor/sebastian/
+vendor/theseer/

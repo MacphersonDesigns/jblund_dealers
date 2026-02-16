@@ -108,3 +108,25 @@ function jblund_get_dealer_representative($user_id = null) {
         'phone' => isset($settings['representative_phone']) ? $settings['representative_phone'] : '(555) 123-4567',
     );
 }
+
+/**
+ * Darken a hex color by a percentage.
+ *
+ * Centralized utility for color manipulation.
+ *
+ * @param string $hex     Hex color code with or without #
+ * @param int    $percent Percentage to darken (0-100)
+ * @return string Darkened hex color code
+ */
+function jblund_darken_color( $hex, $percent ) {
+    $hex = str_replace( '#', '', $hex );
+    $r = hexdec( substr( $hex, 0, 2 ) );
+    $g = hexdec( substr( $hex, 2, 2 ) );
+    $b = hexdec( substr( $hex, 4, 2 ) );
+
+    $r = max( 0, min( 255, $r - ( $r * $percent / 100 ) ) );
+    $g = max( 0, min( 255, $g - ( $g * $percent / 100 ) ) );
+    $b = max( 0, min( 255, $b - ( $b * $percent / 100 ) ) );
+
+    return sprintf( '#%02x%02x%02x', $r, $g, $b );
+}

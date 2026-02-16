@@ -53,10 +53,11 @@ class Styles {
         $custom_css = ":root {\n";
 
         // Inject all customizable colors as CSS variables
-        $custom_css .= "\t--jblund-header-color: " . ($options['header_color'] ?? '#0073aa') . ";\n";
-        $custom_css .= "\t--jblund-card-background: " . ($options['card_background'] ?? '#ffffff') . ";\n";
-        $custom_css .= "\t--jblund-button-color: " . ($options['button_color'] ?? '#0073aa') . ";\n";
-        $custom_css .= "\t--jblund-button-hover-color: " . $this->darken_color($options['button_color'] ?? '#0073aa', 15) . ";\n";
+        $button_color = isset($options['button_color']) ? $options['button_color'] : '#0073aa';
+        $custom_css .= "\t--jblund-header-color: " . (isset($options['header_color']) ? $options['header_color'] : '#0073aa') . ";\n";
+        $custom_css .= "\t--jblund-card-background: " . (isset($options['card_background']) ? $options['card_background'] : '#ffffff') . ";\n";
+        $custom_css .= "\t--jblund-button-color: " . $button_color . ";\n";
+        $custom_css .= "\t--jblund-button-hover-color: " . jblund_darken_color($button_color, 15) . ";\n";
         $custom_css .= "\t--jblund-primary-text-color: " . ($options['text_color'] ?? '#333333') . ";\n";
         $custom_css .= "\t--jblund-secondary-text-color: " . ($options['secondary_text_color'] ?? '#666666') . ";\n";
         $custom_css .= "\t--jblund-border-color: " . ($options['border_color'] ?? '#e0e0e0') . ";\n";
@@ -83,22 +84,6 @@ class Styles {
         if (wp_style_is('jblund-dealer-portal', 'enqueued')) {
             wp_add_inline_style('jblund-dealer-portal', $custom_css);
         }
-    }
-
-    /**
-     * Darken a hex color
-     */
-    private function darken_color($hex, $percent) {
-        $hex = str_replace('#', '', $hex);
-        $r = hexdec(substr($hex, 0, 2));
-        $g = hexdec(substr($hex, 2, 2));
-        $b = hexdec(substr($hex, 4, 2));
-
-        $r = max(0, min(255, $r - ($r * $percent / 100)));
-        $g = max(0, min(255, $g - ($g * $percent / 100)));
-        $b = max(0, min(255, $b - ($b * $percent / 100)));
-
-        return sprintf("#%02x%02x%02x", $r, $g, $b);
     }
 
     /**

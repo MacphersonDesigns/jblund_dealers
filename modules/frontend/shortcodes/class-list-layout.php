@@ -158,15 +158,15 @@ class List_Layout extends Layout_Base {
                         <div class="sublocation-services-col">
                             <div class="dealer-services-icons sublocation-services-icons">
                                 <span class="service-icon service-docks <?php echo (!empty($location['docks']) && $location['docks'] == '1') ? 'active' : ''; ?>" title="<?php _e('Docks', 'jblund-dealers'); ?>">
-                                    <span class="icon">🚢</span>
+                                    <img src="<?php echo esc_url(JBLUND_DEALERS_PLUGIN_URL . 'assets/icons/dock.svg'); ?>" alt="" aria-hidden="true" class="icon" width="32" height="32" />
                                     <span class="label"><?php _e('Docks', 'jblund-dealers'); ?></span>
                                 </span>
                                 <span class="service-icon service-lifts <?php echo (!empty($location['lifts']) && $location['lifts'] == '1') ? 'active' : ''; ?>" title="<?php _e('Lifts', 'jblund-dealers'); ?>">
-                                    <span class="icon">⚓</span>
+                                    <img src="<?php echo esc_url(JBLUND_DEALERS_PLUGIN_URL . 'assets/icons/lift.svg'); ?>" alt="" aria-hidden="true" class="icon" width="32" height="32" />
                                     <span class="label"><?php _e('Lifts', 'jblund-dealers'); ?></span>
                                 </span>
                                 <span class="service-icon service-trailers <?php echo (!empty($location['trailers']) && $location['trailers'] == '1') ? 'active' : ''; ?>" title="<?php _e('Trailers', 'jblund-dealers'); ?>">
-                                    <span class="icon">🚛</span>
+                                    <img src="<?php echo esc_url(JBLUND_DEALERS_PLUGIN_URL . 'assets/icons/trailer.svg'); ?>" alt="" aria-hidden="true" class="icon" width="32" height="32" />
                                     <span class="label"><?php _e('Trailers', 'jblund-dealers'); ?></span>
                                 </span>
                             </div>

@@ -105,18 +105,19 @@ abstract class Layout_Base {
      * @param string $trailers Whether trailers are available
      */
     protected function render_service_icons($docks, $lifts, $trailers) {
+        $icons_url = JBLUND_DEALERS_PLUGIN_URL . 'assets/icons/';
         ?>
         <div class="dealer-services-icons">
             <span class="service-icon service-docks <?php echo ($docks == '1') ? 'active' : ''; ?>" title="<?php _e('Docks', 'jblund-dealers'); ?>">
-                <span class="icon">🚢</span>
+                <img src="<?php echo esc_url($icons_url . 'dock.svg'); ?>" alt="" aria-hidden="true" class="icon" width="40" height="40" />
                 <span class="label"><?php _e('Docks', 'jblund-dealers'); ?></span>
             </span>
             <span class="service-icon service-lifts <?php echo ($lifts == '1') ? 'active' : ''; ?>" title="<?php _e('Lifts', 'jblund-dealers'); ?>">
-                <span class="icon">⚓</span>
+                <img src="<?php echo esc_url($icons_url . 'lift.svg'); ?>" alt="" aria-hidden="true" class="icon" width="40" height="40" />
                 <span class="label"><?php _e('Lifts', 'jblund-dealers'); ?></span>
             </span>
             <span class="service-icon service-trailers <?php echo ($trailers == '1') ? 'active' : ''; ?>" title="<?php _e('Trailers', 'jblund-dealers'); ?>">
-                <span class="icon">🚛</span>
+                <img src="<?php echo esc_url($icons_url . 'trailer.svg'); ?>" alt="" aria-hidden="true" class="icon" width="40" height="40" />
                 <span class="label"><?php _e('Trailers', 'jblund-dealers'); ?></span>
             </span>
         </div>
