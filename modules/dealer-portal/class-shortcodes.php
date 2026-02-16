@@ -35,9 +35,11 @@ class Shortcodes {
     public function enqueue_styles() {
         // Only enqueue on pages with dealer portal shortcodes
         global $post;
-        if (is_a($post, 'WP_Post') && has_shortcode($post->post_content, 'jblund_dealer_dashboard') ||
+        if (is_a($post, 'WP_Post') && (
+            has_shortcode($post->post_content, 'jblund_dealer_dashboard') ||
             has_shortcode($post->post_content, 'jblund_dealer_profile') ||
-            has_shortcode($post->post_content, 'jblund_dealer_login')) {
+            has_shortcode($post->post_content, 'jblund_dealer_login')
+        )) {
 
             wp_enqueue_style(
                 'jblund-dealer-portal',

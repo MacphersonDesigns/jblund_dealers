@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.1] - 2026-02-16
+
+### Fixed
+- Critical: regenerated composer autoloader without dev dependencies — myclabs/deep-copy was referenced in autoload_files but not shipped in the plugin ZIP, causing a fatal error on activation
+- Fixed null-safety bug in dealer portal shortcode style enqueuing (operator precedence causing post_content warnings on non-post pages)
+
+
 ## [2.1.0] - 2026-02-16
 
 ### Added
