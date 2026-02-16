@@ -1,0 +1,61 @@
+// =============================================================================
+// Dealer Map
+// =============================================================================
+
+// Map container
+#jblund-dealer-map {
+    width: 100%;
+    border-radius: var(--jblund-border-radius, 4px);
+    overflow: hidden;
+}
+
+.jblund-map-notice {
+    padding: 1rem;
+    color: var(--jblund-secondary-text-color, #666);
+    font-style: italic;
+}
+
+// Info window content
+.jblund-map-infowindow {
+    font-family: inherit;
+    padding: 4px 2px;
+    min-width: 180px;
+
+    .jblund-map-name {
+        margin: 0 0 6px;
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: var(--jblund-header-color, #1a1a1a);
+        line-height: 1.3;
+    }
+
+    p {
+        margin: 0 0 4px;
+        font-size: 0.82rem;
+        color: var(--jblund-primary-text-color, #333);
+        line-height: 1.4;
+    }
+
+    a {
+        color: var(--jblund-link-color, #cc3300);
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+    .jblund-map-services {
+        display: flex;
+        gap: 6px;
+        margin-top: 8px;
+        padding-top: 8px;
+        border-top: 1px solid var(--jblund-border-color, #e0e0e0);
+    }
+
+    .jblund-map-service img {
+        width: 24px;
+        height: 24px;
+        opacity: 0.75;
+    }
+}

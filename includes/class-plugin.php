@@ -80,6 +80,7 @@ class Plugin {
     private function init_frontend_modules() {
         new \JBLund\Frontend\Styles();
         new \JBLund\Frontend\Shortcode();
+        new \JBLund\Frontend\Dealer_Map();
     }
 
     /**

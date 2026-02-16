@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.2.0] - 2026-02-16
+
+### Added
+- New `[jblund_dealer_map]` shortcode — renders a Google Maps view with a marker for every dealer that has latitude/longitude coordinates
+- Markers show an info popup on click with dealer name, address, phone, website link, and service icons
+- Map auto-fits bounds to show all plotted dealers
+- API key is read automatically from Divi theme settings (no separate configuration needed)
+- Accepts a `height` attribute to control map height (default: 500px)
+
+
 ## [2.1.1] - 2026-02-16
 
 ### Fixed
