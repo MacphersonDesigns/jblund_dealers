@@ -3,7 +3,7 @@
         'name' => 'jblund/dealers-plugin',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'a66e1d7bafa417dccc99f59f483d960c8a3d5cb1',
+        'reference' => '51fc3bd1e54a9ed530c54747b2bfff3d42bc5031',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'jblund/dealers-plugin' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'a66e1d7bafa417dccc99f59f483d960c8a3d5cb1',
+            'reference' => '51fc3bd1e54a9ed530c54747b2bfff3d42bc5031',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

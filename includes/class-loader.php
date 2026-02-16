@@ -91,6 +91,7 @@ class Loader {
     private function load_frontend_modules() {
         require_once $this->plugin_dir . 'modules/frontend/class-styles.php';
         require_once $this->plugin_dir . 'modules/frontend/class-shortcode.php';
+        require_once $this->plugin_dir . 'modules/frontend/class-dealer-map.php';
     }
 
     /**
