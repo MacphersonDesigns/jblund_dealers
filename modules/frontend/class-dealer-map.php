@@ -39,31 +39,14 @@ class Dealer_Map {
     }
 
     /**
-     * Retrieve the Google Maps API key from Divi theme settings.
-     * Tries multiple known storage locations across Divi versions.
+     * Retrieve the Google Maps API key from plugin settings.
      *
-     * @return string API key or empty string if not found
+     * @return string API key or empty string if not configured
      */
     private function get_google_maps_api_key() {
-        // Divi 4.x — standalone option
-        $key = get_option('et_pb_google_maps_api_key', '');
-        if (!empty($key)) {
-            return sanitize_text_field($key);
-        }
-
-        // Divi theme customizer options array
-        $et_divi = get_option('et_divi', array());
-        if (!empty($et_divi['google_maps_api_key'])) {
-            return sanitize_text_field($et_divi['google_maps_api_key']);
-        }
-
-        // Divi API integrations option
-        $api_integrations = get_option('et_divi_api_integrations', array());
-        if (!empty($api_integrations['google_maps_api_key'])) {
-            return sanitize_text_field($api_integrations['google_maps_api_key']);
-        }
-
-        return '';
+        $options = get_option('jblund_dealers_settings', array());
+        $key = isset($options['google_maps_api_key']) ? $options['google_maps_api_key'] : '';
+        return sanitize_text_field($key);
     }
 
     /**
@@ -113,7 +96,7 @@ class Dealer_Map {
 
         if (empty($this->api_key)) {
             return '<p class="jblund-map-notice">'
-                . esc_html__('Map unavailable: Google Maps API key not found in Divi settings.', 'jblund-dealers')
+                . esc_html__('Map unavailable: Google Maps API key not configured. Add your key under Dealers &rarr; Settings.', 'jblund-dealers')
                 . '</p>';
         }
 

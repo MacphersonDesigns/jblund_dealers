@@ -356,6 +356,19 @@ class Settings {
                 'default' => false
             )
         );
+
+        add_settings_field(
+            'google_maps_api_key',
+            __('Google Maps API Key', 'jblund-dealers'),
+            array($this, 'text_field_callback'),
+            'jblund_dealers_settings',
+            'jblund_dealers_shortcode',
+            array(
+                'field'       => 'google_maps_api_key',
+                'default'     => '',
+                'description' => __('Required for the [jblund_dealer_map] shortcode. Obtain your key from the Google Cloud Console.', 'jblund-dealers'),
+            )
+        );
     }
 
     /**
