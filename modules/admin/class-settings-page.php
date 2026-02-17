@@ -567,6 +567,21 @@ class Settings_Page {
                         </div>
                     </div>
 
+                    <!-- Service Icons Section -->
+                    <div class="jblund-section-wrapper">
+                        <h3 class="jblund-section-title" data-section="service-icons">
+                            <span class="dashicons dashicons-arrow-right-alt2"></span>
+                            <?php _e('Service Icons', 'jblund-dealers'); ?>
+                            <span class="section-badge"><?php _e('3 Icons', 'jblund-dealers'); ?></span>
+                        </h3>
+                        <div class="jblund-section-content" id="section-service-icons">
+                            <p class="description" style="margin-bottom:12px;"><?php _e('Upload custom icons to replace the default Docks, Lifts, and Trailers icons. Leave blank to use the bundled SVGs.', 'jblund-dealers'); ?></p>
+                            <table class="form-table">
+                                <?php do_settings_fields('jblund_dealers_settings', 'jblund_dealers_icons'); ?>
+                            </table>
+                        </div>
+                    </div>
+
                     <!-- Custom CSS Section -->
                     <div class="jblund-section-wrapper">
                         <h3 class="jblund-section-title" data-section="custom-css">
