@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.1] - 2026-02-16
+
+### Fixed
+
+- Service Icons section now appears in the Appearance tab — the section was registered correctly but was not wired into the tab's custom HTML renderer
+
+
 ## [2.3.0] - 2026-02-16
 
 ### Added
