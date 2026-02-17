@@ -118,6 +118,33 @@ function jblund_get_dealer_representative($user_id = null) {
  * @param int    $percent Percentage to darken (0-100)
  * @return string Darkened hex color code
  */
+/**
+ * Get the URL for a service icon, using a custom upload if set in settings,
+ * otherwise falling back to the bundled SVG.
+ *
+ * @param string $service One of: 'docks', 'lifts', 'trailers'
+ * @return string Absolute URL to the icon
+ */
+function jblund_get_service_icon_url( $service ) {
+    $defaults = array(
+        'docks'    => JBLUND_DEALERS_PLUGIN_URL . 'assets/icons/dock.svg',
+        'lifts'    => JBLUND_DEALERS_PLUGIN_URL . 'assets/icons/lift.svg',
+        'trailers' => JBLUND_DEALERS_PLUGIN_URL . 'assets/icons/trailer.svg',
+    );
+
+    $options = get_option( 'jblund_dealers_settings', array() );
+    $key     = 'icon_' . $service . '_id';
+
+    if ( ! empty( $options[ $key ] ) ) {
+        $url = wp_get_attachment_url( absint( $options[ $key ] ) );
+        if ( $url ) {
+            return $url;
+        }
+    }
+
+    return isset( $defaults[ $service ] ) ? $defaults[ $service ] : '';
+}
+
 function jblund_darken_color( $hex, $percent ) {
     $hex = str_replace( '#', '', $hex );
     $r = hexdec( substr( $hex, 0, 2 ) );

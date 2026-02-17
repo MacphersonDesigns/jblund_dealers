@@ -27,6 +27,7 @@ class Settings {
      */
     public function __construct() {
         add_action('admin_init', array($this, 'register_settings'));
+        add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_scripts'));
     }
 
     /**
@@ -39,6 +40,7 @@ class Settings {
         register_setting('jblund_dealers_email_settings', 'jblund_dealers_email_settings');
 
         $this->register_appearance_settings();
+        $this->register_icon_settings();
         $this->register_shortcode_settings();
         $this->register_portal_settings();
         $this->register_representative_settings();
@@ -316,6 +318,35 @@ class Settings {
     }
 
     /**
+     * Register service icon settings
+     */
+    private function register_icon_settings() {
+        add_settings_section(
+            'jblund_dealers_icons',
+            __('Service Icons', 'jblund-dealers'),
+            array($this, 'icon_section_callback'),
+            'jblund_dealers_settings'
+        );
+
+        $icons = array(
+            'icon_docks_id'    => __('Docks Icon', 'jblund-dealers'),
+            'icon_lifts_id'    => __('Lifts Icon', 'jblund-dealers'),
+            'icon_trailers_id' => __('Trailers Icon', 'jblund-dealers'),
+        );
+
+        foreach ($icons as $field => $label) {
+            add_settings_field(
+                $field,
+                $label,
+                array($this, 'icon_field_callback'),
+                'jblund_dealers_settings',
+                'jblund_dealers_icons',
+                array('field' => $field)
+            );
+        }
+    }
+
+    /**
      * Register shortcode settings
      */
     private function register_shortcode_settings() {
@@ -472,14 +503,70 @@ class Settings {
             }
         }
 
+        // Sanitize icon attachment IDs (store as int, 0 means "not set")
+        foreach (array('icon_docks_id', 'icon_lifts_id', 'icon_trailers_id') as $icon_field) {
+            if (array_key_exists($icon_field, $input)) {
+                $input[$icon_field] = absint($input[$icon_field]);
+            }
+        }
+
         return array_merge($existing, $input);
     }
 
     /**
      * Section callbacks
      */
+    /**
+     * Enqueue WP media uploader scripts on the plugin settings page
+     */
+    public function enqueue_admin_scripts($hook) {
+        if ($hook !== 'dealer_page_jblund-dealers-settings') {
+            return;
+        }
+        wp_enqueue_media();
+        wp_enqueue_script(
+            'jblund-admin-icons',
+            JBLUND_DEALERS_PLUGIN_URL . 'assets/js/admin-icons.js',
+            array('jquery'),
+            JBLUND_DEALERS_VERSION,
+            true
+        );
+    }
+
     public function appearance_section_callback() {
         echo '<p>' . __('Customize the appearance of dealer cards on your website.', 'jblund-dealers') . '</p>';
+    }
+
+    public function icon_section_callback() {
+        echo '<p>' . __('Upload custom icons to replace the default service icons (Docks, Lifts, Trailers). SVG, PNG, or any image format supported by your browser will work. Leave blank to use the bundled icons.', 'jblund-dealers') . '</p>';
+    }
+
+    public function icon_field_callback($args) {
+        $options     = get_option('jblund_dealers_settings', array());
+        $field       = $args['field'];
+        $attachment_id = isset($options[$field]) ? absint($options[$field]) : 0;
+        $url         = $attachment_id ? wp_get_attachment_url($attachment_id) : '';
+        $preview_style = $url ? '' : ' style="display:none;"';
+        ?>
+        <div class="jblund-icon-field" data-field="<?php echo esc_attr($field); ?>">
+            <img class="jblund-icon-preview"
+                 src="<?php echo esc_url($url); ?>"
+                 width="48" height="48"<?php echo $preview_style; ?>
+                 style="vertical-align:middle;margin-right:8px;border:1px solid #ddd;padding:3px;background:#fff;" />
+            <input type="hidden"
+                   name="jblund_dealers_settings[<?php echo esc_attr($field); ?>]"
+                   class="jblund-icon-id"
+                   value="<?php echo esc_attr($attachment_id ?: ''); ?>" />
+            <button type="button" class="button jblund-icon-select">
+                <?php echo $url ? __('Change Icon', 'jblund-dealers') : __('Select Icon', 'jblund-dealers'); ?>
+            </button>
+            <?php if ($url) : ?>
+            <button type="button" class="button-link jblund-icon-remove" style="margin-left:8px;color:#b32d2e;">
+                <?php _e('Remove', 'jblund-dealers'); ?>
+            </button>
+            <?php endif; ?>
+        </div>
+        <?php
     }
 
     public function shortcode_section_callback() {

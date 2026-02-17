@@ -109,8 +109,12 @@ class Dealer_Map {
         }
 
         wp_localize_script('jblund-dealer-map', 'jblundMapData', array(
-            'dealers'  => $dealers,
-            'iconsUrl' => JBLUND_DEALERS_PLUGIN_URL . 'assets/icons/',
+            'dealers' => $dealers,
+            'icons'   => array(
+                'docks'    => jblund_get_service_icon_url('docks'),
+                'lifts'    => jblund_get_service_icon_url('lifts'),
+                'trailers' => jblund_get_service_icon_url('trailers'),
+            ),
         ));
 
         $height = sanitize_text_field($atts['height']);

@@ -13,10 +13,10 @@ var jblundOpenInfoWindow = null;
  * Build the HTML content for a marker info window
  *
  * @param {Object} dealer
- * @param {string} iconsUrl
+ * @param {Object} icons  Object with 'docks', 'lifts', 'trailers' URL strings
  * @returns {string}
  */
-function jblundBuildInfoWindow(dealer, iconsUrl) {
+function jblundBuildInfoWindow(dealer, icons) {
     var html = '<div class="jblund-map-infowindow">';
     html += '<h3 class="jblund-map-name">' + dealer.name + '</h3>';
 
@@ -36,13 +36,13 @@ function jblundBuildInfoWindow(dealer, iconsUrl) {
     if (hasService) {
         html += '<div class="jblund-map-services">';
         if (dealer.docks === '1') {
-            html += '<span class="jblund-map-service" title="Docks"><img src="' + iconsUrl + 'dock.svg" width="24" height="24" alt="Docks" /></span>';
+            html += '<span class="jblund-map-service" title="Docks"><img src="' + icons.docks + '" width="24" height="24" alt="Docks" /></span>';
         }
         if (dealer.lifts === '1') {
-            html += '<span class="jblund-map-service" title="Lifts"><img src="' + iconsUrl + 'lift.svg" width="24" height="24" alt="Lifts" /></span>';
+            html += '<span class="jblund-map-service" title="Lifts"><img src="' + icons.lifts + '" width="24" height="24" alt="Lifts" /></span>';
         }
         if (dealer.trailers === '1') {
-            html += '<span class="jblund-map-service" title="Trailers"><img src="' + iconsUrl + 'trailer.svg" width="24" height="24" alt="Trailers" /></span>';
+            html += '<span class="jblund-map-service" title="Trailers"><img src="' + icons.trailers + '" width="24" height="24" alt="Trailers" /></span>';
         }
         html += '</div>';
     }
@@ -64,8 +64,8 @@ function jblundInitMap() {
         return;
     }
 
-    var dealers  = jblundMapData.dealers;
-    var iconsUrl = jblundMapData.iconsUrl;
+    var dealers = jblundMapData.dealers;
+    var icons   = jblundMapData.icons;
 
     jblundMap = new google.maps.Map(mapEl, {
         zoom: 6,
@@ -88,7 +88,7 @@ function jblundInitMap() {
         });
 
         var infoWindow = new google.maps.InfoWindow({
-            content: jblundBuildInfoWindow(dealer, iconsUrl),
+            content: jblundBuildInfoWindow(dealer, icons),
             maxWidth: 280,
         });
 

@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.3.0] - 2026-02-16
+
+### Added
+
+- **Service Icons settings** — upload custom icons for Docks, Lifts, and Trailers via the WP Media Library under Dealers → Settings → Service Icons; falls back to bundled SVGs if not set
+- Icons are now respected everywhere: main dealer cards, sublocation rows, and map info-window popups
+- **Map Pin Status meta box row** — each dealer edit screen now shows geocoding status (coordinates saved / failed / pending) with a "Clear & Re-geocode" or "Retry" button so anyone can refresh coordinates without touching code
+- Editing a dealer's address automatically clears any cached geocoding failure so it retries on the next map load
+
+
 ## [2.2.2] - 2026-02-16
 
 ### Added

@@ -31,6 +31,7 @@ class Meta_Boxes {
     public function __construct() {
         add_action('add_meta_boxes', array($this, 'add_dealer_meta_boxes'));
         add_action('save_post_dealer', array($this, 'save_dealer_meta'), 10, 2);
+        add_action('admin_post_jblund_reset_geocode', array($this, 'handle_reset_geocode'));
     }
 
     /**
@@ -122,6 +123,38 @@ class Meta_Boxes {
                 <th><label for="dealer_longitude"><?php _e('Longitude', 'jblund-dealers'); ?></label></th>
                 <td><input type="text" id="dealer_longitude" name="dealer_longitude" value="<?php echo esc_attr($longitude); ?>" class="regular-text" placeholder="e.g., -93.123456" />
                 <p class="description"><?php _e('Optional: Decimal degrees format (e.g., -93.123456)', 'jblund-dealers'); ?></p></td>
+            </tr>
+            <tr>
+                <th><?php _e('Map Pin Status', 'jblund-dealers'); ?></th>
+                <td>
+                    <?php
+                    $geocode_failed = get_post_meta($post->ID, '_dealer_geocode_failed', true);
+                    if (!empty($latitude) && !empty($longitude)) :
+                    ?>
+                        <span style="color:#1d8348;">&#10003; <?php _e('Coordinates saved', 'jblund-dealers'); ?></span>
+                        <code style="margin-left:8px;font-size:0.9em;"><?php echo esc_html($latitude . ', ' . $longitude); ?></code>
+                        <br /><br />
+                        <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" style="display:inline;">
+                            <?php wp_nonce_field('jblund_reset_geocode_' . $post->ID, '_jblund_geocode_nonce'); ?>
+                            <input type="hidden" name="action" value="jblund_reset_geocode" />
+                            <input type="hidden" name="post_id" value="<?php echo esc_attr($post->ID); ?>" />
+                            <button type="submit" class="button"><?php _e('Clear &amp; Re-geocode from Address', 'jblund-dealers'); ?></button>
+                        </form>
+                        <p class="description"><?php _e('Clears saved coordinates. The next map page load will re-geocode from the address above.', 'jblund-dealers'); ?></p>
+                    <?php elseif ($geocode_failed) : ?>
+                        <span style="color:#b32d2e;">&#9888; <?php _e('Last geocoding attempt failed.', 'jblund-dealers'); ?></span>
+                        <p class="description"><?php _e('Check that the address above is complete and accurate, then click Retry.', 'jblund-dealers'); ?></p>
+                        <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" style="display:inline;">
+                            <?php wp_nonce_field('jblund_reset_geocode_' . $post->ID, '_jblund_geocode_nonce'); ?>
+                            <input type="hidden" name="action" value="jblund_reset_geocode" />
+                            <input type="hidden" name="post_id" value="<?php echo esc_attr($post->ID); ?>" />
+                            <button type="submit" class="button button-primary"><?php _e('Retry Geocoding', 'jblund-dealers'); ?></button>
+                        </form>
+                    <?php else : ?>
+                        <span style="color:#7f8c8d;">&#9432; <?php _e('No coordinates saved.', 'jblund-dealers'); ?></span>
+                        <p class="description"><?php _e('Coordinates will be geocoded automatically from the address above when the dealer map is next viewed.', 'jblund-dealers'); ?></p>
+                    <?php endif; ?>
+                </td>
             </tr>
             <tr>
                 <th><label for="dealer_custom_map_link"><?php _e('Custom Map Link', 'jblund-dealers'); ?></label></th>
@@ -513,7 +546,14 @@ class Meta_Boxes {
 
         // Save dealer information
         if (isset($_POST['dealer_company_address'])) {
-            update_post_meta($post_id, '_dealer_company_address', sanitize_textarea_field($_POST['dealer_company_address']));
+            $new_address = sanitize_textarea_field($_POST['dealer_company_address']);
+            $old_address = get_post_meta($post_id, '_dealer_company_address', true);
+            update_post_meta($post_id, '_dealer_company_address', $new_address);
+
+            // Clear geocode failure flag when address changes so it retries automatically
+            if ($new_address !== $old_address) {
+                delete_post_meta($post_id, '_dealer_geocode_failed');
+            }
         }
 
         if (isset($_POST['dealer_company_phone'])) {
@@ -592,5 +632,31 @@ class Meta_Boxes {
                 update_post_meta($post_id, '_dealer_documents', $documents);
             }
         }
+    }
+
+    /**
+     * Handle the "Reset Geocode" admin-post action.
+     * Clears saved coordinates and failure flag so the dealer is re-geocoded
+     * the next time the dealer map shortcode is rendered.
+     */
+    public function handle_reset_geocode() {
+        $post_id = isset($_POST['post_id']) ? absint($_POST['post_id']) : 0;
+
+        if (!$post_id || !current_user_can('edit_post', $post_id)) {
+            wp_die(__('Permission denied.', 'jblund-dealers'));
+        }
+
+        if (!isset($_POST['_jblund_geocode_nonce']) ||
+            !wp_verify_nonce($_POST['_jblund_geocode_nonce'], 'jblund_reset_geocode_' . $post_id)
+        ) {
+            wp_die(__('Security check failed.', 'jblund-dealers'));
+        }
+
+        delete_post_meta($post_id, '_dealer_latitude');
+        delete_post_meta($post_id, '_dealer_longitude');
+        delete_post_meta($post_id, '_dealer_geocode_failed');
+
+        wp_safe_redirect(get_edit_post_link($post_id, 'raw'));
+        exit;
     }
 }
