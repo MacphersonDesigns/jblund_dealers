@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.2.2] - 2026-02-16
+
+### Added
+
+- Address geocoding fallback for the dealer map: dealers without saved lat/lng coordinates are now geocoded automatically via the Google Maps Geocoding API using their stored address
+- Geocoded coordinates are cached back to post meta on first resolution — no repeated API calls on subsequent page loads
+- Dealers that fail geocoding (bad address, API error) are flagged with `_dealer_geocode_failed` meta and silently skipped rather than retried on every load
+
+
 ## [2.2.1] - 2026-02-16
 
 ### Fixed
