@@ -134,22 +134,26 @@ class Meta_Boxes {
                         <span style="color:#1d8348;">&#10003; <?php _e('Coordinates saved', 'jblund-dealers'); ?></span>
                         <code style="margin-left:8px;font-size:0.9em;"><?php echo esc_html($latitude . ', ' . $longitude); ?></code>
                         <br /><br />
-                        <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" style="display:inline;">
-                            <?php wp_nonce_field('jblund_reset_geocode_' . $post->ID, '_jblund_geocode_nonce'); ?>
-                            <input type="hidden" name="action" value="jblund_reset_geocode" />
-                            <input type="hidden" name="post_id" value="<?php echo esc_attr($post->ID); ?>" />
-                            <button type="submit" class="button"><?php _e('Clear &amp; Re-geocode from Address', 'jblund-dealers'); ?></button>
-                        </form>
+                        <?php
+                        $reset_url = wp_nonce_url(
+                            admin_url('admin-post.php?action=jblund_reset_geocode&post_id=' . $post->ID),
+                            'jblund_reset_geocode_' . $post->ID,
+                            '_jblund_geocode_nonce'
+                        );
+                        ?>
+                        <a href="<?php echo esc_url($reset_url); ?>" class="button"><?php _e('Clear &amp; Re-geocode from Address', 'jblund-dealers'); ?></a>
                         <p class="description"><?php _e('Clears saved coordinates. The next map page load will re-geocode from the address above.', 'jblund-dealers'); ?></p>
                     <?php elseif ($geocode_failed) : ?>
                         <span style="color:#b32d2e;">&#9888; <?php _e('Last geocoding attempt failed.', 'jblund-dealers'); ?></span>
                         <p class="description"><?php _e('Check that the address above is complete and accurate, then click Retry.', 'jblund-dealers'); ?></p>
-                        <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" style="display:inline;">
-                            <?php wp_nonce_field('jblund_reset_geocode_' . $post->ID, '_jblund_geocode_nonce'); ?>
-                            <input type="hidden" name="action" value="jblund_reset_geocode" />
-                            <input type="hidden" name="post_id" value="<?php echo esc_attr($post->ID); ?>" />
-                            <button type="submit" class="button button-primary"><?php _e('Retry Geocoding', 'jblund-dealers'); ?></button>
-                        </form>
+                        <?php
+                        $retry_url = wp_nonce_url(
+                            admin_url('admin-post.php?action=jblund_reset_geocode&post_id=' . $post->ID),
+                            'jblund_reset_geocode_' . $post->ID,
+                            '_jblund_geocode_nonce'
+                        );
+                        ?>
+                        <a href="<?php echo esc_url($retry_url); ?>" class="button button-primary"><?php _e('Retry Geocoding', 'jblund-dealers'); ?></a>
                     <?php else : ?>
                         <span style="color:#7f8c8d;">&#9432; <?php _e('No coordinates saved.', 'jblund-dealers'); ?></span>
                         <p class="description"><?php _e('Coordinates will be geocoded automatically from the address above when the dealer map is next viewed.', 'jblund-dealers'); ?></p>
@@ -640,14 +644,14 @@ class Meta_Boxes {
      * the next time the dealer map shortcode is rendered.
      */
     public function handle_reset_geocode() {
-        $post_id = isset($_POST['post_id']) ? absint($_POST['post_id']) : 0;
+        $post_id = isset($_REQUEST['post_id']) ? absint($_REQUEST['post_id']) : 0;
 
         if (!$post_id || !current_user_can('edit_post', $post_id)) {
             wp_die(__('Permission denied.', 'jblund-dealers'));
         }
 
-        if (!isset($_POST['_jblund_geocode_nonce']) ||
-            !wp_verify_nonce($_POST['_jblund_geocode_nonce'], 'jblund_reset_geocode_' . $post_id)
+        if (!isset($_REQUEST['_jblund_geocode_nonce']) ||
+            !wp_verify_nonce($_REQUEST['_jblund_geocode_nonce'], 'jblund_reset_geocode_' . $post_id)
         ) {
             wp_die(__('Security check failed.', 'jblund-dealers'));
         }
